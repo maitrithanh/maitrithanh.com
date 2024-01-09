@@ -55,7 +55,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       <div className="absolute bottom-1 right-36">
         <Link
           target="_blank"
-          href={linkSource}
+          href={preview}
           className="border rounded-full px-2 py-1 m-1 flex justify-center items-center"
         >
           <FaRegEye className="mr-2" />

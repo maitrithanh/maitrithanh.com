@@ -44,7 +44,8 @@ const Navbar = () => {
             );
           })}
         </ul>
-        <div className="px-2">
+
+        <div className="px-2  md:visible invisible">
           <Link href="https://www.buymeacoffee.com/maitrithanh" target="_blank">
             <Image
               src="/default-yellow.png"
@@ -65,7 +66,7 @@ const Navbar = () => {
         </div>
       </div>
       {isOpenMenu && (
-        <Backdrop>
+        <Backdrop setIsOpenMenu={setIsOpenMenu}>
           <MobileNav setIsOpenMenu={setIsOpenMenu} />
         </Backdrop>
       )}
