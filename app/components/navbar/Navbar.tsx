@@ -18,12 +18,18 @@ const Navbar = () => {
     <>
       <div className="h-[52px] flex justify-between items-center px-4">
         <div
-          className="max-w-[200px] cursor-pointer"
+          className="max-w-[80px] max-h-[52px] cursor-pointer"
           onClick={() => {
             router.push("/");
           }}
         >
-          <Image src="/logo.png" width={80} height={50} alt="logo" />
+          <Image
+            src="/logo.png"
+            width={52}
+            height={52}
+            alt="logo"
+            className="flex"
+          />
         </div>
         <ul className="hidden justify-center items-center md:flex">
           {menu.map((item: any) => {
