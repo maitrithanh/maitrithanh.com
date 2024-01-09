@@ -41,7 +41,7 @@ const Navbar = () => {
         <div className="px-2">
           <Link href="https://www.buymeacoffee.com/maitrithanh" target="_blank">
             <Image
-              src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+              src="/default-yellow.png"
               width={120}
               height={20}
               alt="Buy me coffee"
