@@ -50,13 +50,14 @@ const InfoCard = () => {
       <div className="relative flex bordero justify-center items-center bg-[#bcb8b87d] rounded-full shadow-lg hover:border-gray-500">
         <div className="absolute h-[100px] w-[100px] flex justify-center items-center">
           <Image
-            className="rounded-full hover:scale-110 transition-all"
+            className="bounce rounded-full hover:scale-110 transition-all z-20"
             src="/Thanh.jpg"
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
             alt="Avatar"
             priority
           />
+          <div className="animate-ping bg-teal-400 h-[70px] w-[70px] rounded-full"></div>
         </div>
       </div>
     </div>

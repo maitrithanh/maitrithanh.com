@@ -31,7 +31,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           width={660}
           height={140}
           alt=""
-          className="shadow rounded-lg object-cover"
+          className="shadow rounded-lg object-cover hover:scale-110 transition-all"
         />
       </div>
       <div className="col-span-2 md:mt-0 mt-4">

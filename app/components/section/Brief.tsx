@@ -4,7 +4,7 @@ const Brief = () => {
   return (
     <div className="mt-4 pb-2 border-b">
       <div className="w-full flex justify-center my-4">
-        <p>— Start —</p>
+        <p className="animate-bounce">— Start —</p>
       </div>
       <div>
         <h1 className="text-2xl font-bold">🙋🏻‍♂️ Brief introduction</h1>
