@@ -15,6 +15,10 @@ export const projects = [
                 colorCode: "#18a9ea",
                 tagName: "TailWindCSS"
             },
+            {
+                colorCode: "#18a9ea",
+                tagName: "Vite"
+            },
         ]
     },
     {
@@ -32,6 +36,24 @@ export const projects = [
             {
                 colorCode: "#18a9ea",
                 tagName: "TailWindCSS"
+            },
+            {
+                colorCode: "#18a9ea",
+                tagName: "Axios"
+            },
+        ]
+    },
+    {
+        name: "ReactJS TodoList WebApp",
+        date: "2023",
+        description: "",
+        image: "/todo-list-react.png",
+        preview: "https://main--astounding-bubblegum-142c8b.netlify.app/",
+        linkSource: "https://github.com/maitrithanh/FullStack-ToDoApp-FrontEnd",
+        tag: [
+            {
+                colorCode: "#3498db",
+                tagName: "ReactJS"
             },
             {
                 colorCode: "#18a9ea",
