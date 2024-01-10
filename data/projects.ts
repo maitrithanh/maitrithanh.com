@@ -26,7 +26,7 @@ export const projects = [
         date: "Current",
         description: "",
         image: "/preschool.png",
-        preview: "https://steady-sawine-264e91.netlify.app/",
+        preview: "https://fourkids.netlify.app/",
         linkSource: "https://github.com/maitrithanh/AFO",
         tag: [
             {
