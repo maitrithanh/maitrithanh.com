@@ -15,8 +15,8 @@ const Navbar = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   return (
-    <>
-      <div className="h-[52px] flex justify-between items-center px-4">
+    <div className="w-full flex justify-center h-[52px] bg-white fixed top-0 z-40">
+      <div className="flex justify-between items-center px-4 container mx-auto max-w-[640px] ">
         <div
           className="max-w-[80px] max-h-[52px] cursor-pointer"
           onClick={() => {
@@ -70,7 +70,7 @@ const Navbar = () => {
           <MobileNav setIsOpenMenu={setIsOpenMenu} />
         </Backdrop>
       )}
-    </>
+    </div>
   );
 };
 
