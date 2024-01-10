@@ -1,13 +1,23 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaGithub, FaFacebook } from "react-icons/fa";
+import Typewriter from "typewriter-effect";
 
 const InfoCard = () => {
   return (
     <div className="flex px-4 py-6 items-center shadow rounded-2xl">
       <div className="w-[80%]">
-        <div className="font-semibold text-2xl">Mai Tri Thanh</div>
+        <div className="font-semibold text-2xl">
+          <Typewriter
+            options={{
+              strings: ["Mai Tri Thanh", "Frontend Developer"],
+              autoStart: true,
+              loop: true,
+            }}
+          />
+        </div>
         <div className="group relative font-extralight bg-[#e2e2e27d] rounded-full w-fit py-1 px-2 m-1">
           <Link
             href="https://github.com/maitrithanh"

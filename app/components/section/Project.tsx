@@ -3,9 +3,9 @@ import ProjectCard from "../card/ProjectCard";
 import { projects } from "@/data/projects";
 const Project = () => {
   return (
-    <div>
+    <div className="mt-4">
       <div>
-        <h1 className="text-2xl font-bold">Projects</h1>
+        <h1 className="text-2xl font-bold">👨🏻‍💻 Projects</h1>
         <p className="text-[#545454] font-mono">
           Here are some of the projects i{"'"}ve worked on.
         </p>

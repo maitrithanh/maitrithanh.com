@@ -6,6 +6,11 @@ const nextConfig = {
                 protocol: "https",
                 hostname: "cdn.buymeacoffee.com",
                 pathname: '**',
+            },
+            {
+                protocol: "https",
+                hostname: "cdn-icons-png.flaticon.com",
+                pathname: '**',
             }
         ]
     }
