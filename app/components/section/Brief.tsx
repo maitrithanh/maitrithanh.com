@@ -10,7 +10,7 @@ const Brief = () => {
         <h1 className="text-2xl font-bold">🙋🏻‍♂️ Brief introduction</h1>
         <div className="border-l-4 border-[#b3b3b3] pl-6 m-1">
           <p className="text-[#545454]">
-            Hi! I{"'"}m a Software Engineer [Web Developer].
+            Hi! I'm a Software Engineer [Web Developer].
           </p>
         </div>
         <p className="my-2 text-justify">
