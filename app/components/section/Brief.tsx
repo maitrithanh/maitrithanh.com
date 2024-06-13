@@ -14,16 +14,12 @@ const Brief = () => {
           </p>
         </div>
         <p className="my-2 text-justify">
-          I am studying information technology
-        </p>
-        <p className="my-2 text-justify">
-          As a result, I gained skills and experience in web and mobile software
-          development in university.
-        </p>
-        <p className="my-2 text-justify">
-          In the past, I have won many awards in youth innovation competitions
-          at city, provincial and school levels when I was in high school in the
-          field of system software.
+          Passionate about crafting captivating digital experiences through
+          pixel-perfect code. With a keen eye for design and a knack for
+          problem-solving, I specialize in bringing visions to life on the web.
+          From responsive layouts to interactive interfaces, I thrive on
+          creating seamless user experiences that leave a lasting impression.
+          Let's build something beautiful together!
         </p>
       </div>
     </div>

@@ -24,14 +24,14 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   tag,
 }) => {
   return (
-    <div className="grid md:grid-cols-3 grid-cols-1 md:gap-4 mt-8 relative pb-14 md:p-4 shadow-sm rounded-md">
+    <div className="grid md:grid-cols-3 grid-cols-1 md:gap-4 mt-8 relative pb-16 md:p-4 shadow-sm rounded-md group-hover:[&:not(:hover)]:blur-sm hover:scale-110 transition-all">
       <div className="col-span-1 w-full flex justify-center items-center">
         <Image
           src={image}
           width={660}
           height={140}
           alt=""
-          className="shadow rounded-lg object-cover hover:scale-110 transition-all"
+          className="shadow rounded-lg object-cover transition-all"
         />
       </div>
       <div className="col-span-2 md:mt-0 mt-4">
@@ -39,13 +39,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           {name} - {date}
         </h1>
         <p>{description}</p>
-        <div>
+        <div className="flex items-center mb-8">
           {tag.map((item: any) => {
             return (
               <span
                 key={item.tagName}
-                className={`border border-[${item.colorCode}] mr-2 px-2 rounded-full`}
+                className={`border border-[${item.colorCode}] mr-2 px-2 rounded-full flex items-center justify-center gap-1`}
               >
+                <Image
+                  src={item.icon}
+                  width={20}
+                  height={20}
+                  loading="lazy"
+                  alt={item.tagName}
+                  className="h-4 w-4 animateSpin transition-all"
+                />
                 {item.tagName}
               </span>
             );
@@ -56,7 +64,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <Link
           target="_blank"
           href={preview}
-          className="border rounded-full px-2 py-1 m-1 flex justify-center items-center"
+          className="border hover:rotate-3 hover:scale-105 transition-all rounded-full px-2 py-1 m-1 flex justify-center items-center"
         >
           <FaRegEye className="mr-2" />
           Preview
@@ -66,7 +74,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <Link
           target="_blank"
           href={linkSource}
-          className="border rounded-full px-2 py-1 m-1 flex justify-center items-center"
+          className="border hover:-rotate-3 hover:scale-105 transition-all rounded-full px-2 py-1 m-1 flex justify-center items-center"
         >
           <FaGithub className="mr-2" />
           View Srouce

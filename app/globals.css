@@ -2,18 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.animateLeftToRight {
+  animation: leftToRight ease-in-out 1s;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.animateLeftToRight {
+  animation: leftToRight ease-in-out 1s;
+}
+
+.animateRightToLeft {
+  animation: rightToLeft ease-in-out 1s;
+}
+
+.animateBottomToTop {
+  animation: topToBottom ease-in-out 1s;
+}
+
+@keyframes leftToRight {
+  0% {
+    transform: translateX(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
+@keyframes rightToLeft {
+  0% {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
 
+@keyframes topToBottom {
+  0% {
+    transform: translateY(-140px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

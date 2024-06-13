@@ -18,7 +18,7 @@ const Navbar = () => {
     <div className="w-full flex justify-center h-[52px] bg-white fixed top-0 z-40">
       <div className="flex justify-between items-center px-4 container mx-auto max-w-[640px] ">
         <div
-          className="max-w-[80px] max-h-[52px] cursor-pointer"
+          className="max-w-[80px] max-h-[52px] cursor-pointer animateLeftToRight"
           onClick={() => {
             router.push("/");
           }}
@@ -31,7 +31,7 @@ const Navbar = () => {
             className="flex"
           />
         </div>
-        <ul className="hidden justify-center items-center md:flex">
+        <ul className="hidden justify-center items-center md:flex animateLeftToRight">
           {menu.map((item: any) => {
             return (
               <MenuItem
@@ -45,7 +45,7 @@ const Navbar = () => {
           })}
         </ul>
 
-        <div className="px-2  md:visible invisible">
+        <div className="px-2  md:visible invisible animateRightToLeft">
           <Link href="https://www.buymeacoffee.com/maitrithanh" target="_blank">
             <Image
               src="/default-yellow.png"

@@ -16,6 +16,7 @@ const Skills = () => {
                 target="_blank"
                 rel="noreferrer"
                 key={item.name}
+                title={item.name}
                 className="p-1 hover:mb-4 hover:scale-125 transition-all"
               >
                 <Image
