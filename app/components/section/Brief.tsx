@@ -19,7 +19,7 @@ const Brief = () => {
           problem-solving, I specialize in bringing visions to life on the web.
           From responsive layouts to interactive interfaces, I thrive on
           creating seamless user experiences that leave a lasting impression.
-          Let's build something beautiful together!
+          Let&apos;s build something beautiful together!
         </p>
       </div>
     </div>
