@@ -19,8 +19,8 @@ const MenuItem: React.FC<MenuItemProps> = ({
   return (
     <li
       className={`${
-        active ? "font-bold" : ""
-      } flex justify-start items-center px-2 cursor-pointer hover:font-medium`}
+        active ? "text-black bg-gray-100 py-1 rounded-md" : "text-gray-600"
+      } flex justify-start items-center px-2 cursor-pointer`}
       onClick={() => {
         router.push(pathname);
       }}

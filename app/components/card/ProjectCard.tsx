@@ -24,7 +24,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   tag,
 }) => {
   return (
-    <div className="grid md:grid-cols-3 grid-cols-1 md:gap-4 mt-8 relative pb-16 md:p-4 shadow-sm rounded-md group-hover:[&:not(:hover)]:blur-sm hover:scale-110 transition-all">
+    <div className="grid md:grid-cols-3 grid-cols-1 md:gap-4 mt-8 relative pb-16 md:p-4 rounded-md group-hover:[&:not(:hover)]:opacity-50 hover:scale-110 transition-all">
       <div className="col-span-1 w-full flex justify-center items-center">
         <Image
           src={image}
