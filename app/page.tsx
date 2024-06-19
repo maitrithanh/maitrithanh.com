@@ -36,25 +36,27 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container mx-auto my-4 max-w-[640px]">
-      <InfoCard />
-      <div id="Brief" className="animateLeftToRight">
-        <Brief />
-      </div>
-      <div id="Skills" className="animateRightToLeft">
-        <Skills />
-      </div>
-      <div id="Project" className="animateLeftToRight">
-        <Project />
-      </div>
-      <div id="Education" className="invisible">
-        <Education />
-      </div>
-      <div id="Contact" className="invisible">
-        <Contact />
-      </div>
-      <div id="Thank" className="invisible">
-        <Thank />
+    <div>
+      <div className="container mx-auto my-4 max-w-[640px]">
+        <InfoCard />
+        <div id="Brief" className="animateLeftToRight">
+          <Brief />
+        </div>
+        <div id="Skills" className="animateRightToLeft">
+          <Skills />
+        </div>
+        <div id="Project" className="animateLeftToRight">
+          <Project />
+        </div>
+        <div id="Education" className="invisible">
+          <Education />
+        </div>
+        <div id="Contact" className="invisible">
+          <Contact />
+        </div>
+        <div id="Thank" className="invisible">
+          <Thank />
+        </div>
       </div>
     </div>
   );
