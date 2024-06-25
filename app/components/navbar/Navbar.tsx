@@ -15,8 +15,8 @@ const Navbar = () => {
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   return (
-    <div className="w-full flex justify-center h-[52px] bg-white fixed top-0 z-40">
-      <div className="flex justify-between items-center px-4 container mx-auto max-w-[640px] ">
+    <div className="w-full h-[52px] bg-white fixed top-0 z-40">
+      <div className="flex justify-between items-center mx-auto max-w-[640px] ">
         <div
           className="max-w-[80px] max-h-[52px] cursor-pointer animateLeftToRight"
           onClick={() => {

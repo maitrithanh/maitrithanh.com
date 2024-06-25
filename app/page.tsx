@@ -37,7 +37,7 @@ export default function Home() {
 
   return (
     <div>
-      <div className="container mx-auto my-4 max-w-[640px]">
+      <div className="p-2 mx-auto my-4 max-w-[640px]">
         <InfoCard />
         <div id="Brief" className="animateLeftToRight">
           <Brief />

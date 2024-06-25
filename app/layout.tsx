@@ -13,7 +13,7 @@ const font = Poppins({
 
 export const metadata: Metadata = {
   title: "Mai Tri Thanh",
-  description: "Mai Tri Thanh Personal Website",
+  description: "Mai Tri Thanh - Portfolio",
 };
 
 export default function RootLayout({
@@ -29,7 +29,7 @@ export default function RootLayout({
             <div className="radial-background block h-full w-full max-w-lg opacity-40 blur-[70px] saturate-150"></div>
           </div>
           <Navbar />
-          <div className="mx-2 mt-[64px] animateBottomToTop">{children}</div>
+          <div className="mx-1 mt-[64px] animateBottomToTop">{children}</div>
         </div>
       </body>
     </html>

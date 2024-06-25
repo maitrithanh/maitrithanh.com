@@ -1,12 +1,10 @@
 import React from "react";
-import Brief from "../components/section/Brief";
-import Skills from "../components/section/Skills";
+import About from "../components/section/About";
 
 const AboutPage = () => {
   return (
     <div className="container mx-auto my-4 max-w-[640px]">
-      <Skills />
-      <Brief />
+      <About />
     </div>
   );
 };

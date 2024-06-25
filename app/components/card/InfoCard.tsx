@@ -7,7 +7,7 @@ import Typewriter from "typewriter-effect";
 
 const InfoCard = () => {
   return (
-    <div className="flex px-4 py-6 items-center rounded-2xl ">
+    <div className="flex items-center rounded-2xl ">
       <div className="w-[80%]">
         <div className="font-semibold text-2xl">
           <Typewriter
