@@ -10,7 +10,7 @@ const About = () => {
           <div>
             <div className="flex justify-center items-center py-4">
               <Image
-                src="/images/T1.jpg"
+                src="/Images/T1.jpg"
                 alt="Thanh Picture 1"
                 className="rounded-md -rotate-6 hover:rotate-0 hover:scale-110 duration-300 translate-x-0 "
                 width={150}
@@ -18,7 +18,7 @@ const About = () => {
               />
 
               <Image
-                src="/images/T2.jpg"
+                src="/Images/T2.jpg"
                 alt="Thanh Picture 2"
                 className="rounded-md rotate-6 hover:rotate-0 hover:scale-110 duration-300 translate-x-0"
                 width={150}
