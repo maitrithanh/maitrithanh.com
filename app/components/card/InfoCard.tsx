@@ -7,12 +7,12 @@ import Typewriter from "typewriter-effect";
 
 const InfoCard = () => {
   return (
-    <div className="flex px-4 py-6 items-center shadow rounded-2xl ">
+    <div className="flex px-4 py-6 items-center rounded-2xl ">
       <div className="w-[80%]">
         <div className="font-semibold text-2xl">
           <Typewriter
             options={{
-              strings: ["Mai Tri Thanh", "Frontend Developer"],
+              strings: ["Mai Tri Thanh", "Fullstack Developer"],
               autoStart: true,
               loop: true,
             }}
@@ -47,11 +47,11 @@ const InfoCard = () => {
           </div>
         </div>
       </div>
-      <div className="relative flex bordero justify-center items-center bg-[#bcb8b87d] rounded-full shadow-lg hover:border-gray-500">
-        <div className="absolute h-[100px] w-[100px] flex justify-center items-center">
+      <div className="relative flex border justify-center items-center bg-[#bcb8b87d] rounded-full shadow-lg hover:border-gray-500">
+        <div className="absolute h-[150px] w-[150px] flex justify-center items-center">
           <Image
-            className="bounce rounded-full hover:scale-110 transition-all z-20"
-            src="/Thanh.jpg"
+            className="bounce hover:scale-110 transition-all z-20 hover:rotate-6"
+            src="/ThanhAVT.png"
             fill
             sizes="(max-width: 768px) 100vw, 33vw"
             alt="Avatar"
