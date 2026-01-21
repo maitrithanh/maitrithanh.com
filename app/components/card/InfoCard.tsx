@@ -2,7 +2,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { FaGithub, FaFacebook } from "react-icons/fa";
+import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
+import { PiReadCvLogoThin } from "react-icons/pi";
 import Typewriter from "typewriter-effect";
 
 const InfoCard = () => {
@@ -20,16 +21,31 @@ const InfoCard = () => {
         </div>
         <div className="group relative font-extralight bg-[#e2e2e27d] rounded-full w-fit py-1 px-2 m-1">
           <Link
+            href="https://www.linkedin.com/in/maitrithanh06/"
+            target="_blank"
+            className="flex items-center"
+          >
+            <FaLinkedin />
+            <span className="mx-1">Linkedin</span>
+          </Link>
+
+          <div className="absolute border w-fit p-1 rounded-full transition-all translate-x-24 top-0 invisible opacity-20 group-hover:visible group-hover:opacity-100 group-hover:translate-x-32">
+            maitrithanh06
+          </div>
+        </div>
+
+        <div className="group relative font-extralight bg-[#e2e2e27d] rounded-full w-fit py-1 px-2 m-1">
+          <Link
             href="https://github.com/maitrithanh"
             target="_blank"
             className="flex items-center"
           >
             <FaGithub />
-            <span className="mx-1">maitrithanh</span>
+            <span className="mx-1">Github</span>
           </Link>
 
           <div className="absolute border w-fit p-1 rounded-full transition-all translate-x-24 top-0 invisible opacity-20 group-hover:visible group-hover:opacity-100 group-hover:translate-x-32">
-            Github
+            maitrithanh
           </div>
         </div>
 
@@ -40,10 +56,10 @@ const InfoCard = () => {
             className="flex items-center"
           >
             <FaFacebook />
-            <span className="mx-1">Blumtt</span>
+            <span className="mx-1">Facebook</span>
           </Link>
           <div className="absolute border w-fit p-1 rounded-full transition-all translate-x-24 top-0 invisible opacity-20 group-hover:visible group-hover:opacity-100 group-hover:translate-x-32">
-            Facebook
+            Blumtt
           </div>
         </div>
       </div>
