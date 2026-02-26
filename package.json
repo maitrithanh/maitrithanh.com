@@ -13,6 +13,7 @@
     "@radix-ui/react-select": "^2.0.0",
     "@react-three/drei": "^9.115.0",
     "@react-three/fiber": "^8.17.14",
+    "@vercel/analytics": "^1.6.1",
     "animejs": "^4.3.6",
     "class-variance-authority": "^0.7.0",
     "lucide-react": "^0.394.0",
