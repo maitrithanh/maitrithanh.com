@@ -1,0 +1,44 @@
+[
+  {
+    "slug": "animation-system-for-delightful-ux",
+    "title": "Building delightful UX with animation systems",
+    "category": "Frontend",
+    "summary": "How to design animation language that feels alive without hurting performance.",
+    "publishedAt": "2026-02-20",
+    "readTime": "6 min read",
+    "cover": "/preschool.webp",
+    "content": [
+      "A strong animation system starts with consistency. Instead of random motions, define a small set of movement patterns for entrances, hover interactions, and feedback states.",
+      "For production apps, favor transform and opacity because they are GPU-friendly and smooth on low-end devices. Keep durations short, and apply easing with intention.",
+      "The best motion is subtle: enough to communicate hierarchy and state changes, but not so much that users feel delayed or distracted."
+    ]
+  },
+  {
+    "slug": "clean-architecture-in-nextjs",
+    "title": "Practical clean architecture in Next.js apps",
+    "category": "Architecture",
+    "summary": "A lightweight approach for organizing domains, shared UI, and API layers.",
+    "publishedAt": "2026-02-18",
+    "readTime": "8 min read",
+    "cover": "/fastool.webp",
+    "content": [
+      "Start by separating domain logic from presentation. Keep business rules in plain modules and make UI components consume data via clear interfaces.",
+      "Use feature boundaries to keep complexity localized. Each feature can own its components, hooks, and API calls without leaking implementation details.",
+      "This approach keeps refactoring cheap and allows teams to scale both codebase and collaboration quality over time."
+    ]
+  },
+  {
+    "slug": "shipping-with-reusable-design-primitives",
+    "title": "Shipping faster with reusable design primitives",
+    "category": "Design System",
+    "summary": "Turning one-off UI into robust reusable components with shadcn and Tailwind.",
+    "publishedAt": "2026-02-12",
+    "readTime": "5 min read",
+    "cover": "/todo-list-react.png",
+    "content": [
+      "Reusable primitives reduce decision fatigue and increase velocity. Start with core building blocks like buttons, cards, and form controls.",
+      "Define clear variants and spacing rules. Team members can ship faster when components expose predictable APIs and sensible defaults.",
+      "A minimal design system should optimize for readability and consistency first, then gradually add expressive variants when product needs grow."
+    ]
+  }
+]

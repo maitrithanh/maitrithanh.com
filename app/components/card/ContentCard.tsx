@@ -1,4 +1,11 @@
-import React, { ReactElement } from "react";
+import React from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 const ContentCard = ({
   title,
@@ -10,15 +17,18 @@ const ContentCard = ({
   description?: string;
 }) => {
   return (
-    <div className="">
-      <h1 className="text-2xl font-bold sticky top-[52px] bg-[#ffffff8e] rounded-md w-fit z-10">
-        {title}
-      </h1>
-      <div className="border-l-4 border-[#b3b3b3] pl-6 m-1">
-        <p className="text-[#545454]">{description}</p>
-      </div>
-      {children}
-    </div>
+    <Card className="border-primary/20 bg-white/75 shadow-lg backdrop-blur-xl">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-2xl">{title}</CardTitle>
+        {description ? (
+          <CardDescription className="border-l-2 border-border pl-4 text-sm">
+            {description}
+          </CardDescription>
+        ) : null}
+      </CardHeader>
+
+      <CardContent>{children}</CardContent>
+    </Card>
   );
 };
 

@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/navbar/Navbar";
-import { Poppins } from "next/font/google";
+import { Lexend_Deca } from "next/font/google";
+import { Providers } from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
-const font = Poppins({
-  weight: ["400", "500", "600", "700"], // if single weight, otherwise you use array like [400, 500, 700],
-  style: "normal", // if single style, otherwise you use array like ['normal', 'italic']
+const font = Lexend_Deca({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -22,15 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={font.className}>
-        <div>
-          <div className="fixed inset-0 -z-10 flex h-screen w-screen justify-center">
-            <div className="radial-background block h-full w-full max-w-lg opacity-40 blur-[70px] saturate-150"></div>
+        <Providers>
+          <div className="min-h-screen bg-background text-foreground">
+            <Navbar />
+            <main className="mx-auto mt-24 max-w-6xl px-4 pb-20 md:px-6">
+              {children}
+            </main>
           </div>
-          <Navbar />
-          <div className="mx-1 mt-[64px] animateBottomToTop">{children}</div>
-        </div>
+        </Providers>
       </body>
     </html>
   );

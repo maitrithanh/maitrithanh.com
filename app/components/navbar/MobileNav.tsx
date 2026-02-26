@@ -4,20 +4,29 @@ import MenuItem from "./MenuItem";
 import { menu } from "@/data/menu";
 import { usePathname } from "next/navigation";
 import { IoMdClose } from "react-icons/io";
+import { Button } from "@/components/ui/button";
 
-const MobileNav = ({ setIsOpenMenu }: any) => {
+interface MobileNavProps {
+  setIsOpenMenu: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const MobileNav = ({ setIsOpenMenu }: MobileNavProps) => {
   const pathName = usePathname();
+
   return (
-    <div className="fixed flex h-screen w-52 top-0 right-0 bg-white justify-center text-2xl transition-all">
-      <div
-        className="absolute right-0 p-4"
-        onClick={() => {
-          setIsOpenMenu(false);
-        }}
-      >
-        <IoMdClose />
+    <div className="fixed right-0 top-0 flex h-screen w-72 flex-col border-l border-black/10 bg-white/80 p-5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/85">
+      <div className="mb-8 flex justify-end">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setIsOpenMenu(false)}
+          aria-label="Close navigation menu"
+        >
+          <IoMdClose className="h-6 w-6" />
+        </Button>
       </div>
-      <ul className="mt-20">
+
+      <ul className="flex flex-col gap-2">
         {menu.map((item: any) => {
           return (
             <MenuItem

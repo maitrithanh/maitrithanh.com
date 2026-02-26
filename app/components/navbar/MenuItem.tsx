@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface MenuItemProps {
   name: string;
@@ -16,16 +17,18 @@ const MenuItem: React.FC<MenuItemProps> = ({
   active,
 }) => {
   const router = useRouter();
+
   return (
-    <li
-      className={`${
-        active ? "text-black bg-gray-100 py-1 rounded-md" : "text-gray-600"
-      } flex justify-start items-center px-2 cursor-pointer`}
-      onClick={() => {
-        router.push(pathname);
-      }}
-    >
-      <span className="px-1 items-start">{name}</span>
+    <li>
+      <Button
+        variant={active ? "secondary" : "ghost"}
+        size="sm"
+        className={`h-9 gap-1.5 rounded-lg px-3 ${active ? "bg-black text-white hover:bg-black/90 hover:text-white dark:bg-white dark:text-black dark:hover:bg-white/90" : "text-black/80 dark:text-white/80"}`}
+        onClick={() => router.push(pathname)}
+      >
+        <span>{icon}</span>
+        <span>{name}</span>
+      </Button>
     </li>
   );
 };

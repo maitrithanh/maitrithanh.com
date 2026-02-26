@@ -3,6 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaGithub, FaRegEye } from "react-icons/fa";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+interface ProjectTag {
+  icon: string;
+  colorCode: string;
+  tagName: string;
+}
 
 interface ProjectCardProps {
   name: string;
@@ -11,7 +20,7 @@ interface ProjectCardProps {
   image: string;
   preview: string;
   linkSource: string;
-  tag: Array<object>;
+  tag: ProjectTag[];
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -24,63 +33,70 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   tag,
 }) => {
   return (
-    <div className="grid md:grid-cols-3 grid-cols-1 md:gap-4 mt-8 relative pb-16 md:p-4 rounded-md group-hover:[&:not(:hover)]:opacity-50 hover:scale-110 transition-all">
-      <div className="col-span-1 w-full flex justify-center items-center">
-        <Image
-          src={image}
-          width={660}
-          height={140}
-          alt=""
-          className="shadow rounded-lg object-cover transition-all"
-        />
-      </div>
-      <div className="col-span-2 md:mt-0 mt-4">
-        <h1 className="text-xl font-medium">
-          {name} - {date}
-        </h1>
-        <p>{description}</p>
-        <div className="flex items-center mb-8">
-          {tag.map((item: any) => {
-            return (
-              <span
-                key={item.tagName}
-                className={`border border-[${item.colorCode}] mr-2 px-2 rounded-full flex items-center justify-center gap-1`}
-              >
-                <Image
-                  src={item.icon}
-                  width={20}
-                  height={20}
-                  loading="lazy"
-                  alt={item.tagName}
-                  className="h-4 w-4 animateSpin transition-all"
-                />
-                {item.tagName}
-              </span>
-            );
-          })}
+    <Card className="mt-6 overflow-hidden border-border/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+      <CardContent className="grid grid-cols-1 gap-4 p-5 md:grid-cols-3">
+        <div className="col-span-1 flex w-full items-center justify-center">
+          <Image
+            src={image}
+            width={660}
+            height={140}
+            alt={name}
+            className="rounded-lg border object-cover"
+          />
         </div>
-      </div>
-      <div className="absolute bottom-1 right-36">
-        <Link
-          target="_blank"
-          href={preview}
-          className="border hover:rotate-3 hover:scale-105 transition-all rounded-full px-2 py-1 m-1 flex justify-center items-center"
-        >
-          <FaRegEye className="mr-2" />
-          Preview
-        </Link>
-      </div>
-      <div className="absolute bottom-1 right-1">
-        <Link
-          target="_blank"
-          href={linkSource}
-          className="border hover:-rotate-3 hover:scale-105 transition-all rounded-full px-2 py-1 m-1 flex justify-center items-center"
-        >
-          <FaGithub className="mr-2" />
-          View Srouce
-        </Link>
-      </div>
-    </div>
+
+        <div className="col-span-2 space-y-3 md:mt-0">
+          <h1 className="text-xl font-semibold">
+            {name} <span className="text-muted-foreground">• {date}</span>
+          </h1>
+
+          {description ? (
+            <p className="text-sm text-muted-foreground">{description}</p>
+          ) : (
+            <p className="text-sm text-muted-foreground">Project showcase</p>
+          )}
+
+          <div className="flex flex-wrap items-center gap-2">
+            {tag.map((item) => {
+              return (
+                <Badge
+                  key={item.tagName}
+                  variant="outline"
+                  className="gap-1.5"
+                  style={{ borderColor: item.colorCode }}
+                >
+                  <Image
+                    src={item.icon}
+                    width={20}
+                    height={20}
+                    loading="lazy"
+                    alt={item.tagName}
+                    className="h-4 w-4"
+                  />
+                  {item.tagName}
+                </Badge>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 pt-1">
+            <Button asChild variant="outline" size="sm" className="rounded-full">
+              <Link target="_blank" href={preview} rel="noreferrer">
+                <FaRegEye className="mr-2" />
+                Preview
+              </Link>
+            </Button>
+
+            <Button asChild variant="secondary" size="sm" className="rounded-full">
+              <Link target="_blank" href={linkSource} rel="noreferrer">
+                <FaGithub className="mr-2" />
+                View Source
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

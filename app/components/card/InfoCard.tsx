@@ -3,14 +3,43 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaGithub, FaFacebook, FaLinkedin } from "react-icons/fa";
-import { PiReadCvLogoThin } from "react-icons/pi";
 import Typewriter from "typewriter-effect";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 const InfoCard = () => {
   return (
-    <div className="flex items-center rounded-2xl ">
-      <div className="w-[80%]">
-        <div className="font-semibold text-2xl">
+    <Card className="border-primary/20 bg-white/75 shadow-xl backdrop-blur-xl">
+      <CardContent className="flex flex-col items-center gap-8 p-8 md:flex-row">
+      {/* Avatar */}
+      <div className="relative shrink-0">
+        <div className="relative h-32 w-32 md:h-36 md:w-36">
+          {/* Subtle Ring */}
+          <div className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-400/20 to-purple-400/20 blur-md"></div>
+          
+          {/* Avatar */}
+          <div className="relative h-full w-full rounded-full overflow-hidden border-2 border-white shadow-md">
+            <Image
+              src="/ThanhAVT.png"
+              fill
+              sizes="144px"
+              alt="Avatar"
+              priority
+              className="object-cover"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Info */}
+      <div className="flex-1 text-center md:text-left space-y-4">
+        <Badge variant="secondary" className="rounded-full px-3 py-1 text-xs">
+          Open To Work
+        </Badge>
+
+        {/* Name */}
+        <h1 className="bg-gradient-to-r from-foreground via-foreground to-primary bg-clip-text font-bold text-3xl text-transparent md:text-4xl">
           <Typewriter
             options={{
               strings: ["Mai Tri Thanh", "Fullstack Developer"],
@@ -18,65 +47,52 @@ const InfoCard = () => {
               loop: true,
             }}
           />
-        </div>
-        <div className="group relative font-extralight bg-[#e2e2e27d] rounded-full w-fit py-1 px-2 m-1">
-          <Link
+        </h1>
+
+        {/* Social Links */}
+        <div className="flex flex-wrap justify-center gap-2 md:justify-start">
+          <SocialLink
             href="https://www.linkedin.com/in/maitrithanh06/"
-            target="_blank"
-            className="flex items-center"
-          >
-            <FaLinkedin />
-            <span className="mx-1">Linkedin</span>
-          </Link>
-
-          <div className="absolute border w-fit p-1 rounded-full transition-all translate-x-24 top-0 invisible opacity-20 group-hover:visible group-hover:opacity-100 group-hover:translate-x-32">
-            maitrithanh06
-          </div>
-        </div>
-
-        <div className="group relative font-extralight bg-[#e2e2e27d] rounded-full w-fit py-1 px-2 m-1">
-          <Link
-            href="https://github.com/maitrithanh"
-            target="_blank"
-            className="flex items-center"
-          >
-            <FaGithub />
-            <span className="mx-1">Github</span>
-          </Link>
-
-          <div className="absolute border w-fit p-1 rounded-full transition-all translate-x-24 top-0 invisible opacity-20 group-hover:visible group-hover:opacity-100 group-hover:translate-x-32">
-            maitrithanh
-          </div>
-        </div>
-
-        <div className="group relative font-extralight bg-[#e2e2e27d] rounded-full w-fit py-1 px-2 m-1">
-          <Link
-            href="https://www.facebook.com/BluMTT/"
-            target="_blank"
-            className="flex items-center"
-          >
-            <FaFacebook />
-            <span className="mx-1">Facebook</span>
-          </Link>
-          <div className="absolute border w-fit p-1 rounded-full transition-all translate-x-24 top-0 invisible opacity-20 group-hover:visible group-hover:opacity-100 group-hover:translate-x-32">
-            Blumtt
-          </div>
-        </div>
-      </div>
-      <div className="relative flex border justify-center items-center bg-[#bcb8b87d] rounded-full shadow-lg hover:border-gray-500">
-        <div className="absolute h-[150px] w-[150px] flex justify-center items-center">
-          <Image
-            className="bounce hover:scale-110 transition-all z-20 hover:rotate-6"
-            src="/ThanhAVT.png"
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            alt="Avatar"
-            priority
+            icon={<FaLinkedin size={16} />}
+            label="LinkedIn"
           />
-          <div className="animate-ping bg-teal-400 h-[70px] w-[70px] rounded-full"></div>
+
+          <SocialLink
+            href="https://github.com/maitrithanh"
+            icon={<FaGithub size={16} />}
+            label="GitHub"
+          />
+
+          <SocialLink
+            href="https://www.facebook.com/BluMTT/"
+            icon={<FaFacebook size={16} />}
+            label="Facebook"
+          />
         </div>
       </div>
-    </div>
+
+      </CardContent>
+    </Card>
+  );
+};
+
+// Minimal Social Link
+const SocialLink = ({ 
+  href, 
+  icon, 
+  label
+}: { 
+  href: string; 
+  icon: React.ReactNode; 
+  label: string; 
+}) => {
+  return (
+    <Button asChild variant="outline" size="sm" className="gap-1.5 rounded-full">
+      <Link href={href} target="_blank" rel="noreferrer">
+        {icon}
+        <span>{label}</span>
+      </Link>
+    </Button>
   );
 };
 
