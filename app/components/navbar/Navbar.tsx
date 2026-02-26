@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { menu } from "@/data/menu";
 import MenuItem from "./MenuItem";
 import { useRouter, usePathname } from "next/navigation";
@@ -14,16 +14,56 @@ const Navbar = () => {
   const router = useRouter();
   const pathName = usePathname();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY.current;
+
+      if (Math.abs(delta) < 6) {
+        return;
+      }
+
+      if (currentY <= 40) {
+        setIsHeaderVisible(true);
+        lastScrollY.current = currentY;
+        return;
+      }
+
+      if (!isOpenMenu) {
+        if (delta > 0 && currentY > 90) {
+          setIsHeaderVisible(false);
+        } else {
+          setIsHeaderVisible(true);
+        }
+      }
+
+      lastScrollY.current = currentY;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isOpenMenu]);
+
+  useEffect(() => {
+    if (isOpenMenu) {
+      setIsHeaderVisible(true);
+    }
+  }, [isOpenMenu]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40">
+    <header
+      className={`fixed inset-x-0 top-0 z-40 transition-transform duration-300 ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"}`}
+    >
       <div className="mx-auto max-w-6xl px-4 pt-3 md:px-6">
         <div className="flex h-16 items-center justify-between rounded-2xl border border-black/10 bg-white/75 px-4 shadow-[0_6px_18px_rgba(0,0,0,0.06)] backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/75 dark:shadow-[0_8px_24px_rgba(0,0,0,0.5)] md:px-6">
         <div
           className="cursor-pointer transition-opacity hover:opacity-80"
           onClick={() => router.push("/")}
         >
-          <span className="inline-flex items-center rounded-full border border-black/15 bg-white px-3 py-1.5 text-sm font-semibold tracking-wide text-black dark:border-white/20 dark:bg-zinc-900 dark:text-white">
+          <span className="inline-flex items-center rounded-full text-sm font-semibold tracking-wide text-black dark:border-white/20 dark:bg-zinc-900 dark:text-white">
             MAI TRI THANH
           </span>
         </div>

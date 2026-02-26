@@ -75,6 +75,10 @@ export default function Home() {
           y: [18, 0],
           duration: 780,
           ease: "outExpo",
+          complete: () => {
+            element.style.transform = "none";
+            element.style.opacity = "1";
+          },
         });
       });
     };
@@ -82,37 +86,41 @@ export default function Home() {
     revealInView();
     window.addEventListener("scroll", revealInView, { passive: true });
 
+    const cleanups: Array<() => void> = [];
+
     const hoverCards = Array.from(
       document.querySelectorAll<HTMLElement>("[data-anime-hover-card='true']"),
     );
-    const cleanups: Array<() => void> = [];
 
-    hoverCards.forEach((card) => {
-      const onEnter = () => {
-        animate(card, {
-          scale: 1.008,
-          y: -2,
-          duration: 260,
-          ease: "out(4)",
-        });
-      };
+    // hoverCards.forEach((card) => {
+    //   const onEnter = () => {
+    //     animate(card, {
+    //       scale: 1.008,
+    //       y: -2,
+    //       duration: 260,
+    //       ease: "out(4)",
+    //     });
+    //   };
 
-      const onLeave = () => {
-        animate(card, {
-          scale: 1,
-          y: 0,
-          duration: 300,
-          ease: "out(3)",
-        });
-      };
+    //   const onLeave = () => {
+    //     animate(card, {
+    //       scale: 1,
+    //       y: 0,
+    //       duration: 300,
+    //       ease: "out(3)",
+    //       complete: () => {
+    //         card.style.transform = "none";
+    //       },
+    //     });
+    //   };
 
-      card.addEventListener("mouseenter", onEnter);
-      card.addEventListener("mouseleave", onLeave);
-      cleanups.push(() => {
-        card.removeEventListener("mouseenter", onEnter);
-        card.removeEventListener("mouseleave", onLeave);
-      });
-    });
+    //   card.addEventListener("mouseenter", onEnter);
+    //   card.addEventListener("mouseleave", onLeave);
+    //   cleanups.push(() => {
+    //     card.removeEventListener("mouseenter", onEnter);
+    //     card.removeEventListener("mouseleave", onLeave);
+    //   });
+    // });
 
     return () => {
       window.removeEventListener("scroll", revealInView);
@@ -125,7 +133,7 @@ export default function Home() {
       <section className="grid gap-4 md:grid-cols-5">
         <Card
           data-anime="hero"
-          className="anime-hover-card neo-glass relative overflow-hidden md:col-span-3"
+          className="neo-glass relative overflow-hidden md:col-span-3"
         >
           <CardContent className="relative p-7 md:p-8">
             <Badge
@@ -151,7 +159,11 @@ export default function Home() {
                 <Link href="/about">About Me</Link>
               </Button>
               <Button asChild variant="outline" className="rounded-full px-5">
-                <Link href="/CV_MaiTriThanh.pdf" target="_blank" rel="noreferrer">
+                <Link
+                  href="/CV_MaiTriThanh.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   My Resume
                 </Link>
               </Button>
@@ -205,12 +217,12 @@ export default function Home() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid gap-4 md:grid-cols-3">
-              <div className="relative space-y-4 md:col-span-2">
+              <div className="relative md:col-span-2">
                 <span className="absolute bottom-5 left-[17px] top-5 w-px bg-black/15 dark:bg-white/20" />
                 {careerTimeline.map((item) => (
                   <div
                     key={`${item.company}-${item.period}`}
-                    className="relative rounded-xl border border-black/10 bg-white p-4 pl-8 dark:border-white/10 dark:bg-zinc-900"
+                    className="relative rounded-xl mb-4 border border-black/10 bg-white p-4 pl-8 dark:border-white/10 dark:bg-zinc-900"
                   >
                     <span className="absolute left-3.5 top-5 h-2.5 w-2.5 rounded-full bg-black dark:bg-white" />
 
@@ -262,7 +274,7 @@ export default function Home() {
                   </div>
                 </div>
 
-                <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
+                {/* <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
                   <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">
                     <RiDoubleQuotesL />
                     Personal Motto
@@ -270,7 +282,7 @@ export default function Home() {
                   <p className="mt-2 text-sm italic text-foreground/90">
                     {cvQuickInfo.quote}
                   </p>
-                </div>
+                </div> */}
               </div>
             </div>
           </CardContent>
@@ -296,7 +308,13 @@ export default function Home() {
                   rel="noreferrer"
                   className="group flex items-center gap-2 rounded-full border border-black/15 bg-white px-3 py-2 text-sm text-black/80 transition-all hover:-translate-y-0.5 hover:shadow-sm dark:border-white/20 dark:bg-zinc-900 dark:text-white/80 "
                 >
-                  <img src={item.image} alt={item.name} className="h-4 w-4" />
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={16}
+                    height={16}
+                    className="h-4 w-4"
+                  />
                   <span>{item.name}</span>
                 </a>
               ))}
