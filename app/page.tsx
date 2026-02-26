@@ -150,6 +150,11 @@ export default function Home() {
               <Button asChild variant="outline" className="rounded-full px-5">
                 <Link href="/about">About Me</Link>
               </Button>
+              <Button asChild variant="outline" className="rounded-full px-5">
+                <Link href="/CV_MaiTriThanh.pdf" target="_blank" rel="noreferrer">
+                  My Resume
+                </Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -162,7 +167,7 @@ export default function Home() {
                 Web Developer
               </h2>
               <h2 className="mt-2 text-2xl font-semibold text-foreground">
-                React • Next.js • UX
+                React • Next.js • Laravel
               </h2>
             </div>
 
