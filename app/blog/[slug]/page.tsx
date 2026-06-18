@@ -2,36 +2,24 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { blogPosts } from "@/lib/blog";
-import type { BlogPost } from "@/types/blog";
+import { blogPosts as fallbackPosts } from "@/lib/blog";
+import { getBlogPostBySlug } from "@/lib/data";
 import { FaArrowLeft, FaRegCalendarAlt, FaClock } from "react-icons/fa";
 import { SITE_URL } from "@/lib/constants";
 
-interface BlogDetailProps {
-  params: {
-    slug: string;
-  };
+interface PageProps {
+  params: { slug: string };
 }
-
-const findPostBySlug = (slug: string): BlogPost | undefined => {
-  return blogPosts.find((item) => item.slug === slug);
-};
 
 export function generateStaticParams() {
-  return blogPosts.map((post) => ({ slug: post.slug }));
+  return fallbackPosts.map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: BlogDetailProps): Metadata {
-  const post = findPostBySlug(params.slug);
-
-  if (!post) {
-    return {
-      title: "Post not found",
-    };
-  }
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const post = await getBlogPostBySlug(params.slug);
+  if (!post) return { title: "Post not found" };
 
   return {
     title: post.title,
@@ -42,14 +30,7 @@ export function generateMetadata({ params }: BlogDetailProps): Metadata {
       type: "article",
       publishedTime: post.publishedAt,
       url: `${SITE_URL}/blog/${post.slug}`,
-      images: [
-        {
-          url: `${SITE_URL}${post.cover}`,
-          width: 1200,
-          height: 630,
-          alt: post.title,
-        },
-      ],
+      images: [{ url: `${SITE_URL}${post.cover}`, width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card: "summary_large_image",
@@ -57,18 +38,13 @@ export function generateMetadata({ params }: BlogDetailProps): Metadata {
       description: post.summary,
       images: [`${SITE_URL}${post.cover}`],
     },
-    alternates: {
-      canonical: `${SITE_URL}/blog/${post.slug}`,
-    },
+    alternates: { canonical: `${SITE_URL}/blog/${post.slug}` },
   };
 }
 
-export default function BlogDetailPage({ params }: BlogDetailProps) {
-  const post = findPostBySlug(params.slug);
-
-  if (!post) {
-    notFound();
-  }
+export default async function BlogDetailPage({ params }: PageProps) {
+  const post = await getBlogPostBySlug(params.slug);
+  if (!post) notFound();
 
   return (
     <>
@@ -82,62 +58,39 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
             description: post.summary,
             image: `${SITE_URL}${post.cover}`,
             datePublished: post.publishedAt,
-            author: {
-              "@type": "Person",
-              name: "Mai Tri Thanh",
-              url: SITE_URL,
-            },
-            publisher: {
-              "@type": "Person",
-              name: "Mai Tri Thanh",
-            },
-            mainEntityOfPage: {
-              "@type": "WebPage",
-              "@id": `${SITE_URL}/blog/${post.slug}`,
-            },
+            author: { "@type": "Person", name: "Mai Tri Thanh", url: SITE_URL },
+            publisher: { "@type": "Person", name: "Mai Tri Thanh" },
+            mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
           }),
         }}
       />
-    <div className="mx-auto max-w-3xl space-y-6">
-      <Button asChild variant="outline" className="rounded-full border-black/20 bg-white hover:bg-black hover:text-white dark:border-white/20 dark:bg-zinc-900 dark:hover:bg-white dark:hover:text-black">
-        <Link href="/blog" className="inline-flex items-center gap-2">
-          <FaArrowLeft className="text-xs" />
-          Back to blog
-        </Link>
-      </Button>
+      <div className="mx-auto max-w-3xl space-y-6">
+        <Button asChild variant="outline" className="rounded-full">
+          <Link href="/blog" className="inline-flex items-center gap-2">
+            <FaArrowLeft className="text-xs" /> Back to blog
+          </Link>
+        </Button>
 
-      <Card className="neo-glass overflow-hidden">
-        <div className="relative h-56 w-full border-b border-black/10 dark:border-white/10 md:h-72">
-          <Image src={post.cover} alt={post.title} fill className="object-cover" priority />
-        </div>
-
-        <CardContent className="space-y-5 p-6 md:p-8">
-          <Badge variant="outline" className="border-black/20 bg-white text-black dark:border-white/20 dark:bg-zinc-900 dark:text-white">
-            {post.category}
-          </Badge>
-
-          <h1 className="text-3xl font-semibold leading-tight text-foreground md:text-4xl">{post.title}</h1>
-          <p className="text-base text-muted-foreground">{post.summary}</p>
-
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <span className="inline-flex items-center gap-1.5">
-              <FaRegCalendarAlt />
-              {new Date(post.publishedAt).toLocaleDateString("en-GB")}
-            </span>
-            <span className="inline-flex items-center gap-1.5">
-              <FaClock />
-              {post.readTime}
-            </span>
+        <div className="overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
+          <div className="relative h-56 w-full md:h-72">
+            <Image src={post.cover} alt={post.title} fill className="object-cover" priority />
           </div>
-
-          <article className="space-y-4 text-base leading-7 text-foreground/85">
-            {post.content.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </article>
-        </CardContent>
-      </Card>
-    </div>
+          <div className="space-y-5 p-6 md:p-8">
+            <Badge variant="outline" className="border-border/60 bg-muted/30 text-xs text-foreground/70">
+              {post.category}
+            </Badge>
+            <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground md:text-4xl">{post.title}</h1>
+            <p className="text-base text-muted-foreground">{post.summary}</p>
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <span className="inline-flex items-center gap-1.5"><FaRegCalendarAlt />{new Date(post.publishedAt).toLocaleDateString("en-GB")}</span>
+              <span className="inline-flex items-center gap-1.5"><FaClock />{post.readTime}</span>
+            </div>
+            <article className="space-y-4 text-base leading-7 text-foreground/85">
+              {post.content.map((paragraph: string) => <p key={paragraph}>{paragraph}</p>)}
+            </article>
+          </div>
+        </div>
+      </div>
     </>
   );
 }

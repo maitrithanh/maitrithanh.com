@@ -1,15 +1,14 @@
 "use client";
-import { useEffect } from "react";
-import { animate, createTimeline, stagger } from "animejs";
+import { useEffect, useState, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { WaveText } from "@/components/ui/wave-text";
-import { projects } from "@/data/projects";
-import { skill } from "@/data/skill";
-import { careerTimeline, cvQuickInfo } from "@/data/cv";
+import { projects as fallbackProjects } from "@/data/projects";
+import { skill as fallbackSkills } from "@/data/skill";
+import { careerTimeline as fallbackTimeline, cvQuickInfo as fallbackQuickInfo } from "@/data/cv";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 import {
   RiMapPinLine,
@@ -19,377 +18,268 @@ import {
   RiBriefcaseLine,
   RiGraduationCapLine,
   RiCodeSSlashLine,
-  RiDoubleQuotesL,
+  RiArrowRightUpLine,
 } from "react-icons/ri";
 
 const HERO_NAME = "Mai Tri Thanh";
 
+function RevealSection({
+  children,
+  className,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+}) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 36 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function FadeIn({
+  children,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export default function Home() {
+  const [projects, setProjects] = useState(fallbackProjects);
+  const [skills, setSkills] = useState(fallbackSkills);
+  const [timeline, setTimeline] = useState(fallbackTimeline);
+  const [quickInfo, setQuickInfo] = useState(fallbackQuickInfo);
+  const [settings, setSettings] = useState<Record<string, string>>({});
+
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return;
-    }
-
-    const heroItems = document.querySelectorAll<HTMLElement>(
-      "[data-anime='hero']",
-    );
-
-    createTimeline({
-      defaults: {
-        duration: 850,
-        ease: "out(3)",
-      },
-    }).add(heroItems, {
-      opacity: [0, 1],
-      y: [28, 0],
-      delay: stagger(110),
-    });
-
-    const revealItems = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-anime='reveal']"),
-    );
-    const revealed = new WeakSet<HTMLElement>();
-
-    const revealInView = () => {
-      revealItems.forEach((element) => {
-        if (revealed.has(element)) {
-          return;
-        }
-
-        const rect = element.getBoundingClientRect();
-        const isInView = rect.top <= window.innerHeight * 0.88;
-
-        if (!isInView) {
-          return;
-        }
-
-        revealed.add(element);
-
-        const direction = element.dataset.direction ?? "up";
-        const moveX =
-          direction === "left" ? -26 : direction === "right" ? 26 : 0;
-
-        animate(element, {
-          opacity: [0, 1],
-          x: [moveX, 0],
-          y: [18, 0],
-          duration: 780,
-          ease: "outExpo",
-          complete: () => {
-            element.style.transform = "none";
-            element.style.opacity = "1";
-          },
-        });
-      });
-    };
-
-    revealInView();
-    window.addEventListener("scroll", revealInView, { passive: true });
-
-    const cleanups: Array<() => void> = [];
-
-    const hoverCards = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-anime-hover-card='true']"),
-    );
-
-    // hoverCards.forEach((card) => {
-    //   const onEnter = () => {
-    //     animate(card, {
-    //       scale: 1.008,
-    //       y: -2,
-    //       duration: 260,
-    //       ease: "out(4)",
-    //     });
-    //   };
-
-    //   const onLeave = () => {
-    //     animate(card, {
-    //       scale: 1,
-    //       y: 0,
-    //       duration: 300,
-    //       ease: "out(3)",
-    //       complete: () => {
-    //         card.style.transform = "none";
-    //       },
-    //     });
-    //   };
-
-    //   card.addEventListener("mouseenter", onEnter);
-    //   card.addEventListener("mouseleave", onLeave);
-    //   cleanups.push(() => {
-    //     card.removeEventListener("mouseenter", onEnter);
-    //     card.removeEventListener("mouseleave", onLeave);
-    //   });
-    // });
-
-    return () => {
-      window.removeEventListener("scroll", revealInView);
-      cleanups.forEach((cleanup) => cleanup());
-    };
+    Promise.allSettled([
+      fetch("/api/projects").then((r) => r.json()).then((d) => d.length && setProjects(d.map((p: any) => ({
+        name: p.name, date: p.date, description: p.description || "", image: p.image,
+        preview: p.preview, linkSource: p.link_source, tag: p.tags || [],
+      })))),
+      fetch("/api/skills").then((r) => r.json()).then((d) => d.length && setSkills(d.map((s: any) => ({
+        name: s.name, link: s.link, image: s.image,
+      })))),
+      fetch("/api/experiences").then((r) => r.json()).then((d) => d.length && setTimeline(d.map((e: any) => ({
+        company: e.company, role: e.role, period: e.period, location: e.location, highlights: e.highlights || [],
+      })))),
+      fetch("/api/settings").then((r) => r.json()).then((d) => Object.keys(d).length && setSettings(d)),
+    ]);
   }, []);
 
   return (
-    <div className="space-y-8 pb-10 md:space-y-10">
-      <section className="grid gap-4 md:grid-cols-5">
-        <Card
-          data-anime="hero"
-          className="neo-glass relative overflow-hidden md:col-span-3"
-        >
-          <CardContent className="relative p-7 md:p-8">
+    <div className="space-y-10 pb-16 md:space-y-14">
+      <section className="grid gap-5 md:grid-cols-5">
+        <FadeIn delay={0.1}>
+          <div className="relative overflow-hidden rounded-2xl border border-border/60 bg-card p-8 shadow-sm md:col-span-3">
+            <div className="pointer-events-none absolute -inset-px rounded-2xl ring-1 ring-inset ring-black/[0.03] dark:ring-white/[0.03]" />
             <Badge
               variant="outline"
-              className="mb-4 rounded-full border-black/20 bg-white text-black"
+              className="mb-5 rounded-full border-border bg-muted/50 text-xs text-muted-foreground"
             >
               <RiSparklingLine className="mr-1.5" />
-              Building clean web experiences
+              {settings.hero_badge || "Building clean web experiences"}
             </Badge>
 
-            <h1 className="text-3xl font-semibold leading-tight text-foreground md:text-5xl">
+            <h1 className="text-4xl font-semibold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl">
               <WaveText text={HERO_NAME} />
             </h1>
-            <p className="mt-2 text-base text-muted-foreground md:text-lg">
-              Fullstack Developer crafting modern, fast and delightful products.
+            <p className="mt-3 max-w-lg text-base text-muted-foreground md:text-lg">
+              {settings.hero_subtitle || "Fullstack Developer crafting modern, fast and delightful products."}
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-2">
-              <Button asChild className="rounded-full px-5">
-                <Link href="/projects">View Projects</Link>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button asChild className="rounded-full px-6 shadow-sm">
+                <Link href="/projects">
+                  View Projects
+                  <RiArrowRightUpLine className="ml-1.5" />
+                </Link>
               </Button>
-              <Button asChild variant="outline" className="rounded-full px-5">
+              <Button asChild variant="secondary" className="rounded-full px-6">
                 <Link href="/about">About Me</Link>
               </Button>
-              <Button asChild variant="outline" className="rounded-full px-5">
-                <Link
-                  href="/CV_MaiTriThanh.pdf"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  My Resume
+              <Button asChild variant="outline" className="rounded-full px-6">
+                <Link href="/CV_MaiTriThanh.pdf" target="_blank" rel="noreferrer">
+                  Resume
                 </Link>
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </FadeIn>
 
-        <Card data-anime="hero" className="neo-glass md:col-span-2">
-          <CardContent className="flex h-full flex-col justify-between p-6">
+        <FadeIn delay={0.2}>
+          <div className="flex flex-col justify-between rounded-2xl border border-border/60 bg-card p-6 shadow-sm md:col-span-2">
             <div>
-              <p className="text-sm text-muted-foreground">Focus</p>
-              <h2 className="mt-2 text-2xl font-semibold text-foreground">
-                Web Developer
-              </h2>
-              <h2 className="mt-2 text-2xl font-semibold text-foreground">
-                React • Next.js • Laravel
-              </h2>
-            </div>
-
-            <div className="space-y-2 text-sm text-muted-foreground">
-              <p className="inline-flex items-center gap-2">
-                <RiMapPinLine /> Ho Chi Minh City
-              </p>
-              <br />
-              <p className="inline-flex items-center gap-2">
-                <RiMailLine /> maitrithanh06@gmail.com
-              </p>
-              <br />
-              <p className="inline-flex items-center gap-2">
-                <RiPhoneLine /> +84 325575029
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section
-        data-anime="reveal"
-        data-direction="left"
-        className="anime-reveal"
-      >
-        <Card className="neo-glass">
-          <CardHeader>
-            <CardTitle className="inline-flex items-center gap-2 text-2xl">
-              <RiBriefcaseLine className="text-xl" />
-              Work Journey
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              Experience and profile highlights from your CV.
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-3">
-              <div className="relative md:col-span-2">
-                <span className="absolute bottom-5 left-[17px] top-5 w-px bg-black/15 dark:bg-white/20" />
-                {careerTimeline.map((item) => (
-                  <div
-                    key={`${item.company}-${item.period}`}
-                    className="relative rounded-xl mb-4 border border-black/10 bg-white p-4 pl-8 dark:border-white/10 dark:bg-zinc-900"
-                  >
-                    <span className="absolute left-3.5 top-5 h-2.5 w-2.5 rounded-full bg-black dark:bg-white" />
-
-                    <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
-                      <h3 className="font-semibold text-foreground">
-                        {item.role} · {item.company}
-                      </h3>
-                      <span className="text-xs text-muted-foreground">
-                        {item.period}
-                      </span>
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {item.location}
-                    </p>
-                    <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
-                      {item.highlights.map((highlight) => (
-                        <li key={highlight}>• {highlight}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-
-              <div className="space-y-4">
-                <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
-                  <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">
-                    <RiGraduationCapLine />
-                    Education
-                  </p>
-                  <p className="mt-2 text-sm text-foreground">
-                    {cvQuickInfo.education}
-                  </p>
-                </div>
-
-                <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
-                  <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">
-                    <RiCodeSSlashLine />
-                    Core Skills
-                  </p>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {cvQuickInfo.coreSkills.map((skillItem) => (
-                      <span
-                        key={skillItem}
-                        className="rounded-full border border-black/15 px-2.5 py-1 text-xs text-foreground dark:border-white/20"
-                      >
-                        {skillItem}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* <div className="rounded-xl border border-black/10 bg-white p-4 dark:border-white/10 dark:bg-zinc-900">
-                  <p className="inline-flex items-center gap-1.5 text-xs uppercase tracking-wide text-muted-foreground">
-                    <RiDoubleQuotesL />
-                    Personal Motto
-                  </p>
-                  <p className="mt-2 text-sm italic text-foreground/90">
-                    {cvQuickInfo.quote}
-                  </p>
-                </div> */}
+              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Focus</p>
+              <h2 className="mt-2 text-2xl font-semibold leading-tight text-foreground">Web Developer</h2>
+              <div className="mt-1 flex flex-wrap gap-x-2 text-lg text-muted-foreground">
+                <span>React</span><span className="text-border">•</span>
+                <span>Next.js</span><span className="text-border">•</span>
+                <span>Laravel</span>
               </div>
             </div>
-          </CardContent>
-        </Card>
-      </section>
-
-      <section
-        data-anime="reveal"
-        data-direction="left"
-        className="anime-reveal"
-      >
-        <Card className="neo-glass">
-          <CardHeader>
-            <CardTitle className="text-2xl">Tech Stack</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {skill.slice(0, 12).map((item) => (
-                <a
-                  key={item.name}
-                  href={item.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group flex items-center gap-2 rounded-full border border-black/15 bg-white px-3 py-2 text-sm text-black/80 transition-all hover:-translate-y-0.5 hover:shadow-sm dark:border-white/20 dark:bg-zinc-900 dark:text-white/80 "
-                >
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={16}
-                    height={16}
-                    className="h-4 w-4"
-                  />
-                  <span>{item.name}</span>
+            <div className="mt-6 space-y-3 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2.5">
+                <RiMapPinLine className="shrink-0" />
+                <span>{settings.location || "Ho Chi Minh City"}</span>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <RiMailLine className="shrink-0" />
+                <a href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`} className="transition-colors hover:text-foreground">
+                  {settings.email || "maitrithanh06@gmail.com"}
                 </a>
+              </div>
+              <div className="flex items-center gap-2.5">
+                <RiPhoneLine className="shrink-0" />
+                <span>{settings.phone || "+84 325575029"}</span>
+              </div>
+            </div>
+          </div>
+        </FadeIn>
+      </section>
+
+      <RevealSection>
+        <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
+          <div className="flex items-center gap-3">
+            <RiBriefcaseLine className="text-xl text-foreground" />
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">Work Journey</h2>
+          </div>
+          <p className="mt-1 text-sm text-muted-foreground">Experience and profile highlights from my CV.</p>
+
+          <div className="mt-6 grid gap-6 md:grid-cols-3">
+            <div className="relative md:col-span-2">
+              <div className="absolute bottom-4 left-[15px] top-4 w-px bg-border" />
+              {timeline.map((item) => (
+                <div key={`${item.company}-${item.period}`} className="relative mb-5 rounded-xl border border-border/60 bg-muted/30 p-5 pl-9 last:mb-0">
+                  <span className="absolute left-[11px] top-6 h-2 w-2 rounded-full bg-foreground ring-2 ring-background" />
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                    <h3 className="font-semibold text-foreground">
+                      {item.role} <span className="text-muted-foreground">·</span>{" "}
+                      <span className="font-normal text-muted-foreground">{item.company}</span>
+                    </h3>
+                    <span className="text-xs text-muted-foreground">{item.period}</span>
+                  </div>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{item.location}</p>
+                  <ul className="mt-3 space-y-1.5 text-sm text-muted-foreground">
+                    {item.highlights.map((highlight) => (
+                      <li key={highlight} className="flex gap-2">
+                        <span className="mt-2.5 h-1 w-1 shrink-0 rounded-full bg-muted-foreground/50" />
+                        {highlight}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
-      </section>
 
-      <section
-        data-anime="reveal"
-        data-direction="right"
-        className="anime-reveal"
-      >
-        <Card className="neo-glass">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle className="text-2xl">Featured Projects</CardTitle>
-            <Button asChild variant="ghost" className="rounded-full">
-              <Link href="/projects">See all</Link>
-            </Button>
-          </CardHeader>
-          <CardContent className="grid gap-4 md:grid-cols-3">
-            {projects.slice(0, 3).map((project) => (
-              <Link
-                href={project.preview}
-                target="_blank"
-                key={project.name}
-                className="group overflow-hidden rounded-xl border border-black/10 bg-white transition-all dark:border-white/10 dark:bg-zinc-900"
+            <div className="space-y-4">
+              <div className="rounded-xl border border-border/60 bg-muted/30 p-5">
+                <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <RiGraduationCapLine /> Education
+                </p>
+                <p className="mt-2 text-sm text-foreground">{quickInfo.education}</p>
+              </div>
+              <div className="rounded-xl border border-border/60 bg-muted/30 p-5">
+                <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                  <RiCodeSSlashLine /> Core Skills
+                </p>
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {quickInfo.coreSkills.map((s) => (
+                    <span key={s} className="rounded-md border border-border/60 bg-background px-2.5 py-1 text-xs text-foreground">{s}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </RevealSection>
+
+      <RevealSection>
+        <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">Tech Stack</h2>
+          <div className="mt-5 flex flex-wrap gap-2">
+            {skills.slice(0, 12).map((item) => (
+              <a key={item.name} href={item.link} target="_blank" rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-muted/30 px-3.5 py-2 text-sm text-foreground/80 transition-all hover:-translate-y-0.5 hover:border-foreground/20 hover:bg-muted/50 hover:text-foreground hover:shadow-sm"
               >
-                <div className="relative h-40 w-full overflow-hidden">
-                  <Image
-                    src={project.image}
-                    alt={project.name}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
+                <Image src={item.image} alt={item.name} width={16} height={16} className="h-4 w-4" />
+                <span>{item.name}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </RevealSection>
+
+      <RevealSection>
+        <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
+          <div className="flex items-center justify-between">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">Featured Projects</h2>
+            <Button asChild variant="ghost" className="rounded-full text-sm">
+              <Link href="/projects">See all <RiArrowRightUpLine className="ml-1" /></Link>
+            </Button>
+          </div>
+          <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {projects.slice(0, 3).map((project) => (
+              <Link href={project.preview} target="_blank" key={project.name}
+                className="group overflow-hidden rounded-xl border border-border/60 bg-muted/30 transition-all hover:-translate-y-1 hover:border-foreground/20 hover:shadow-md"
+              >
+                <div className="relative h-44 w-full overflow-hidden">
+                  <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
                 </div>
                 <div className="p-4">
-                  <p className="text-xs text-muted-foreground">
-                    {project.date}
-                  </p>
-                  <h3 className="mt-1 line-clamp-2 font-medium text-foreground">
-                    {project.name}
-                  </h3>
-                  <span className="mt-3 inline-flex items-center text-sm text-foreground">
-                    Preview{" "}
-                    <FaArrowUpRightFromSquare className="ml-1 text-xs" />
+                  <p className="text-xs text-muted-foreground">{project.date}</p>
+                  <h3 className="mt-1 line-clamp-2 font-medium text-foreground">{project.name}</h3>
+                  <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-foreground/70 transition-colors group-hover:text-foreground">
+                    Preview <FaArrowUpRightFromSquare className="text-xs" />
                   </span>
                 </div>
               </Link>
             ))}
-          </CardContent>
-        </Card>
-      </section>
+          </div>
+        </div>
+      </RevealSection>
 
-      <section
-        data-anime="reveal"
-        data-direction="left"
-        className="anime-reveal"
-      >
-        <Card className="neo-glass">
-          <CardContent className="flex flex-col items-center justify-between gap-4 p-6 text-center md:flex-row md:text-left">
+      <RevealSection>
+        <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
+          <div className="flex flex-col items-center gap-6 text-center md:flex-row md:justify-between md:text-left">
             <div>
-              <h2 className="text-xl font-semibold text-foreground">
-                Let&apos;s build something memorable.
+              <h2 className="text-xl font-semibold tracking-tight text-foreground">
+                {settings.cta_title || "Let's build something memorable."}
               </h2>
-              <p className="text-sm text-muted-foreground">
-                Open for freelance, product, and startup collaborations.
+              <p className="mt-1 text-sm text-muted-foreground">
+                {settings.cta_subtitle || "Open for freelance, product, and startup collaborations."}
               </p>
             </div>
-            <Button asChild className="rounded-full">
-              <Link href="mailto:maitrithanh06@gmail.com">Contact Me</Link>
+            <Button asChild className="rounded-full px-6 shadow-sm">
+              <Link href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`}>
+                Contact Me <RiArrowRightUpLine className="ml-1.5" />
+              </Link>
             </Button>
-          </CardContent>
-        </Card>
-      </section>
+          </div>
+        </div>
+      </RevealSection>
     </div>
   );
 }

@@ -1,0 +1,47 @@
+import { createClient } from "./server";
+import { createAdminClient } from "./server";
+
+type TableName = "projects" | "blog_posts" | "skills" | "experiences" | "site_settings";
+
+export async function list(table: TableName, options?: { orderBy?: string; ascending?: boolean }) {
+  const supabase = await createClient();
+  let query = supabase.from(table).select("*");
+  if (options?.orderBy) {
+    query = query.order(options.orderBy, { ascending: options.ascending ?? false });
+  }
+  const { data, error } = await query;
+  if (error) throw error;
+  return data;
+}
+
+export async function getById(table: TableName, id: string) {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from(table).select("*").eq("id", id).single();
+  if (error) throw error;
+  return data;
+}
+
+export async function create(table: TableName, body: Record<string, unknown>) {
+  const supabase = await createAdminClient();
+  const { data, error } = await supabase.from(table).insert(body).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function update(table: TableName, id: string, body: Record<string, unknown>) {
+  const supabase = await createAdminClient();
+  const { data, error } = await supabase
+    .from(table)
+    .update({ ...body, updated_at: new Date().toISOString() })
+    .eq("id", id)
+    .select()
+    .single();
+  if (error) throw error;
+  return data;
+}
+
+export async function remove(table: TableName, id: string) {
+  const supabase = await createAdminClient();
+  const { error } = await supabase.from(table).delete().eq("id", id);
+  if (error) throw error;
+}

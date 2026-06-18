@@ -1,81 +1,67 @@
-import React from "react";
-import type { Metadata } from "next";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+"use client";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { SITE_URL, SITE_OG_IMAGE } from "@/lib/constants";
-
-export const metadata: Metadata = {
-  title: "About",
-  description:
-    "Mai Tri Thanh - Fullstack Developer specializing in Next.js, React, TypeScript, SwiftUI, and Laravel. Based in Ho Chi Minh City, Vietnam.",
-  openGraph: {
-    title: "About | Mai Tri Thanh",
-    description:
-      "Fullstack Developer specializing in Next.js, React, TypeScript, SwiftUI, and Laravel.",
-    url: `${SITE_URL}/about`,
-    images: [
-      {
-        url: SITE_OG_IMAGE,
-        width: 1200,
-        height: 630,
-        alt: "About Mai Tri Thanh",
-      },
-    ],
-  },
-  twitter: {
-    title: "About | Mai Tri Thanh",
-    description:
-      "Fullstack Developer specializing in Next.js, React, TypeScript, SwiftUI, and Laravel.",
-    images: [SITE_OG_IMAGE],
-  },
-  alternates: {
-    canonical: `${SITE_URL}/about`,
-  },
-};
 
 const AboutPage = () => {
+  const [settings, setSettings] = useState<Record<string, string>>({});
+
+  useEffect(() => {
+    fetch("/api/settings")
+      .then((r) => r.json())
+      .then((d) => Object.keys(d).length && setSettings(d))
+      .catch(() => {});
+  }, []);
+
   return (
     <div className="space-y-6">
-      <Card className="neo-glass">
-        <CardHeader>
-          <CardTitle className="text-3xl">About Me</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-4 text-muted-foreground">
-          <p>
-            I&apos;m Mai Tri Thanh, a Fullstack Developer who enjoys blending solid engineering with thoughtful UI.
-          </p>
-          <p>
-            My focus is building fast web products with clean architecture, smooth interactions, and details users can feel.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="outline">Next.js</Badge>
-            <Badge variant="outline">React</Badge>
-            <Badge variant="outline">TypeScript</Badge>
-            <Badge variant="outline">Laravel</Badge>
-            <Badge variant="outline">REST APIs</Badge>
+      <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
+        <div className="space-y-1">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">About</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground">About Me</h1>
+        </div>
+        <div className="mt-5 space-y-4 text-sm leading-relaxed text-muted-foreground">
+          <p>{settings.about_me || "I'm Mai Tri Thanh, a Fullstack Developer who enjoys blending solid engineering with thoughtful UI."}</p>
+          <p>{settings.about_focus || "My focus is building fast web products with clean architecture, smooth interactions, and details users can feel."}</p>
+        </div>
+        <div className="mt-6 flex flex-wrap gap-2">
+          {["Next.js", "React", "TypeScript", "Laravel", "REST APIs"].map((skill) => (
+            <Badge key={skill} variant="outline" className="border-border/60 bg-muted/30 text-xs text-foreground/80">
+              {skill}
+            </Badge>
+          ))}
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
+        <div className="space-y-1">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Experience</p>
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">Experience Highlights</h2>
+        </div>
+        <div className="mt-5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+          <div className="flex gap-3">
+            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-foreground/30" />
+            <span>Built responsive production interfaces and optimized performance on modern frontend stacks.</span>
           </div>
-        </CardContent>
-      </Card>
+          <div className="flex gap-3">
+            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-foreground/30" />
+            <span>Contributed backend APIs and data integrations to ship end-to-end features.</span>
+          </div>
+          <div className="flex gap-3">
+            <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-foreground/30" />
+            <span>Collaborated with designers to turn concepts into maintainable, reusable component systems.</span>
+          </div>
+        </div>
+      </div>
 
-      <Card className="neo-glass">
-        <CardHeader>
-          <CardTitle className="text-2xl">Experience Highlights</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm text-muted-foreground">
-          <p>• Built responsive production interfaces and optimized performance on modern frontend stacks.</p>
-          <p>• Contributed backend APIs and data integrations to ship end-to-end features.</p>
-          <p>• Collaborated with designers to turn concepts into maintainable, reusable component systems.</p>
-        </CardContent>
-      </Card>
-
-      <Card className="neo-glass">
-        <CardHeader>
-          <CardTitle className="text-2xl">Education</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
+      <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
+        <div className="space-y-1">
+          <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Education</p>
+          <h2 className="text-2xl font-semibold tracking-tight text-foreground">Education</h2>
+        </div>
+        <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
           Major in Software Engineering — Ho Chi Minh City University of Foreign Languages – Information Technology (2020 - 2024)
-        </CardContent>
-      </Card>
+        </p>
+      </div>
     </div>
   );
 };
