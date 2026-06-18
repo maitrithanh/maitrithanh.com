@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { projects as fallbackProjects } from "@/data/projects";
 import { RiSparklingLine, RiArrowRightUpLine } from "react-icons/ri";
 
@@ -26,27 +27,29 @@ const ProjectsPage = () => {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-border/60 bg-card p-8 shadow-sm">
-        <Badge className="mb-4 rounded-full border-primary/20 bg-primary/10 text-xs font-medium text-primary">
-          <RiSparklingLine className="mr-1.5" />
-          Portfolio
-        </Badge>
-        <h1 className="text-3xl font-semibold tracking-tight text-foreground">Projects</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          A curated selection of products and experiments focused on clean UX and practical engineering.
-        </p>
-      </div>
+      <Card>
+        <CardHeader>
+          <Badge className="w-fit rounded-full border-primary/20 bg-primary/10 text-xs font-medium text-primary">
+            <RiSparklingLine className="mr-1.5" />
+            Portfolio
+          </Badge>
+          <CardTitle className="text-3xl">Projects</CardTitle>
+          <CardDescription>
+            A curated selection of products and experiments focused on clean UX and practical engineering.
+          </CardDescription>
+        </CardHeader>
+      </Card>
 
       <div className="grid gap-5 md:grid-cols-2">
         {projects.map((project) => (
-          <div key={project.name} className="group overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
+          <Card key={project.name} className="overflow-hidden transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
             <div className="relative h-48 w-full overflow-hidden">
               <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
             </div>
-            <div className="space-y-4 p-5">
+            <CardContent className="space-y-4 p-5">
               <div>
                 <p className="text-xs text-muted-foreground">{project.date}</p>
-                <h3 className="mt-1 text-lg font-semibold tracking-tight text-foreground">{project.name}</h3>
+                <CardTitle className="mt-1 text-lg">{project.name}</CardTitle>
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {project.tag.map((item) => (
@@ -65,8 +68,8 @@ const ProjectsPage = () => {
                   <Link href={project.linkSource} target="_blank">Source</Link>
                 </Button>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>
