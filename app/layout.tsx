@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "./components/navbar/Navbar";
 import { Lexend_Deca } from "next/font/google";
 import { Providers } from "./providers";
 import {
@@ -34,15 +33,15 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-      images: [
-        {
-          url: SITE_OG_IMAGE,
-          width: 1200,
-          height: 630,
-          alt: SITE_NAME,
-        },
-      ],
-    },
+    images: [
+      {
+        url: SITE_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: SITE_NAME,
+      },
+    ],
+  },
   twitter: {
     card: "summary_large_image",
     site: TWITTER_HANDLE,
@@ -79,14 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={font.className}>
-        <Providers>
-          <div className="min-h-screen bg-background text-foreground">
-            <Navbar />
-            <main className="mx-auto mt-24 max-w-6xl px-4 pb-20 md:px-6">
-              {children}
-            </main>
-          </div>
-        </Providers>
+        <Providers>{children}</Providers>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -98,9 +90,7 @@ export default function RootLayout({
               image: `${SITE_URL}/avatar.jpg`,
               jobTitle: "Fullstack Developer",
               description: SITE_DESCRIPTION,
-              sameAs: [
-                "https://github.com/maitrithanh",
-              ],
+              sameAs: ["https://github.com/maitrithanh"],
             }),
           }}
         />
