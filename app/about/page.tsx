@@ -1,6 +1,37 @@
 import React from "react";
+import type { Metadata } from "next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { SITE_URL, SITE_OG_IMAGE } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "Mai Tri Thanh - Fullstack Developer specializing in Next.js, React, TypeScript, SwiftUI, and Laravel. Based in Ho Chi Minh City, Vietnam.",
+  openGraph: {
+    title: "About | Mai Tri Thanh",
+    description:
+      "Fullstack Developer specializing in Next.js, React, TypeScript, SwiftUI, and Laravel.",
+    url: `${SITE_URL}/about`,
+    images: [
+      {
+        url: SITE_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "About Mai Tri Thanh",
+      },
+    ],
+  },
+  twitter: {
+    title: "About | Mai Tri Thanh",
+    description:
+      "Fullstack Developer specializing in Next.js, React, TypeScript, SwiftUI, and Laravel.",
+    images: [SITE_OG_IMAGE],
+  },
+  alternates: {
+    canonical: `${SITE_URL}/about`,
+  },
+};
 
 const AboutPage = () => {
   return (

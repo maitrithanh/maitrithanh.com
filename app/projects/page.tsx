@@ -1,10 +1,41 @@
 import React from "react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { projects } from "@/data/projects";
+import { SITE_URL, SITE_OG_IMAGE } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Projects",
+  description:
+    "A curated selection of products and experiments by Mai Tri Thanh focused on clean UX and practical engineering.",
+  openGraph: {
+    title: "Projects | Mai Tri Thanh",
+    description:
+      "A curated selection of products and experiments focused on clean UX and practical engineering.",
+    url: `${SITE_URL}/projects`,
+    images: [
+      {
+        url: SITE_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Mai Tri Thanh Projects",
+      },
+    ],
+  },
+  twitter: {
+    title: "Projects | Mai Tri Thanh",
+    description:
+      "A curated selection of products and experiments focused on clean UX and practical engineering.",
+    images: [SITE_OG_IMAGE],
+  },
+  alternates: {
+    canonical: `${SITE_URL}/projects`,
+  },
+};
 
 const ProjectsPage = () => {
   return (

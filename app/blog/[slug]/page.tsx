@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/lib/blog";
 import type { BlogPost } from "@/types/blog";
 import { FaArrowLeft, FaRegCalendarAlt, FaClock } from "react-icons/fa";
+import { SITE_URL } from "@/lib/constants";
 
 interface BlogDetailProps {
   params: {
@@ -33,8 +34,32 @@ export function generateMetadata({ params }: BlogDetailProps): Metadata {
   }
 
   return {
-    title: `${post.title} | Blog`,
+    title: post.title,
     description: post.summary,
+    openGraph: {
+      title: `${post.title} | Blog`,
+      description: post.summary,
+      type: "article",
+      publishedTime: post.publishedAt,
+      url: `${SITE_URL}/blog/${post.slug}`,
+      images: [
+        {
+          url: `${SITE_URL}${post.cover}`,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${post.title} | Blog`,
+      description: post.summary,
+      images: [`${SITE_URL}${post.cover}`],
+    },
+    alternates: {
+      canonical: `${SITE_URL}/blog/${post.slug}`,
+    },
   };
 }
 
@@ -46,6 +71,33 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
   }
 
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BlogPosting",
+            headline: post.title,
+            description: post.summary,
+            image: `${SITE_URL}${post.cover}`,
+            datePublished: post.publishedAt,
+            author: {
+              "@type": "Person",
+              name: "Mai Tri Thanh",
+              url: SITE_URL,
+            },
+            publisher: {
+              "@type": "Person",
+              name: "Mai Tri Thanh",
+            },
+            mainEntityOfPage: {
+              "@type": "WebPage",
+              "@id": `${SITE_URL}/blog/${post.slug}`,
+            },
+          }),
+        }}
+      />
     <div className="mx-auto max-w-3xl space-y-6">
       <Button asChild variant="outline" className="rounded-full border-black/20 bg-white hover:bg-black hover:text-white dark:border-white/20 dark:bg-zinc-900 dark:hover:bg-white dark:hover:text-black">
         <Link href="/blog" className="inline-flex items-center gap-2">
@@ -86,5 +138,6 @@ export default function BlogDetailPage({ params }: BlogDetailProps) {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 }

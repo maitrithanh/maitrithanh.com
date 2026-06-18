@@ -1,4 +1,5 @@
 import React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +7,36 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/lib/blog";
 import { FaRegCalendarAlt, FaClock, FaArrowRight } from "react-icons/fa";
+import { SITE_URL, SITE_OG_IMAGE } from "@/lib/constants";
+
+export const metadata: Metadata = {
+  title: "Blog",
+  description:
+    "Insights on product engineering, motion design, and scalable frontend development by Mai Tri Thanh.",
+  openGraph: {
+    title: "Blog | Mai Tri Thanh",
+    description:
+      "Insights on product engineering, motion design, and scalable frontend development.",
+    url: `${SITE_URL}/blog`,
+    images: [
+      {
+        url: SITE_OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Mai Tri Thanh Blog",
+      },
+    ],
+  },
+  twitter: {
+    title: "Blog | Mai Tri Thanh",
+    description:
+      "Insights on product engineering, motion design, and scalable frontend development.",
+    images: [SITE_OG_IMAGE],
+  },
+  alternates: {
+    canonical: `${SITE_URL}/blog`,
+  },
+};
 
 const BlogPage = () => {
   return (
