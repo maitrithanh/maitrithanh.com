@@ -18,6 +18,9 @@ import {
   RiCodeBoxLine,
   RiPagesLine,
   RiUserHeartLine,
+  RiBriefcaseLine,
+  RiGraduationCapLine,
+  RiCodeSSlashLine,
 } from "react-icons/ri";
 import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
@@ -100,19 +103,21 @@ export default function Home() {
   ];
 
   return (
-    <div className="space-y-10 pb-16 md:space-y-14">
+    <div className="space-y-12 pb-20 md:space-y-16">
       <section className="grid gap-5 md:grid-cols-5">
         <FadeIn delay={0.1} className="md:col-span-3">
-          <Card>
+          <Card className="relative overflow-hidden">
+            <div className="pointer-events-none absolute -inset-px rounded-xl ring-1 ring-inset ring-black/[0.02]" />
+            <div className="pointer-events-none absolute -right-20 -top-20 h-40 w-40 rounded-full bg-primary/5 blur-3xl" />
             <CardHeader>
-              <Badge className="w-fit rounded-full border-primary/20 bg-primary/10 text-xs font-medium text-primary">
+              <Badge className="w-fit rounded-full border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                 <RiSparklingLine className="mr-1.5" />
                 {settings.hero_badge || "Building clean web experiences"}
               </Badge>
-              <CardTitle className="text-4xl leading-tight md:text-5xl lg:text-6xl">
+              <CardTitle className="mt-2 text-4xl font-bold leading-tight tracking-tight md:text-5xl lg:text-6xl">
                 {HERO_NAME}
               </CardTitle>
-              <CardDescription className="mt-1 max-w-lg text-base md:text-lg">
+              <CardDescription className="mt-2 max-w-lg text-base md:text-lg">
                 {settings.hero_subtitle || "Fullstack Developer crafting modern, fast and delightful products."}
               </CardDescription>
             </CardHeader>
@@ -136,30 +141,32 @@ export default function Home() {
         </FadeIn>
 
         <FadeIn delay={0.2} className="md:col-span-2">
-          <Card>
+          <Card className="h-full">
             <CardHeader>
-              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Focus</p>
-              <CardTitle className="text-2xl">Web Developer</CardTitle>
-              <CardDescription className="flex flex-wrap gap-x-2 text-lg">
-                <span>React</span><span className="text-border">•</span>
-                <span>Next.js</span><span className="text-border">•</span>
-                <span>Laravel</span>
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3 text-sm text-muted-foreground">
-              <div className="flex items-center gap-2.5">
-                <RiMapPinLine className="shrink-0 text-primary" />
-                <span>{settings.location || "Ho Chi Minh City"}</span>
+              <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Focus</p>
+              <CardTitle className="mt-1 text-2xl">Web Developer</CardTitle>
+              <div className="mt-1 flex flex-wrap gap-x-2 text-lg text-muted-foreground">
+                <span className="font-medium text-foreground/80">React</span>
+                <span className="text-border">•</span>
+                <span className="font-medium text-foreground/80">Next.js</span>
+                <span className="text-border">•</span>
+                <span className="font-medium text-foreground/80">Laravel</span>
               </div>
-              <div className="flex items-center gap-2.5">
+            </CardHeader>
+            <CardContent className="space-y-3 text-sm">
+              <div className="flex items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5">
+                <RiMapPinLine className="shrink-0 text-primary" />
+                <span className="text-muted-foreground">{settings.location || "Ho Chi Minh City"}</span>
+              </div>
+              <div className="flex items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5">
                 <RiMailLine className="shrink-0 text-primary" />
-                <a href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`} className="transition-colors hover:text-foreground">
+                <a href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`} className="text-muted-foreground transition-colors hover:text-foreground">
                   {settings.email || "maitrithanh06@gmail.com"}
                 </a>
               </div>
-              <div className="flex items-center gap-2.5">
+              <div className="flex items-center gap-3 rounded-lg border border-border/50 bg-muted/30 px-3 py-2.5">
                 <RiPhoneLine className="shrink-0 text-primary" />
-                <span>{settings.phone || "+84 325575029"}</span>
+                <span className="text-muted-foreground">{settings.phone || "+84 325575029"}</span>
               </div>
             </CardContent>
           </Card>
@@ -169,10 +176,12 @@ export default function Home() {
       <RevealSection>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {stats.map((stat) => (
-            <Card key={stat.label}>
+            <Card key={stat.label} className="group">
               <CardContent className="flex flex-col items-center p-6">
-                <stat.icon className="mb-2 text-2xl text-primary" />
-                <p className="text-3xl font-bold tracking-tight text-foreground">{stat.value}</p>
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary transition-transform group-hover:scale-110">
+                  <stat.icon className="text-xl" />
+                </div>
+                <p className="mt-3 text-3xl font-bold tracking-tight text-foreground">{stat.value}</p>
                 <p className="mt-1 text-sm text-muted-foreground">{stat.label}</p>
               </CardContent>
             </Card>
@@ -187,19 +196,19 @@ export default function Home() {
             <CardDescription>Technologies I work with regularly.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-6">
+            <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
               {skills.slice(0, 12).map((item) => (
                 <a
                   key={item.name}
                   href={item.link}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex flex-col items-center gap-2 rounded-xl border border-border bg-muted/30 p-4 text-center transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-sm"
+                  className="group flex flex-col items-center gap-2.5 rounded-xl border border-border/60 bg-muted/20 p-4 text-center transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary/[0.03] hover:shadow-sm"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-background p-2">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-background p-2.5 shadow-sm ring-1 ring-border/40">
                     <Image src={item.image} alt={item.name} width={24} height={24} className="h-6 w-6" />
                   </div>
-                  <span className="text-xs font-medium text-foreground/80">{item.name}</span>
+                  <span className="text-xs font-semibold text-foreground/70 group-hover:text-foreground">{item.name}</span>
                 </a>
               ))}
             </div>
@@ -211,34 +220,36 @@ export default function Home() {
         <Card>
           <CardHeader>
             <div className="flex items-center gap-3">
-              <Badge className="rounded-lg border-primary/20 bg-primary/10 px-2 py-1 text-sm font-semibold text-primary">
-                01
-              </Badge>
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                <RiBriefcaseLine className="text-sm text-primary" />
+              </div>
               <CardTitle>Work Journey</CardTitle>
             </div>
             <CardDescription>Experience and profile highlights from my CV.</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-6">
+            <div className="relative space-y-8">
+              <div className="absolute left-[17px] top-2 h-[calc(100%-16px)] w-0.5 bg-gradient-to-b from-primary/30 via-primary/20 to-transparent" />
               {timeline.map((item, idx) => (
-                <div key={`${item.company}-${item.period}`} className="relative pl-14">
-                  <Badge className="absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border-primary/20 bg-primary/10 p-0 text-sm font-bold text-primary ring-4 ring-background">
+                <div key={`${item.company}-${item.period}`} className="relative pl-12">
+                  <div className="absolute left-0 top-0 flex h-9 w-9 items-center justify-center rounded-full border-2 border-primary/20 bg-background text-sm font-bold text-primary shadow-sm">
                     {String(idx + 1).padStart(2, "0")}
-                  </Badge>
-                  <div>
+                  </div>
+                  <div className="rounded-xl border border-border/60 bg-muted/20 p-5 transition-all hover:border-primary/20 hover:shadow-sm">
                     <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-                      <h3 className="text-lg font-semibold text-foreground">
-                        {item.role}
-                        <span className="text-muted-foreground"> · </span>
-                        <span className="font-normal text-muted-foreground">{item.company}</span>
-                      </h3>
-                      <span className="text-xs text-muted-foreground">{item.period}</span>
+                      <div>
+                        <h3 className="text-base font-semibold text-foreground">
+                          {item.role}
+                        </h3>
+                        <p className="text-sm font-medium text-primary">{item.company}</p>
+                      </div>
+                      <span className="text-xs font-medium text-muted-foreground">{item.period}</span>
                     </div>
-                    <p className="mt-0.5 text-sm text-muted-foreground">{item.location}</p>
-                    <ul className="mt-3 space-y-2">
+                    <p className="mt-1.5 text-xs text-muted-foreground/70">{item.location}</p>
+                    <ul className="mt-3 space-y-2 border-t border-border/40 pt-3">
                       {item.highlights.map((highlight) => (
-                        <li key={highlight} className="flex gap-3 text-sm text-muted-foreground">
-                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/60" />
+                        <li key={highlight} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                          <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-primary/50" />
                           {highlight}
                         </li>
                       ))}
@@ -247,25 +258,55 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <Card>
-                <CardContent className="p-5">
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Education</p>
-                  <p className="mt-2 text-sm text-foreground">{quickInfo.education}</p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardContent className="p-5">
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Core Skills</p>
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {quickInfo.coreSkills.map((s) => (
-                      <Badge key={s} variant="outline" className="border-primary/20 bg-primary/5 text-xs font-medium text-primary">
-                        {s}
-                      </Badge>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
+          </CardContent>
+        </Card>
+      </RevealSection>
+
+      <RevealSection>
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                <RiGraduationCapLine className="text-sm text-primary" />
+              </div>
+              <CardTitle>Education</CardTitle>
+            </div>
+            <CardDescription>Academic background and qualifications.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Card className="bg-muted/20">
+              <CardContent className="flex items-start gap-3 p-5">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/10">
+                  <RiGraduationCapLine className="text-primary" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-foreground">{quickInfo.education}</p>
+                  <p className="mt-1 text-xs text-muted-foreground">Graduated 2024</p>
+                </div>
+              </CardContent>
+            </Card>
+          </CardContent>
+        </Card>
+      </RevealSection>
+
+      <RevealSection>
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/10">
+                <RiCodeSSlashLine className="text-sm text-primary" />
+              </div>
+              <CardTitle>Core Skills</CardTitle>
+            </div>
+            <CardDescription>Technologies and tools I use daily.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-2">
+              {quickInfo.coreSkills.map((s) => (
+                <Badge key={s} className="rounded-md border-primary/15 bg-primary/5 px-3 py-1.5 text-sm font-medium text-primary">
+                  {s}
+                </Badge>
+              ))}
             </div>
           </CardContent>
         </Card>
@@ -288,17 +329,20 @@ export default function Home() {
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {projects.slice(0, 3).map((project) => (
                 <Link href={project.preview} target="_blank" key={project.name}
-                  className="group overflow-hidden rounded-xl border border-border bg-muted/30 transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md"
+                  className="group relative overflow-hidden rounded-xl border border-border/60 bg-muted/20 transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md"
                 >
                   <div className="relative h-44 w-full overflow-hidden">
-                    <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <Image src={project.image} alt={project.name} fill className="object-cover transition-all duration-500 group-hover:scale-105" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                   </div>
                   <div className="p-4">
-                    <p className="text-xs text-muted-foreground">{project.date}</p>
-                    <h3 className="mt-1 line-clamp-2 font-medium text-foreground">{project.name}</h3>
-                    <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-primary">
-                      Preview <FaArrowUpRightFromSquare className="text-xs" />
-                    </span>
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-medium text-muted-foreground">{project.date}</p>
+                      <span className="inline-flex items-center gap-1 text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                        Preview <FaArrowUpRightFromSquare className="text-[10px]" />
+                      </span>
+                    </div>
+                    <h3 className="mt-1 line-clamp-2 font-semibold text-foreground">{project.name}</h3>
                   </div>
                 </Link>
               ))}
@@ -308,13 +352,13 @@ export default function Home() {
       </RevealSection>
 
       <RevealSection>
-        <Card className="border-primary/20 bg-primary/5">
+        <Card className="border-primary/20 bg-gradient-to-br from-primary/[0.04] to-primary/[0.08]">
           <CardContent className="flex flex-col items-center gap-6 p-6 text-center md:flex-row md:justify-between md:text-left">
             <div>
               <CardTitle className="text-xl">
                 {settings.cta_title || "Let's build something memorable."}
               </CardTitle>
-              <CardDescription className="mt-1">
+              <CardDescription className="mt-1 max-w-lg">
                 {settings.cta_subtitle || "Open for freelance, product, and startup collaborations."}
               </CardDescription>
             </div>

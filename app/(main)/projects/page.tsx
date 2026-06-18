@@ -26,10 +26,10 @@ const ProjectsPage = () => {
   }, []);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <Card>
         <CardHeader>
-          <Badge className="w-fit rounded-full border-primary/20 bg-primary/10 text-xs font-medium text-primary">
+          <Badge className="w-fit rounded-full border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
             <RiSparklingLine className="mr-1.5" />
             Portfolio
           </Badge>
@@ -40,20 +40,21 @@ const ProjectsPage = () => {
         </CardHeader>
       </Card>
 
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="grid gap-6 md:grid-cols-2">
         {projects.map((project) => (
           <Card key={project.name} className="overflow-hidden transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
             <div className="relative h-48 w-full overflow-hidden">
-              <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+              <Image src={project.image} alt={project.name} fill className="object-cover transition-all duration-500 hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
             </div>
             <CardContent className="space-y-4 p-5">
               <div>
-                <p className="text-xs text-muted-foreground">{project.date}</p>
+                <p className="text-xs font-medium text-muted-foreground">{project.date}</p>
                 <CardTitle className="mt-1 text-lg">{project.name}</CardTitle>
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {project.tag.map((item) => (
-                  <Badge key={item.tagName} className="rounded-full border-primary/20 bg-primary/5 text-xs font-medium text-primary">
+                  <Badge key={item.tagName} className="rounded-md border-primary/15 bg-primary/5 px-2 py-0.5 text-xs font-medium text-primary">
                     {item.tagName}
                   </Badge>
                 ))}
