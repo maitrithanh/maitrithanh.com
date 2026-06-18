@@ -50,9 +50,11 @@ function RevealSection({
 
 function FadeIn({
   children,
+  className,
   delay = 0,
 }: {
   children: React.ReactNode;
+  className?: string;
   delay?: number;
 }) {
   return (
@@ -60,6 +62,7 @@ function FadeIn({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1], delay }}
+      className={className}
     >
       {children}
     </motion.div>
@@ -99,8 +102,8 @@ export default function Home() {
   return (
     <div className="space-y-10 pb-16 md:space-y-14">
       <section className="grid gap-5 md:grid-cols-5">
-        <FadeIn delay={0.1}>
-          <Card className="md:col-span-3">
+        <FadeIn delay={0.1} className="md:col-span-3">
+          <Card>
             <CardHeader>
               <Badge className="w-fit rounded-full border-primary/20 bg-primary/10 text-xs font-medium text-primary">
                 <RiSparklingLine className="mr-1.5" />
@@ -132,8 +135,8 @@ export default function Home() {
           </Card>
         </FadeIn>
 
-        <FadeIn delay={0.2}>
-          <Card className="md:col-span-2">
+        <FadeIn delay={0.2} className="md:col-span-2">
+          <Card>
             <CardHeader>
               <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Focus</p>
               <CardTitle className="text-2xl">Web Developer</CardTitle>
