@@ -8,8 +8,6 @@ import { CiMenuFries } from "react-icons/ci";
 import MobileNav from "./MobileNav";
 import Backdrop from "../Backdrop";
 import { Button } from "@/components/ui/button";
-import ThemeToggle from "./ThemeToggle";
-
 const Navbar = () => {
   const router = useRouter();
   const pathName = usePathname();
@@ -58,7 +56,7 @@ const Navbar = () => {
       className={`fixed inset-x-0 top-0 z-40 transition-transform duration-300 ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"}`}
     >
       <div className="mx-auto max-w-6xl px-4 pt-3 md:px-6">
-        <div className="flex h-16 items-center justify-between rounded-2xl border border-border/60 bg-white/75 px-4 shadow-sm backdrop-blur-xl dark:bg-zinc-950/75 md:px-6">
+        <div className="flex h-16 items-center justify-between rounded-2xl border border-border/60 bg-white/75 px-4 shadow-sm backdrop-blur-xl md:px-6">
           <div
             className="cursor-pointer transition-opacity hover:opacity-80"
             onClick={() => router.push("/")}
@@ -81,7 +79,6 @@ const Navbar = () => {
           </ul>
 
           <div className="hidden items-center gap-1 md:flex">
-            <ThemeToggle />
             <Link
               href="https://www.buymeacoffee.com/maitrithanh"
               target="_blank"
@@ -94,7 +91,6 @@ const Navbar = () => {
           </div>
 
           <div className="flex items-center md:hidden">
-            <ThemeToggle />
             <Button
               variant="ghost"
               size="icon"

@@ -14,7 +14,7 @@ const MobileNav = ({ setIsOpenMenu }: MobileNavProps) => {
   const pathName = usePathname();
 
   return (
-    <div className="fixed right-0 top-0 flex h-screen w-72 flex-col border-l border-black/10 bg-white/80 p-5 shadow-xl backdrop-blur-xl dark:border-white/10 dark:bg-zinc-950/85">
+    <div className="fixed right-0 top-0 flex h-screen w-72 flex-col border-l border-black/10 bg-white/80 p-5 shadow-xl backdrop-blur-xl">
       <div className="mb-8 flex justify-end">
         <Button
           variant="ghost"
