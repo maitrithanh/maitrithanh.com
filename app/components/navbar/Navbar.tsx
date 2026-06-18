@@ -55,8 +55,8 @@ const Navbar = () => {
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-transform duration-300 ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"}`}
     >
-      <div className="mx-auto max-w-6xl px-4 pt-3 md:px-6">
-        <div className="flex h-16 items-center justify-between rounded-2xl border border-border/60 bg-white/75 px-4 shadow-sm backdrop-blur-xl md:px-6">
+        <div className="mx-auto max-w-6xl px-4 md:px-6">
+        <div className="flex h-14 items-center justify-between border-b border-border md:h-16">
           <div
             className="cursor-pointer transition-opacity hover:opacity-80"
             onClick={() => router.push("/")}

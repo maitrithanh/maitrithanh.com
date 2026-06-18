@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { projects as fallbackProjects } from "@/data/projects";
-import { RiSparklingLine, RiArrowRightUpLine } from "react-icons/ri";
+import { FaArrowUpRightFromSquare } from "react-icons/fa6";
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState(fallbackProjects);
@@ -26,13 +25,10 @@ const ProjectsPage = () => {
   }, []);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <Card>
         <CardHeader>
-          <Badge className="w-fit rounded-full border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-            <RiSparklingLine className="mr-1.5" />
-            Portfolio
-          </Badge>
+          <Badge variant="outline" className="w-fit rounded-full text-xs text-muted-foreground">Portfolio</Badge>
           <CardTitle className="text-3xl">Projects</CardTitle>
           <CardDescription>
             A curated selection of products and experiments focused on clean UX and practical engineering.
@@ -42,35 +38,30 @@ const ProjectsPage = () => {
 
       <div className="grid gap-6 md:grid-cols-2">
         {projects.map((project) => (
-          <Card key={project.name} className="overflow-hidden transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
-            <div className="relative h-48 w-full overflow-hidden">
-              <Image src={project.image} alt={project.name} fill className="object-cover transition-all duration-500 hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+          <div key={project.name} className="group rounded-xl border bg-muted/20 transition-colors hover:border-foreground/20">
+            <div className="relative aspect-[16/9] overflow-hidden rounded-t-xl">
+              <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
             </div>
-            <CardContent className="space-y-4 p-5">
-              <div>
-                <p className="text-xs font-medium text-muted-foreground">{project.date}</p>
-                <CardTitle className="mt-1 text-lg">{project.name}</CardTitle>
-              </div>
-              <div className="flex flex-wrap gap-1.5">
+            <div className="p-5">
+              <p className="text-xs text-muted-foreground">{project.date}</p>
+              <h3 className="mt-0.5 font-medium text-foreground">{project.name}</h3>
+              <div className="mt-3 flex flex-wrap gap-1.5">
                 {project.tag.map((item) => (
-                  <Badge key={item.tagName} className="rounded-md border-primary/15 bg-primary/5 px-2 py-0.5 text-xs font-medium text-primary">
+                  <span key={item.tagName} className="rounded-md border bg-muted/30 px-2 py-0.5 text-xs text-foreground/60">
                     {item.tagName}
-                  </Badge>
+                  </span>
                 ))}
               </div>
-              <div className="flex gap-2">
-                <Button asChild size="sm" className="rounded-full">
-                  <Link href={project.preview} target="_blank">
-                    Preview <RiArrowRightUpLine className="ml-1" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="sm" className="rounded-full">
-                  <Link href={project.linkSource} target="_blank">Source</Link>
-                </Button>
+              <div className="mt-4 flex gap-3">
+                <Link href={project.preview} target="_blank" className="inline-flex items-center gap-1 text-sm font-medium text-foreground/60 transition-colors hover:text-foreground">
+                  Preview <FaArrowUpRightFromSquare className="text-xs" />
+                </Link>
+                <Link href={project.linkSource} target="_blank" className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground">
+                  Source <FaArrowUpRightFromSquare className="text-xs" />
+                </Link>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         ))}
       </div>
     </div>

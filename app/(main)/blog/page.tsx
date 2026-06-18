@@ -3,11 +3,9 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { blogPosts as fallbackPosts } from "@/lib/blog";
-import { FaRegCalendarAlt, FaClock, FaArrowRight } from "react-icons/fa";
-import { RiSparklingLine, RiArrowRightUpLine } from "react-icons/ri";
+import { FaRegCalendarAlt, FaArrowRight } from "react-icons/fa";
 
 const BlogPage = () => {
   const [posts, setPosts] = useState(fallbackPosts);
@@ -27,25 +25,20 @@ const BlogPage = () => {
   }, []);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-10">
       <Card>
         <CardHeader>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <Badge className="w-fit rounded-full border-primary/20 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
-                <RiSparklingLine className="mr-1.5" />
-                Articles
-              </Badge>
-              <CardTitle className="mt-2 text-3xl">Blog</CardTitle>
+              <Badge variant="outline" className="w-fit rounded-full text-xs text-muted-foreground">Articles</Badge>
+              <CardTitle className="mt-1 text-3xl">Blog</CardTitle>
               <CardDescription>
                 Insights on product engineering, motion design, and scalable frontend development.
               </CardDescription>
             </div>
-            <Button asChild className="rounded-full shrink-0">
-              <Link href="mailto:maitrithanh06@gmail.com">
-                Suggest a topic <RiArrowRightUpLine className="ml-1.5" />
-              </Link>
-            </Button>
+            <Link href="mailto:maitrithanh06@gmail.com" className="text-sm font-medium text-foreground/60 transition-colors hover:text-foreground">
+              Suggest a topic →
+            </Link>
           </div>
         </CardHeader>
       </Card>
@@ -53,26 +46,23 @@ const BlogPage = () => {
       <div className="grid gap-6 md:grid-cols-3">
         {posts.map((post) => (
           <Link key={post.slug} href={`/blog/${post.slug}`}>
-            <Card className="group overflow-hidden transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
-              <div className="relative h-40 w-full overflow-hidden">
-                <Image src={post.cover} alt={post.title} fill className="object-cover transition-all duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+            <div className="group rounded-xl border bg-muted/20 transition-colors hover:border-foreground/20">
+              <div className="relative aspect-[16/9] overflow-hidden rounded-t-xl">
+                <Image src={post.cover} alt={post.title} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
               </div>
-              <CardContent className="space-y-3 p-5">
-                <Badge className="rounded-md border-primary/15 bg-primary/5 px-2 py-0.5 text-xs font-medium text-primary">
-                  {post.category}
-                </Badge>
-                <CardTitle className="line-clamp-2 text-lg leading-snug">{post.title}</CardTitle>
-                <CardDescription className="line-clamp-2">{post.summary}</CardDescription>
-                <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                  <span className="inline-flex items-center gap-1.5"><FaRegCalendarAlt className="text-primary/60" />{new Date(post.publishedAt).toLocaleDateString("en-GB")}</span>
-                  <span className="inline-flex items-center gap-1.5"><FaClock className="text-primary/60" />{post.readTime}</span>
+              <div className="p-4">
+                <span className="rounded-md border bg-muted/30 px-2 py-0.5 text-xs text-foreground/60">{post.category}</span>
+                <h3 className="mt-2 line-clamp-2 font-medium text-foreground">{post.title}</h3>
+                <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>
+                <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground/60">
+                  <FaRegCalendarAlt className="mr-1" />
+                  {new Date(post.publishedAt).toLocaleDateString("en-GB")}
                 </div>
-                <span className="inline-flex items-center gap-2 text-sm font-medium text-primary transition-all group-hover:gap-3">
-                  Read detail <FaArrowRight className="text-xs" />
+                <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-foreground/60 transition-colors group-hover:text-foreground">
+                  Read <FaArrowRight className="text-xs" />
                 </span>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </Link>
         ))}
       </div>
