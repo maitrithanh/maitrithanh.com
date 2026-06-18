@@ -23,7 +23,11 @@ const MenuItem: React.FC<MenuItemProps> = ({
       <Button
         variant={active ? "secondary" : "ghost"}
         size="sm"
-        className={`h-9 gap-1.5 rounded-lg px-3 ${active ? "bg-black text-white hover:bg-black/90 hover:text-white dark:bg-white dark:text-black dark:hover:bg-white/90" : "text-black/80 dark:text-white/80"}`}
+        className={`h-9 gap-1.5 rounded-lg px-3 ${
+          active
+            ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
         onClick={() => router.push(pathname)}
       >
         <span>{icon}</span>
