@@ -164,6 +164,30 @@ export default function Home() {
 
       <RevealSection>
         <div>
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education</h2>
+          <div className="mt-4 border-l-2 border-border pl-4">
+            <p className="font-medium text-foreground">Software Engineering</p>
+            <p className="text-sm text-muted-foreground">HUFLIT · 2020 – 2024</p>
+            <p className="mt-1 text-sm text-muted-foreground/60">{quickInfo.education}</p>
+          </div>
+        </div>
+      </RevealSection>
+
+      <RevealSection>
+        <div>
+          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Core Skills</h2>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {quickInfo.coreSkills.map((s) => (
+              <span key={s} className="rounded-lg border bg-muted/30 px-3 py-1.5 text-sm text-foreground/70">
+                {s}
+              </span>
+            ))}
+          </div>
+        </div>
+      </RevealSection>
+
+      <RevealSection>
+        <div>
           <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Experience</h2>
           <div className="mt-4 space-y-6">
             {timeline.map((item, idx) => (
@@ -185,30 +209,6 @@ export default function Home() {
                   ))}
                 </ul>
               </div>
-            ))}
-          </div>
-        </div>
-      </RevealSection>
-
-      <RevealSection>
-        <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education</h2>
-          <div className="mt-4 border-l-2 border-border pl-4">
-            <p className="font-medium text-foreground">Software Engineering</p>
-            <p className="text-sm text-muted-foreground">HUFLIT · 2020 – 2024</p>
-            <p className="mt-1 text-sm text-muted-foreground/60">{quickInfo.education}</p>
-          </div>
-        </div>
-      </RevealSection>
-
-      <RevealSection>
-        <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Core Skills</h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {quickInfo.coreSkills.map((s) => (
-              <span key={s} className="rounded-lg border bg-muted/30 px-3 py-1.5 text-sm text-foreground/70">
-                {s}
-              </span>
             ))}
           </div>
         </div>
