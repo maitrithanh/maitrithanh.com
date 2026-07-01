@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { projects as fallbackProjects } from "@/data/projects";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import { ExportSquare } from "iconsax-reactjs";
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState(fallbackProjects);
@@ -54,10 +54,10 @@ const ProjectsPage = () => {
               </div>
               <div className="mt-4 flex gap-3">
                 <Link href={project.preview} target="_blank" className="inline-flex items-center gap-1 text-sm font-medium text-foreground/60 transition-colors hover:text-foreground">
-                  Preview <FaArrowUpRightFromSquare className="text-xs" />
+                  Preview <ExportSquare variant="Bulk" size={12} />
                 </Link>
                 <Link href={project.linkSource} target="_blank" className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground">
-                  Source <FaArrowUpRightFromSquare className="text-xs" />
+                  Source <ExportSquare variant="Bulk" size={12} />
                 </Link>
               </div>
             </div>

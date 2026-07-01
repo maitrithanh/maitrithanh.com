@@ -4,7 +4,7 @@ import { menu } from "@/data/menu";
 import MenuItem from "./MenuItem";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import { CiMenuFries } from "react-icons/ci";
+import { HamburgerMenu } from "iconsax-reactjs";
 import MobileNav from "./MobileNav";
 import Backdrop from "../Backdrop";
 import { Button } from "@/components/ui/button";
@@ -55,7 +55,7 @@ const Navbar = () => {
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-transform duration-300 ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"}`}
     >
-        <div className="mx-auto max-w-6xl px-4 md:px-6">
+        <div className="mx-auto max-w-6xl px-4 md:px-6 bg-white">
         <div className="flex h-14 items-center justify-between border-b border-border md:h-16">
           <div
             className="cursor-pointer transition-opacity hover:opacity-80"
@@ -71,7 +71,7 @@ const Navbar = () => {
               <MenuItem
                 key={item.name}
                 name={item.name}
-                icon={<item.icon size={20} />}
+                icon={<item.icon size={20} variant="Bulk" />}
                 pathname={item.pathName}
                 active={pathName === item.pathName}
               />
@@ -84,7 +84,7 @@ const Navbar = () => {
               target="_blank"
               className="inline-block"
             >
-              <Button variant="outline" size="sm" className="rounded-full border-primary/30 text-primary hover:bg-primary hover:text-white">
+              <Button variant="outline" size="sm" className="rounded-full border-pri bg-primary text-white">
                 Buy me a coffee
               </Button>
             </Link>
@@ -97,7 +97,7 @@ const Navbar = () => {
               onClick={() => setIsOpenMenu(true)}
               aria-label="Open navigation menu"
             >
-              <CiMenuFries size={24} />
+              <HamburgerMenu variant="Bulk" size={24} />
             </Button>
           </div>
         </div>

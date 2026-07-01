@@ -22,7 +22,7 @@ export default function AdminDashboard() {
         </h1>
       </div>
 
-      <div className="flex gap-1 rounded-xl border border-border/60 bg-card p-1">
+      <div className="flex gap-1 rounded-xl">
         {tabs.map((t) => (
           <button
             key={t.key}

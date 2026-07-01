@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { blogPosts as fallbackPosts } from "@/lib/blog";
-import { FaRegCalendarAlt, FaArrowRight } from "react-icons/fa";
+import { Calendar, ArrowRight } from "iconsax-reactjs";
 
 const BlogPage = () => {
   const [posts, setPosts] = useState(fallbackPosts);
@@ -55,11 +55,11 @@ const BlogPage = () => {
                 <h3 className="mt-2 line-clamp-2 font-medium text-foreground">{post.title}</h3>
                 <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>
                 <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground/60">
-                  <FaRegCalendarAlt className="mr-1" />
+                  <Calendar variant="Bulk" className="mr-1" />
                   {new Date(post.publishedAt).toLocaleDateString("en-GB")}
                 </div>
                 <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-foreground/60 transition-colors group-hover:text-foreground">
-                  Read <FaArrowRight className="text-xs" />
+                  Read <ArrowRight variant="Bulk" size={12} />
                 </span>
               </div>
             </div>

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { RiHomeLine, RiFolderOpenLine } from "react-icons/ri";
+import { Home, FolderOpen } from "iconsax-reactjs";
 
 export const metadata: Metadata = {
   title: "404 - Page Not Found",
@@ -28,13 +28,13 @@ export default function NotFound() {
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Button asChild className="rounded-full">
           <Link href="/" className="inline-flex items-center gap-2">
-            <RiHomeLine />
+            <Home variant="Bulk" />
             Back to Home
           </Link>
         </Button>
         <Button asChild variant="outline" className="rounded-full">
           <Link href="/projects" className="inline-flex items-center gap-2">
-            <RiFolderOpenLine />
+            <FolderOpen variant="Bulk" />
             View Projects
           </Link>
         </Button>

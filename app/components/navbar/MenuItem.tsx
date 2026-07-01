@@ -25,7 +25,7 @@ const MenuItem: React.FC<MenuItemProps> = ({
         size="sm"
         className={`h-9 gap-1.5 rounded-lg px-3 ${
           active
-            ? "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+            ? "text-pri hover:bg-pri/20 hover:text-pri border-pri border"
             : "text-muted-foreground hover:text-foreground"
         }`}
         onClick={() => router.push(pathname)}

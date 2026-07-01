@@ -1,26 +1,24 @@
-import { GoProject } from "react-icons/go";
-import { TbBrandBlogger } from "react-icons/tb";
-import { CiCircleInfo, CiHome } from "react-icons/ci";
+import { Briefcase, Blogger, InfoCircle, Home } from "iconsax-reactjs";
 
 export const menu = [
   {
     name: "Home",
-    icon: CiHome,
+    icon: Home,
     pathName: "/",
   },
   {
     name: "About",
-    icon: CiCircleInfo,
+    icon: InfoCircle,
     pathName: "/about",
   },
   {
     name: "Blog",
-    icon: TbBrandBlogger,
+    icon: Blogger,
     pathName: "/blog",
   },
   {
     name: "Projects",
-    icon: GoProject,
+    icon: Briefcase,
     pathName: "/projects",
   },
 ];

@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { blogPosts as fallbackPosts } from "@/lib/blog";
 import { getBlogPostBySlug } from "@/lib/data";
-import { FaArrowLeft, FaRegCalendarAlt, FaClock } from "react-icons/fa";
+import { ArrowLeft, Calendar, Clock } from "iconsax-reactjs";
 import { SITE_URL } from "@/lib/constants";
 
 interface PageProps {
@@ -67,7 +67,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
       <div className="mx-auto max-w-3xl space-y-6">
         <Button asChild variant="outline" className="rounded-full">
           <Link href="/blog" className="inline-flex items-center gap-2">
-            <FaArrowLeft className="text-xs" /> Back to blog
+            <ArrowLeft variant="Bulk" size={12} /> Back to blog
           </Link>
         </Button>
 
@@ -82,8 +82,8 @@ export default async function BlogDetailPage({ params }: PageProps) {
             <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground md:text-4xl">{post.title}</h1>
             <p className="text-base text-muted-foreground">{post.summary}</p>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5"><FaRegCalendarAlt />{new Date(post.publishedAt).toLocaleDateString("en-GB")}</span>
-              <span className="inline-flex items-center gap-1.5"><FaClock />{post.readTime}</span>
+              <span className="inline-flex items-center gap-1.5"><Calendar variant="Bulk" />{new Date(post.publishedAt).toLocaleDateString("en-GB")}</span>
+              <span className="inline-flex items-center gap-1.5"><Clock variant="Bulk" />{post.readTime}</span>
             </div>
             <article className="space-y-4 text-base leading-7 text-foreground/85">
               {post.content.map((paragraph: string) => <p key={paragraph}>{paragraph}</p>)}

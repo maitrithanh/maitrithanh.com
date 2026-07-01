@@ -9,16 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/com
 import { projects as fallbackProjects } from "@/data/projects";
 import { skill as fallbackSkills } from "@/data/skill";
 import { careerTimeline as fallbackTimeline, cvQuickInfo as fallbackQuickInfo } from "@/data/cv";
-import {
-  RiMapPinLine,
-  RiMailLine,
-  RiPhoneLine,
-  RiArrowRightUpLine,
-  RiBriefcaseLine,
-  RiGraduationCapLine,
-  RiCodeSSlashLine,
-} from "react-icons/ri";
-import { FaArrowUpRightFromSquare } from "react-icons/fa6";
+import { Location, Sms, Call, ArrowRight, ExportSquare } from "iconsax-reactjs";
 
 function RevealSection({ children, className }: { children: React.ReactNode; className?: string }) {
   const ref = useRef(null);
@@ -79,7 +70,7 @@ export default function Home() {
               <Button asChild>
                 <Link href="/projects">
                   View Projects
-                  <RiArrowRightUpLine className="ml-1.5" />
+                  <ArrowRight variant="Bulk" className="ml-1.5" />
                 </Link>
               </Button>
               <Button asChild variant="outline">
@@ -103,17 +94,17 @@ export default function Home() {
             </CardHeader>
             <CardContent className="space-y-2.5 text-sm">
               <div className="flex items-center gap-2.5 text-muted-foreground">
-                <RiMapPinLine className="shrink-0 text-foreground/40" />
+                <Location variant="Bulk" className="shrink-0 text-foreground/40" />
                 <span>{settings.location || "Ho Chi Minh City"}</span>
               </div>
               <div className="flex items-center gap-2.5 text-muted-foreground">
-                <RiMailLine className="shrink-0 text-foreground/40" />
+                <Sms variant="Bulk" className="shrink-0 text-foreground/40" />
                 <a href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`} className="transition-colors hover:text-foreground">
                   {settings.email || "maitrithanh06@gmail.com"}
                 </a>
               </div>
               <div className="flex items-center gap-2.5 text-muted-foreground">
-                <RiPhoneLine className="shrink-0 text-foreground/40" />
+                <Call variant="Bulk" className="shrink-0 text-foreground/40" />
                 <span>{settings.phone || "+84 325575029"}</span>
               </div>
             </CardContent>
@@ -144,7 +135,9 @@ export default function Home() {
 
       <RevealSection>
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Tech Stack</h2>
+          <h2 className="text-md font-bold uppercase tracking-wider text-primary">
+            Tech Stack
+          </h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {skills.slice(0, 12).map((item) => (
               <a
@@ -164,18 +157,22 @@ export default function Home() {
 
       <RevealSection>
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education</h2>
-          <div className="mt-4 border-l-2 border-border pl-4">
+          <h2 className="text-md font-bold uppercase tracking-wider text-primary">
+            Education
+          </h2>
+          <div className="mt-4 border-l-2 border-primary pl-4">
             <p className="font-medium text-foreground">Software Engineering</p>
             <p className="text-sm text-muted-foreground">HUFLIT · 2020 – 2024</p>
-            <p className="mt-1 text-sm text-muted-foreground/60">{quickInfo.education}</p>
+            <p className="mt-1 text-sm text-muted-foreground/60 italic">{quickInfo.education}</p>
           </div>
         </div>
       </RevealSection>
 
       <RevealSection>
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Core Skills</h2>
+          <h2 className="text-md font-bold uppercase tracking-wider text-primary">
+            Core Skills
+          </h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {quickInfo.coreSkills.map((s) => (
               <span key={s} className="rounded-lg border bg-muted/30 px-3 py-1.5 text-sm text-foreground/70">
@@ -188,10 +185,12 @@ export default function Home() {
 
       <RevealSection>
         <div>
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Experience</h2>
+          <h2 className="text-md font-bold uppercase tracking-wider text-primary">
+            Experience
+          </h2>
           <div className="mt-4 space-y-6">
             {timeline.map((item, idx) => (
-              <div key={`${item.company}-${item.period}`} className="border-l-2 border-border pl-4">
+              <div key={`${item.company}-${item.period}`} className="border-l-2 border-primary pl-4">
                 <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <p className="font-medium text-foreground">{item.role}</p>
@@ -217,7 +216,9 @@ export default function Home() {
       <RevealSection>
         <div>
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Projects</h2>
+            <h2 className="text-md font-bold uppercase tracking-wider text-primary">
+              Projects
+            </h2>
             <Link href="/projects" className="text-sm font-medium text-foreground/60 transition-colors hover:text-foreground">
               See all →
             </Link>
@@ -234,7 +235,7 @@ export default function Home() {
                   <p className="text-xs text-muted-foreground">{project.date}</p>
                   <p className="mt-0.5 font-medium text-foreground">{project.name}</p>
                   <span className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors group-hover:text-foreground">
-                    Preview <FaArrowUpRightFromSquare />
+                    Preview <ExportSquare variant="Bulk" />
                   </span>
                 </div>
               </a>
@@ -256,7 +257,7 @@ export default function Home() {
             </div>
             <Button asChild>
               <Link href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`}>
-                Contact Me <RiArrowRightUpLine className="ml-1.5" />
+                Contact Me <ArrowRight variant="Bulk" className="ml-1.5" />
               </Link>
             </Button>
           </CardContent>
