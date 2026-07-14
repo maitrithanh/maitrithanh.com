@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 interface MenuItemProps {
@@ -16,11 +16,10 @@ const MenuItem: React.FC<MenuItemProps> = ({
   pathname,
   active,
 }) => {
-  const router = useRouter();
-
   return (
     <li>
       <Button
+        asChild
         variant={active ? "secondary" : "ghost"}
         size="sm"
         className={`h-9 gap-1.5 rounded-lg px-3 ${
@@ -28,10 +27,11 @@ const MenuItem: React.FC<MenuItemProps> = ({
             ? "text-pri hover:bg-pri/20 hover:text-pri border-pri border"
             : "text-muted-foreground hover:text-foreground"
         }`}
-        onClick={() => router.push(pathname)}
       >
-        <span>{icon}</span>
-        <span>{name}</span>
+        <Link href={pathname} prefetch>
+          <span>{icon}</span>
+          <span>{name}</span>
+        </Link>
       </Button>
     </li>
   );

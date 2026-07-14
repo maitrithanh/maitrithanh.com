@@ -2,14 +2,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { menu } from "@/data/menu";
 import MenuItem from "./MenuItem";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { HamburgerMenu } from "iconsax-reactjs";
 import MobileNav from "./MobileNav";
 import Backdrop from "../Backdrop";
 import { Button } from "@/components/ui/button";
 const Navbar = () => {
-  const router = useRouter();
   const pathName = usePathname();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
@@ -57,14 +56,15 @@ const Navbar = () => {
     >
         <div className="mx-auto max-w-6xl px-4 md:px-6 bg-white">
         <div className="flex h-14 items-center justify-between border-b border-border md:h-16">
-          <div
-            className="cursor-pointer transition-opacity hover:opacity-80"
-            onClick={() => router.push("/")}
+          <Link
+            href="/"
+            prefetch
+            className="inline-flex cursor-pointer items-center transition-opacity hover:opacity-80"
           >
             <span className="inline-flex items-center text-sm font-semibold tracking-wide text-foreground">
               MAI TRI THANH
             </span>
-          </div>
+          </Link>
 
           <ul className="hidden items-center gap-1 md:flex">
             {menu.map((item: any) => (
