@@ -260,7 +260,7 @@ function BlogManager() {
           <Field label="Slug" value={editing.slug || ""} onChange={(v) => setEditing({ ...editing, slug: v })} required />
           <Field label="Category" value={editing.category || ""} onChange={(v) => setEditing({ ...editing, category: v })} required />
           <Field label="Summary" value={editing.summary || ""} onChange={(v) => setEditing({ ...editing, summary: v })} as="textarea" required />
-          <Field label="Published At" value={editing.published_at || ""} onChange={(v) => setEditing({ ...editing, published_at: v })} required />
+          <Field label="Published At" type="date" value={(editing.published_at || "").slice(0, 10)} onChange={(v) => setEditing({ ...editing, published_at: v })} required />
           <Field label="Read Time" value={editing.read_time || ""} onChange={(v) => setEditing({ ...editing, read_time: v })} required />
           <Field label="Cover image" value={editing.cover || ""} onChange={(v) => setEditing({ ...editing, cover: v })} required />
           <div>
@@ -579,11 +579,12 @@ function SettingsManager() {
 
 // ─── Shared Components ───────────────────────────────────────────
 
-function Field({ label, value, onChange, as, required }: {
+function Field({ label, value, onChange, as, type, required }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   as?: string;
+  type?: string;
   required?: boolean;
 }) {
   return (
@@ -600,6 +601,7 @@ function Field({ label, value, onChange, as, required }: {
         />
       ) : (
         <input
+          type={type || "text"}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           required={required}
