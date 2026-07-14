@@ -12,8 +12,12 @@ export async function PUT(request: Request, { params }: { params: { id: string }
   const denied = await requireAdmin();
   if (denied) return denied;
   const body = await request.json();
-  const data = await update("blog_posts", params.id, body);
-  return NextResponse.json(data);
+  try {
+    const data = await update("blog_posts", params.id, body);
+    return NextResponse.json(data);
+  } catch (e: any) {
+    return NextResponse.json({ error: e?.message || "Update failed" }, { status: 400 });
+  }
 }
 
 export async function DELETE(_: Request, { params }: { params: { id: string } }) {

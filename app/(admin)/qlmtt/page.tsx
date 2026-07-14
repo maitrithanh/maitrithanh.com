@@ -209,23 +209,31 @@ function BlogManager() {
 
   const save = async (data: any) => {
     setSaving(true);
-    const body = { ...data, content: contentLines.filter(Boolean) };
-    if (editing?.id) {
-      await fetch(`/api/blog/${editing.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-    } else {
-      await fetch("/api/blog", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+    const { id, created_at, updated_at, ...rest } = data;
+    const body = { ...rest, content: contentLines.filter(Boolean) };
+    try {
+      const res = editing?.id
+        ? await fetch(`/api/blog/${editing.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          })
+        : await fetch("/api/blog", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+          });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || `Request failed (${res.status})`);
+      }
+      setEditing(null);
+      load();
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Save failed");
+    } finally {
+      setSaving(false);
     }
-    setEditing(null);
-    setSaving(false);
-    load();
   };
 
   const remove = async (id: string) => {

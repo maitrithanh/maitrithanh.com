@@ -12,6 +12,10 @@ export async function POST(request: Request) {
   const denied = await requireAdmin();
   if (denied) return denied;
   const body = await request.json();
-  const data = await create("blog_posts", body);
-  return NextResponse.json(data);
+  try {
+    const data = await create("blog_posts", body);
+    return NextResponse.json(data);
+  } catch (e: any) {
+    return NextResponse.json({ error: e?.message || "Create failed" }, { status: 400 });
+  }
 }
