@@ -14,7 +14,7 @@ export default function AdminLayout({
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/admin/login") {
+    if (pathname === "/qlmtt/login") {
       setLoading(false);
       return;
     }
@@ -24,11 +24,11 @@ export default function AdminLayout({
         return res.json();
       })
       .then((data) => setUser(data.user))
-      .catch(() => router.push("/admin/login"))
+      .catch(() => router.push("/qlmtt/login"))
       .finally(() => setLoading(false));
   }, [pathname, router]);
 
-  if (pathname === "/admin/login") {
+  if (pathname === "/qlmtt/login") {
     return <>{children}</>;
   }
 
@@ -44,17 +44,17 @@ export default function AdminLayout({
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
-    router.push("/admin/login");
+    router.push("/qlmtt/login");
     router.refresh();
   };
 
   const tabs = [
-    { label: "Dashboard", href: "/admin" },
-    { label: "Projects", href: "/admin" },
-    { label: "Blog", href: "/admin" },
-    { label: "Skills", href: "/admin" },
-    { label: "Experience", href: "/admin" },
-    { label: "Settings", href: "/admin" },
+    { label: "Dashboard", href: "/qlmtt" },
+    { label: "Projects", href: "/qlmtt" },
+    { label: "Blog", href: "/qlmtt" },
+    { label: "Skills", href: "/qlmtt" },
+    { label: "Experience", href: "/qlmtt" },
+    { label: "Settings", href: "/qlmtt" },
   ];
 
   return (
@@ -63,7 +63,7 @@ export default function AdminLayout({
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
           <div className="flex items-center gap-4">
             <Link
-              href="/admin"
+              href="/qlmtt"
               className="text-sm font-semibold text-foreground"
             >
               CMS Panel

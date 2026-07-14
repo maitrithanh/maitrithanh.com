@@ -20,6 +20,7 @@ export default function AdminDashboard() {
         <h1 className="text-2xl font-semibold tracking-tight text-foreground">
           Dashboard
         </h1>
+        <SeedButton />
       </div>
 
       <div className="flex gap-1 rounded-xl">
@@ -43,6 +44,44 @@ export default function AdminDashboard() {
       {tab === "skills" && <SkillsManager />}
       {tab === "experience" && <ExperienceManager />}
       {tab === "settings" && <SettingsManager />}
+    </div>
+  );
+}
+
+// ─── Seed ────────────────────────────────────────────────────────
+
+function SeedButton() {
+  const [status, setStatus] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+
+  const seed = async () => {
+    if (!confirm("Seed static data into empty tables?")) return;
+    setLoading(true);
+    setStatus("");
+    try {
+      const res = await fetch("/api/seed", { method: "POST" });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Seed failed");
+      const seeded = data.seeded || {};
+      const parts = Object.entries(seeded).map(([k, v]) => `${k}: ${v}`);
+      setStatus(parts.length ? `Seeded — ${parts.join(", ")}` : "Nothing to seed (tables not empty)");
+    } catch (e) {
+      setStatus(e instanceof Error ? e.message : "Seed failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-3">
+      {status && <span className="text-xs text-muted-foreground">{status}</span>}
+      <button
+        onClick={seed}
+        disabled={loading}
+        className="rounded-lg border border-border/60 px-4 py-2 text-xs font-medium text-foreground transition-colors hover:bg-muted/40 disabled:opacity-50"
+      >
+        {loading ? "Seeding..." : "Seed data"}
+      </button>
     </div>
   );
 }

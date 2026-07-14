@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
+import { requireAdmin } from "@/lib/auth";
 import { list, create, update } from "@/lib/supabase/api";
 import { createAdminClient } from "@/lib/supabase/server";
 
@@ -13,6 +14,8 @@ export async function GET() {
 }
 
 export async function PUT(request: Request) {
+  const denied = await requireAdmin();
+  if (denied) return denied;
   const body = await request.json();
   const supabase = await createAdminClient();
 
