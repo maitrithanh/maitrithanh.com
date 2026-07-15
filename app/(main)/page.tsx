@@ -10,10 +10,12 @@ import { projects as fallbackProjects } from "@/data/projects";
 import { skill as fallbackSkills } from "@/data/skill";
 import { careerTimeline as fallbackTimeline, cvQuickInfo as fallbackQuickInfo } from "@/data/cv";
 import { Location, Sms, Call, ArrowRight, ExportSquare } from "iconsax-reactjs";
+import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
 
-function RevealSection({ children, className }: { children: React.ReactNode; className?: string }) {
+function RevealSection({ children, className, show = true }: { children: React.ReactNode; className?: string; show?: boolean }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  if (!show) return null;
   return (
     <motion.div
       ref={ref}
@@ -33,6 +35,7 @@ export default function Home() {
   const [timeline, setTimeline] = useState(fallbackTimeline);
   const [quickInfo] = useState(fallbackQuickInfo);
   const [settings, setSettings] = useState<Record<string, string>>({});
+  const modules = useModuleVisibility("home");
 
   useEffect(() => {
     Promise.allSettled([
@@ -112,7 +115,7 @@ export default function Home() {
         </div>
       </section>
 
-      <RevealSection>
+      <RevealSection show={modules.isVisible("stats")}>
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           <div>
             <p className="text-3xl font-semibold tracking-tight text-foreground">2+</p>
@@ -133,7 +136,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection>
+      <RevealSection show={modules.isVisible("tech_stack")}>
         <div>
           <h2 className="text-md font-bold uppercase tracking-wider text-primary">
             Tech Stack
@@ -155,7 +158,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection>
+      <RevealSection show={modules.isVisible("education")}>
         <div>
           <h2 className="text-md font-bold uppercase tracking-wider text-primary">
             Education
@@ -168,7 +171,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection>
+      <RevealSection show={modules.isVisible("core_skills")}>
         <div>
           <h2 className="text-md font-bold uppercase tracking-wider text-primary">
             Core Skills
@@ -183,7 +186,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection>
+      <RevealSection show={modules.isVisible("experience")}>
         <div>
           <h2 className="text-md font-bold uppercase tracking-wider text-primary">
             Experience
@@ -213,7 +216,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection>
+      <RevealSection show={modules.isVisible("projects")}>
         <div>
           <div className="flex items-center justify-between">
             <h2 className="text-md font-bold uppercase tracking-wider text-primary">
@@ -244,7 +247,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection>
+      <RevealSection show={modules.isVisible("cta")}>
         <Card className="border-dashed">
           <CardContent className="flex flex-col items-center gap-4 p-6 text-center md:flex-row md:justify-between md:text-left">
             <div>

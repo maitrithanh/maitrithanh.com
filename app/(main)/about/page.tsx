@@ -2,9 +2,11 @@
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
 
 const AboutPage = () => {
   const [settings, setSettings] = useState<Record<string, string>>({});
+  const modules = useModuleVisibility("about");
 
   useEffect(() => {
     fetch("/api/settings")
@@ -15,6 +17,7 @@ const AboutPage = () => {
 
   return (
     <div className="space-y-10">
+      {modules.isVisible("bio") && (
       <Card>
         <CardHeader>
           <Badge variant="outline" className="w-fit rounded-full text-xs text-muted-foreground">About</Badge>
@@ -30,7 +33,9 @@ const AboutPage = () => {
           </div>
         </CardContent>
       </Card>
+      )}
 
+      {modules.isVisible("experience") && (
       <div>
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Experience</h2>
         <div className="mt-4 space-y-3">
@@ -45,7 +50,9 @@ const AboutPage = () => {
           ))}
         </div>
       </div>
+      )}
 
+      {modules.isVisible("education") && (
       <div>
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education</h2>
         <div className="mt-4 border-l-2 border-border pl-4">
@@ -54,6 +61,7 @@ const AboutPage = () => {
           <p className="mt-0.5 text-xs text-muted-foreground/60">2020 – 2024 · GPA 3.2/4.0</p>
         </div>
       </div>
+      )}
     </div>
   );
 };

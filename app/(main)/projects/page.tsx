@@ -6,9 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { projects as fallbackProjects } from "@/data/projects";
 import { ExportSquare } from "iconsax-reactjs";
+import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
 
 const ProjectsPage = () => {
   const [projects, setProjects] = useState(fallbackProjects);
+  const modules = useModuleVisibility("projects");
 
   useEffect(() => {
     fetch("/api/projects")
@@ -25,6 +27,7 @@ const ProjectsPage = () => {
   }, []);
 
   return (
+    modules.isVisible("content") && (
     <div className="space-y-10">
       <Card>
         <CardHeader>
@@ -65,6 +68,7 @@ const ProjectsPage = () => {
         ))}
       </div>
     </div>
+    )
   );
 };
 

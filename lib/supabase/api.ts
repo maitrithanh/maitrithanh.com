@@ -1,7 +1,7 @@
 import { createClient } from "./server";
 import { createAdminClient } from "./server";
 
-type TableName = "projects" | "blog_posts" | "skills" | "experiences" | "site_settings";
+type TableName = "projects" | "blog_posts" | "skills" | "experiences" | "site_settings" | "page_modules";
 
 export async function list(table: TableName, options?: { orderBy?: string; ascending?: boolean }) {
   const supabase = await createClient();

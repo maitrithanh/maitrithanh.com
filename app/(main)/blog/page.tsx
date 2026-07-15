@@ -6,9 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { blogPosts as fallbackPosts } from "@/lib/blog";
 import { Calendar, ArrowRight } from "iconsax-reactjs";
+import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
 
 const BlogPage = () => {
   const [posts, setPosts] = useState(fallbackPosts);
+  const modules = useModuleVisibility("blog");
 
   useEffect(() => {
     fetch("/api/blog")
@@ -25,6 +27,7 @@ const BlogPage = () => {
   }, []);
 
   return (
+    modules.isVisible("content") && (
     <div className="space-y-10">
       <Card>
         <CardHeader>
@@ -67,6 +70,7 @@ const BlogPage = () => {
         ))}
       </div>
     </div>
+    )
   );
 };
 

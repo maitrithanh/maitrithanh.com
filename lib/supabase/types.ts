@@ -58,3 +58,15 @@ export interface SiteSetting {
   created_at: string;
   updated_at: string;
 }
+
+// ponytail: one row per toggleable section on a page; missing rows = visible
+export interface PageModule {
+  id: string;
+  page: string;
+  section: string;
+  label: string;
+  visible: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}

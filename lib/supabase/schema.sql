@@ -73,6 +73,35 @@ INSERT INTO site_settings (key, value) VALUES
   ('location', 'Ho Chi Minh City')
 ON CONFLICT (key) DO NOTHING;
 
+-- Page Modules (per-page section visibility toggles)
+CREATE TABLE page_modules (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  page TEXT NOT NULL,
+  section TEXT NOT NULL,
+  label TEXT NOT NULL,
+  visible BOOLEAN DEFAULT true,
+  sort_order INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now(),
+  UNIQUE (page, section)
+);
+
+-- Default sections shown in the CMS Modules tab
+INSERT INTO page_modules (page, section, label, sort_order) VALUES
+  ('home', 'stats', 'Stats', 1),
+  ('home', 'tech_stack', 'Tech Stack', 2),
+  ('home', 'education', 'Education', 3),
+  ('home', 'core_skills', 'Core Skills', 4),
+  ('home', 'experience', 'Experience', 5),
+  ('home', 'projects', 'Projects', 6),
+  ('home', 'cta', 'Call To Action', 7),
+  ('about', 'bio', 'Bio', 1),
+  ('about', 'experience', 'Experience', 2),
+  ('about', 'education', 'Education', 3),
+  ('projects', 'content', 'Projects List', 1),
+  ('blog', 'content', 'Blog List', 1)
+ON CONFLICT (page, section) DO NOTHING;
+
 -- Enable Row Level Security
 ALTER TABLE projects ENABLE ROW LEVEL SECURITY;
 ALTER TABLE blog_posts ENABLE ROW LEVEL SECURITY;
@@ -93,3 +122,7 @@ CREATE POLICY "Full access for authenticated" ON blog_posts FOR ALL USING (auth.
 CREATE POLICY "Full access for authenticated" ON skills FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Full access for authenticated" ON experiences FOR ALL USING (auth.role() = 'authenticated');
 CREATE POLICY "Full access for authenticated" ON site_settings FOR ALL USING (auth.role() = 'authenticated');
+CREATE POLICY "Full access for authenticated" ON page_modules FOR ALL USING (auth.role() = 'authenticated');
+
+-- Public read access
+CREATE POLICY "Public read access" ON page_modules FOR SELECT USING (true);
