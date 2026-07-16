@@ -46,6 +46,7 @@ function LoginForm() {
           disabled={loading}
           className="mt-6 flex w-full items-center justify-center gap-2 rounded-lg border border-border/60 bg-background px-4 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-muted/40 disabled:opacity-50"
         >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="https://www.google.com/favicon.ico" alt="" className="h-4 w-4" />
           {loading ? "Redirecting..." : "Continue with Google"}
         </button>
