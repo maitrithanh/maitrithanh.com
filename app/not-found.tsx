@@ -28,13 +28,13 @@ export default function NotFound() {
       <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
         <Button asChild className="rounded-full">
           <Link href="/" className="inline-flex items-center gap-2">
-            <Home variant="Bulk" />
+            <Home variant="Outline" />
             Back to Home
           </Link>
         </Button>
         <Button asChild variant="outline" className="rounded-full">
           <Link href="/projects" className="inline-flex items-center gap-2">
-            <FolderOpen variant="Bulk" />
+            <FolderOpen variant="Outline" />
             View Projects
           </Link>
         </Button>

@@ -58,11 +58,11 @@ const BlogPage = () => {
                 <h3 className="mt-2 line-clamp-2 font-medium text-foreground">{post.title}</h3>
                 <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{post.summary}</p>
                 <div className="mt-3 flex items-center gap-1 text-xs text-muted-foreground/60">
-                  <Calendar variant="Bulk" className="mr-1" />
+                  <Calendar variant="Outline" className="mr-1" />
                   {new Date(post.publishedAt).toLocaleDateString("en-GB")}
                 </div>
                 <span className="mt-3 inline-flex items-center gap-1 text-sm font-medium text-foreground/60 transition-colors group-hover:text-foreground">
-                  Read <ArrowRight variant="Bulk" size={12} />
+                  Read <ArrowRight variant="Outline" size={12} />
                 </span>
               </div>
             </div>

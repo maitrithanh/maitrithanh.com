@@ -73,7 +73,7 @@ export default function Home() {
               <Button asChild>
                 <Link href="/projects">
                   View Projects
-                  <ArrowRight variant="Bulk" className="ml-1.5" />
+                  <ArrowRight variant="Outline" className="ml-1.5" />
                 </Link>
               </Button>
               <Button asChild variant="outline">
@@ -97,17 +97,17 @@ export default function Home() {
             </CardHeader>
             <CardContent className="space-y-2.5 text-sm">
               <div className="flex items-center gap-2.5 text-muted-foreground">
-                <Location variant="Bulk" className="shrink-0 text-foreground/40" />
+                <Location variant="Outline" className="shrink-0 text-foreground/40" />
                 <span>{settings.location || "Ho Chi Minh City"}</span>
               </div>
               <div className="flex items-center gap-2.5 text-muted-foreground">
-                <Sms variant="Bulk" className="shrink-0 text-foreground/40" />
+                <Sms variant="Outline" className="shrink-0 text-foreground/40" />
                 <a href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`} className="transition-colors hover:text-foreground">
                   {settings.email || "maitrithanh06@gmail.com"}
                 </a>
               </div>
               <div className="flex items-center gap-2.5 text-muted-foreground">
-                <Call variant="Bulk" className="shrink-0 text-foreground/40" />
+                <Call variant="Outline" className="shrink-0 text-foreground/40" />
                 <span>{settings.phone || "+84 325575029"}</span>
               </div>
             </CardContent>
@@ -238,7 +238,7 @@ export default function Home() {
                   <p className="text-xs text-muted-foreground">{project.date}</p>
                   <p className="mt-0.5 font-medium text-foreground">{project.name}</p>
                   <span className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors group-hover:text-foreground">
-                    Preview <ExportSquare variant="Bulk" />
+                    Preview <ExportSquare variant="Outline" />
                   </span>
                 </div>
               </a>
@@ -260,7 +260,7 @@ export default function Home() {
             </div>
             <Button asChild>
               <Link href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`}>
-                Contact Me <ArrowRight variant="Bulk" className="ml-1.5" />
+                Contact Me <ArrowRight variant="Outline" className="ml-1.5" />
               </Link>
             </Button>
           </CardContent>

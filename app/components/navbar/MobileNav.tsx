@@ -22,7 +22,7 @@ const MobileNav = ({ setIsOpenMenu }: MobileNavProps) => {
           onClick={() => setIsOpenMenu(false)}
           aria-label="Close navigation menu"
         >
-          <CloseSquare variant="Bulk" className="h-6 w-6" />
+          <CloseSquare variant="Outline" className="h-6 w-6" />
         </Button>
       </div>
 
@@ -32,7 +32,7 @@ const MobileNav = ({ setIsOpenMenu }: MobileNavProps) => {
             <MenuItem
               key={item.name}
               name={item.name}
-              icon={<item.icon size={22} variant="Bulk" />}
+              icon={<item.icon size={22} variant="Outline" />}
               pathname={item.pathName}
               active={pathName === item.pathName}
             />

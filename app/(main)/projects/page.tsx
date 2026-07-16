@@ -57,10 +57,10 @@ const ProjectsPage = () => {
               </div>
               <div className="mt-4 flex gap-3">
                 <Link href={project.preview} target="_blank" className="inline-flex items-center gap-1 text-sm font-medium text-foreground/60 transition-colors hover:text-foreground">
-                  Preview <ExportSquare variant="Bulk" size={12} />
+                  Preview <ExportSquare variant="Outline" size={12} />
                 </Link>
                 <Link href={project.linkSource} target="_blank" className="inline-flex items-center gap-1 text-sm text-muted-foreground transition-colors hover:text-foreground">
-                  Source <ExportSquare variant="Bulk" size={12} />
+                  Source <ExportSquare variant="Outline" size={12} />
                 </Link>
               </div>
             </div>

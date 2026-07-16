@@ -71,7 +71,7 @@ const Navbar = () => {
               <MenuItem
                 key={item.name}
                 name={item.name}
-                icon={<item.icon size={20} variant="Bulk" />}
+                icon={<item.icon size={20} variant="Outline" />}
                 pathname={item.pathName}
                 active={pathName === item.pathName}
               />
@@ -97,7 +97,7 @@ const Navbar = () => {
               onClick={() => setIsOpenMenu(true)}
               aria-label="Open navigation menu"
             >
-              <HamburgerMenu variant="Bulk" size={24} />
+              <HamburgerMenu variant="Outline" size={24} />
             </Button>
           </div>
         </div>
