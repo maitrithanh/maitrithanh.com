@@ -241,21 +241,6 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection show={modules.isVisible("core_skills")}>
-        <div>
-          <h2 className="text-md font-bold uppercase tracking-wider text-primary">
-            Core Skills
-          </h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {quickInfo.coreSkills.map((s) => (
-              <span key={s} className="rounded-lg border bg-muted/30 px-3 py-1.5 text-sm text-foreground/70">
-                {s}
-              </span>
-            ))}
-          </div>
-        </div>
-      </RevealSection>
-
       <RevealSection show={modules.isVisible("experience")}>
         <div>
           <h2 className="text-md font-bold uppercase tracking-wider text-primary">
