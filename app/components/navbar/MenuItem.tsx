@@ -20,12 +20,12 @@ const MenuItem: React.FC<MenuItemProps> = ({
     <li>
       <Button
         asChild
-        variant={active ? "secondary" : "ghost"}
+        variant="ghost"
         size="sm"
-        className={`h-9 gap-1.5 rounded-lg px-3 ${
+        className={`h-9 gap-1.5 rounded-full px-3.5 transition-all ${
           active
-            ? "text-pri hover:bg-pri/20 hover:text-pri border-pri border"
-            : "text-muted-foreground hover:text-foreground"
+            ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:text-primary-foreground"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
         }`}
       >
         <Link href={pathname} prefetch>
