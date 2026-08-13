@@ -35,6 +35,7 @@ export default function Home() {
   const [timeline, setTimeline] = useState(fallbackTimeline);
   const [quickInfo] = useState(fallbackQuickInfo);
   const [settings, setSettings] = useState<Record<string, string>>({});
+  const [avtIMG, setAvtIMG] = useState('/AlbumCuaTui/1.png');
   const modules = useModuleVisibility("home");
 
   useEffect(() => {
@@ -53,11 +54,48 @@ export default function Home() {
     ]);
   }, []);
 
+
+  const avtRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = avtRef.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+
+    // tâm avatar theo toạ độ viewport
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+
+    // vector từ tâm avatar tới con trỏ
+    const dx = e.clientX - cx;
+    const dy = e.clientY - cy;
+
+    let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+    if (angle < 0) angle += 360;
+
+    const index = Math.round(angle / 45) % 8;
+
+    setAvtIMG(prev => {
+      const next = `/AlbumCuaTui/${index + 1}.png`;
+      return prev === next ? prev : next;
+    });
+  };
+
   return (
-    <div className="space-y-16 pb-20">
+    <div className="space-y-16 pb-20" onMouseMove={handleMouseMove}>
       <section className="grid gap-6 md:grid-cols-5">
-        <div className="md:col-span-3">
-          <Card>
+        <div className="md:col-span-3 flex gap-4">
+          <div ref={avtRef}>
+            <Image
+              src={avtIMG || "/AlbumCuaTui/1.png"}
+              alt="Hero"
+              width={300}
+              height={100}
+              className="w-[200px] h-full object-cover rounded-lg"
+            />
+          </div>
+          <Card >
             <CardHeader>
               <Badge variant="outline" className="w-fit rounded-full text-xs text-muted-foreground">
                 {settings.hero_badge || "Building clean web experiences"}
