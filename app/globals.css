@@ -48,4 +48,17 @@
   .text-pri {
     color: hsl(154.9, 100%, 19.2%);
   }
+
+  .btn-3d {
+    box-shadow: 0 4px 0 0 hsl(var(--primary) / 0.35), 0 6px 10px -2px hsl(var(--primary) / 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-3d:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 0 0 hsl(var(--primary) / 0.35), 0 8px 12px -2px hsl(var(--primary) / 0.3);
+  }
+  .btn-3d:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 0 hsl(var(--primary) / 0.35), 0 2px 4px -1px hsl(var(--primary) / 0.2);
+  }
 }

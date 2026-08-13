@@ -12,6 +12,12 @@ import { careerTimeline as fallbackTimeline, cvQuickInfo as fallbackQuickInfo } 
 import { Location, Sms, Call, ArrowRight, ExportSquare } from "iconsax-reactjs";
 import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
 
+// góc 0°→315° theo bước 45°, tính từ atan2(dy,dx) trên toạ độ màn hình (y hướng xuống)
+const AVATAR_DIRECTIONS = [
+  "right", "down-right", "down", "down-left",
+  "left", "up-left", "up", "up-right",
+] as const;
+
 function RevealSection({ children, className, show = true }: { children: React.ReactNode; className?: string; show?: boolean }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -35,7 +41,7 @@ export default function Home() {
   const [timeline, setTimeline] = useState(fallbackTimeline);
   const [quickInfo] = useState(fallbackQuickInfo);
   const [settings, setSettings] = useState<Record<string, string>>({});
-  const [avtIMG, setAvtIMG] = useState('/AlbumCuaTui/1.png');
+  const [avtIMG, setAvtIMG] = useState('/AlbumCuaTui/right.png');
   const modules = useModuleVisibility("home");
 
   useEffect(() => {
@@ -56,29 +62,55 @@ export default function Home() {
 
 
   const avtRef = useRef<HTMLDivElement>(null);
+  const rafId = useRef<number | null>(null);
+  const centerRef = useRef({ cx: 0, cy: 0 });
+
+  // Cache avatar center; recompute only on resize instead of every mousemove.
+  useEffect(() => {
+    const measure = () => {
+      const rect = avtRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      centerRef.current = { cx: rect.left + rect.width / 2, cy: rect.top + rect.height / 2 };
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    window.addEventListener("scroll", measure, { passive: true });
+    return () => {
+      window.removeEventListener("resize", measure);
+      window.removeEventListener("scroll", measure);
+    };
+  }, []);
+
+  // Preload the 8 avatar frames so switching mid-hover doesn't flicker.
+  useEffect(() => {
+    for (const dir of AVATAR_DIRECTIONS) {
+      const img = new window.Image();
+      img.src = `/AlbumCuaTui/${dir}.png`;
+    }
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const el = avtRef.current;
-    if (!el) return;
+    if (rafId.current !== null) return; // throttle to 1 update/frame
+    const clientX = e.clientX;
+    const clientY = e.clientY;
 
-    const rect = el.getBoundingClientRect();
+    rafId.current = requestAnimationFrame(() => {
+      rafId.current = null;
 
-    // tâm avatar theo toạ độ viewport
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
+      // vector từ tâm avatar (cached, no reflow) tới con trỏ
+      const { cx, cy } = centerRef.current;
+      const dx = clientX - cx;
+      const dy = clientY - cy;
 
-    // vector từ tâm avatar tới con trỏ
-    const dx = e.clientX - cx;
-    const dy = e.clientY - cy;
+      let angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      if (angle < 0) angle += 360;
 
-    let angle = Math.atan2(dy, dx) * 180 / Math.PI;
-    if (angle < 0) angle += 360;
+      const index = Math.round(angle / 45) % 8;
 
-    const index = Math.round(angle / 45) % 8;
-
-    setAvtIMG(prev => {
-      const next = `/AlbumCuaTui/${index + 1}.png`;
-      return prev === next ? prev : next;
+      setAvtIMG(prev => {
+        const next = `/AlbumCuaTui/${AVATAR_DIRECTIONS[index]}.png`;
+        return prev === next ? prev : next;
+      });
     });
   };
 
@@ -88,7 +120,7 @@ export default function Home() {
         <div className="md:col-span-3 flex gap-4">
           <div ref={avtRef}>
             <Image
-              src={avtIMG || "/AlbumCuaTui/1.png"}
+              src={avtIMG || "/AlbumCuaTui/right.png"}
               alt="Hero"
               width={300}
               height={100}
@@ -205,21 +237,6 @@ export default function Home() {
             <p className="font-medium text-foreground">Software Engineering</p>
             <p className="text-sm text-muted-foreground">HUFLIT · 2020 – 2024</p>
             <p className="mt-1 text-sm text-muted-foreground/60 italic">{quickInfo.education}</p>
-          </div>
-        </div>
-      </RevealSection>
-
-      <RevealSection show={modules.isVisible("core_skills")}>
-        <div>
-          <h2 className="text-md font-bold uppercase tracking-wider text-primary">
-            Core Skills
-          </h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {quickInfo.coreSkills.map((s) => (
-              <span key={s} className="rounded-lg border bg-muted/30 px-3 py-1.5 text-sm text-foreground/70">
-                {s}
-              </span>
-            ))}
           </div>
         </div>
       </RevealSection>

@@ -84,7 +84,7 @@ const Navbar = () => {
               target="_blank"
               className="inline-block"
             >
-              <Button variant="outline" size="sm" className="rounded-full border-pri bg-primary text-white">
+              <Button variant="outline" size="sm" className="rounded-full border-pri bg-primary text-white btn-3d">
                 Buy me a coffee
               </Button>
             </Link>
