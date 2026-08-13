@@ -37,24 +37,14 @@
     scroll-behavior: smooth;
   }
 
-  .border-pri {
-    border-color: color-mix(in oklab,hsl(153.1, 57.9%, 51.6%) 30%,transparent);
-  }
-
-  .bg-pri {
-    background-color: hsl(154.9, 100%, 19.2%);
-  }
-
-  .text-pri {
-    color: hsl(154.9, 100%, 19.2%);
-  }
 }
 
 /* unlayered: must win over Button's own shadow/shadow-sm utility classes */
 .btn-3d {
   --btn-3d-depth: 4px;
+  --btn-3d-color: hsl(var(--primary) / 0.85);
   box-shadow:
-    0 var(--btn-3d-depth) 0 0 hsl(var(--primary) / 0.85),
+    0 var(--btn-3d-depth) 0 0 var(--btn-3d-color),
     0 2px 5px rgb(0 0 0 / 0.2),
     0 -1px 0.3px rgb(255 255 255 / 0.25) inset,
     0 1px 1px rgb(255 255 255 / 0.3) inset !important;
@@ -67,7 +57,7 @@
 .btn-3d:active {
   transform: translateY(var(--btn-3d-depth));
   box-shadow:
-    0 0 0 0 hsl(var(--primary) / 0.85),
+    0 0 0 0 var(--btn-3d-color),
     0 1px 2px rgb(0 0 0 / 0.15),
     0 -1px 0.3px rgb(255 255 255 / 0.25) inset,
     0 1px 1px rgb(255 255 255 / 0.3) inset !important;

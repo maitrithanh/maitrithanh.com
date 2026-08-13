@@ -11,7 +11,8 @@ const buttonVariants = cva(
       variant: {
         default: "rounded-full btn-3d bg-primary text-primary-foreground hover:bg-primary/90",
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        outline: "rounded-full btn-3d border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        outline:
+          "rounded-full btn-3d border border-input bg-background hover:bg-accent hover:text-accent-foreground [--btn-3d-color:hsl(var(--foreground)/0.15)]",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
