@@ -41,7 +41,7 @@ export default function Home() {
   const [timeline, setTimeline] = useState(fallbackTimeline);
   const [quickInfo] = useState(fallbackQuickInfo);
   const [settings, setSettings] = useState<Record<string, string>>({});
-  const [avtIMG, setAvtIMG] = useState('/AlbumCuaTui/right.png');
+  const [avtIMG, setAvtIMG] = useState('/AlbumCuaTui/center.png');
   const modules = useModuleVisibility("home");
 
   useEffect(() => {
