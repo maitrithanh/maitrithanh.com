@@ -53,7 +53,11 @@
 /* unlayered: must win over Button's own shadow/shadow-sm utility classes */
 .btn-3d {
   --btn-3d-depth: 4px;
-  box-shadow: 0 var(--btn-3d-depth) 0 0 hsl(var(--primary) / 0.85) !important;
+  box-shadow:
+    0 var(--btn-3d-depth) 0 0 hsl(var(--primary) / 0.85),
+    0 2px 5px rgb(0 0 0 / 0.2),
+    0 -1px 0.3px rgb(255 255 255 / 0.25) inset,
+    0 1px 1px rgb(255 255 255 / 0.3) inset !important;
   transform: translateY(0);
   transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, filter 0.15s ease;
 }
@@ -62,5 +66,9 @@
 }
 .btn-3d:active {
   transform: translateY(var(--btn-3d-depth));
-  box-shadow: 0 0 0 0 hsl(var(--primary) / 0.85) !important;
+  box-shadow:
+    0 0 0 0 hsl(var(--primary) / 0.85),
+    0 1px 2px rgb(0 0 0 / 0.15),
+    0 -1px 0.3px rgb(255 255 255 / 0.25) inset,
+    0 1px 1px rgb(255 255 255 / 0.3) inset !important;
 }

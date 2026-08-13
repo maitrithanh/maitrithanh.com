@@ -65,7 +65,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
         }}
       />
       <div className="mx-auto max-w-3xl space-y-6">
-        <Button asChild variant="outline" className="rounded-full btn-3d">
+        <Button asChild variant="outline">
           <Link href="/blog" className="inline-flex items-center gap-2">
             <ArrowLeft variant="Outline" size={12} /> Back to blog
           </Link>

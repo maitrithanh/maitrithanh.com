@@ -78,18 +78,6 @@ const Navbar = () => {
             ))}
           </ul>
 
-          <div className="hidden items-center gap-1 md:flex">
-            <Link
-              href="https://www.buymeacoffee.com/maitrithanh"
-              target="_blank"
-              className="inline-block"
-            >
-              <Button variant="outline" size="sm" className="rounded-full border-pri bg-primary text-white btn-3d">
-                Buy me a coffee
-              </Button>
-            </Link>
-          </div>
-
           <div className="flex items-center md:hidden">
             <Button
               variant="ghost"
