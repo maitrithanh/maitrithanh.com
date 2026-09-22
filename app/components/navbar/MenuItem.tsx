@@ -1,38 +1,28 @@
 "use client";
-import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 interface MenuItemProps {
   name: string;
-  icon: React.ReactNode;
   pathname: string;
   active?: boolean;
 }
 
 const MenuItem: React.FC<MenuItemProps> = ({
   name,
-  icon,
   pathname,
   active,
 }) => {
   return (
     <li>
-      <Button
-        asChild
-        variant="ghost"
-        size="sm"
-        className={`h-9 gap-1.5 rounded-full px-3.5 transition-all ${
-          active
-            ? "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 hover:text-primary-foreground"
-            : "text-muted-foreground hover:bg-muted hover:text-foreground"
+      <Link
+        href={pathname}
+        prefetch
+        className={`inline-flex h-16 items-center gap-1.5 border-b-2 px-1 text-sm transition-colors ${
+          active ? "border-foreground font-medium text-foreground" : "border-transparent text-muted-foreground hover:text-foreground"
         }`}
       >
-        <Link href={pathname} prefetch>
-          <span>{icon}</span>
-          <span>{name}</span>
-        </Link>
-      </Button>
+        <span>{name}</span>
+      </Link>
     </li>
   );
 };

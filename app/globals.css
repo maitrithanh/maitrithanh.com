@@ -10,20 +10,20 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 160 84% 39%;
+    --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 160 84% 95%;
-    --secondary-foreground: 160 84% 20%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-    --accent: 160 84% 95%;
-    --accent-foreground: 160 84% 20%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 160 84% 39%;
-    --radius: 0.75rem;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
   }
 
   * {
@@ -36,29 +36,4 @@
   html {
     scroll-behavior: smooth;
   }
-
-}
-
-/* unlayered: must win over Button's own shadow/shadow-sm utility classes */
-.btn-3d {
-  --btn-3d-depth: 4px;
-  --btn-3d-color: hsl(var(--primary) / 0.85);
-  box-shadow:
-    0 var(--btn-3d-depth) 0 0 var(--btn-3d-color),
-    0 2px 5px rgb(0 0 0 / 0.2),
-    0 -1px 0.3px rgb(255 255 255 / 0.25) inset,
-    0 1px 1px rgb(255 255 255 / 0.3) inset !important;
-  transform: translateY(0);
-  transition: transform 0.08s ease-out, box-shadow 0.08s ease-out, filter 0.15s ease;
-}
-.btn-3d:hover {
-  filter: brightness(1.05);
-}
-.btn-3d:active {
-  transform: translateY(var(--btn-3d-depth));
-  box-shadow:
-    0 0 0 0 var(--btn-3d-color),
-    0 1px 2px rgb(0 0 0 / 0.15),
-    0 -1px 0.3px rgb(255 255 255 / 0.25) inset,
-    0 1px 1px rgb(255 255 255 / 0.3) inset !important;
 }

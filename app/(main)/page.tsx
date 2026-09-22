@@ -1,38 +1,19 @@
 "use client";
-import { useEffect, useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { projects as fallbackProjects } from "@/data/projects";
 import { skill as fallbackSkills } from "@/data/skill";
 import { careerTimeline as fallbackTimeline, cvQuickInfo as fallbackQuickInfo } from "@/data/cv";
-import { Location, Sms, Call, ArrowRight, ExportSquare } from "iconsax-reactjs";
+import { ArrowRight, ExportSquare } from "iconsax-reactjs";
 import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
 
-// góc 0°→315° theo bước 45°, tính từ atan2(dy,dx) trên toạ độ màn hình (y hướng xuống)
-const AVATAR_DIRECTIONS = [
-  "right", "down-right", "down", "down-left",
-  "left", "up-left", "up", "up-right",
-] as const;
-
 function RevealSection({ children, className, show = true }: { children: React.ReactNode; className?: string; show?: boolean }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
   if (!show) return null;
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
+  return <div className={`border-t pt-10 ${className || ""}`}>{children}</div>;
 }
 
 export default function Home() {
@@ -41,7 +22,6 @@ export default function Home() {
   const [timeline, setTimeline] = useState(fallbackTimeline);
   const [quickInfo] = useState(fallbackQuickInfo);
   const [settings, setSettings] = useState<Record<string, string>>({});
-  const [avtIMG, setAvtIMG] = useState('/AlbumCuaTui/center.png');
   const modules = useModuleVisibility("home");
 
   useEffect(() => {
@@ -60,133 +40,27 @@ export default function Home() {
     ]);
   }, []);
 
-
-  const avtRef = useRef<HTMLDivElement>(null);
-  const rafId = useRef<number | null>(null);
-  const centerRef = useRef({ cx: 0, cy: 0 });
-
-  // Cache avatar center; recompute only on resize instead of every mousemove.
-  useEffect(() => {
-    const measure = () => {
-      const rect = avtRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      centerRef.current = { cx: rect.left + rect.width / 2, cy: rect.top + rect.height / 2 };
-    };
-    measure();
-    window.addEventListener("resize", measure);
-    window.addEventListener("scroll", measure, { passive: true });
-    return () => {
-      window.removeEventListener("resize", measure);
-      window.removeEventListener("scroll", measure);
-    };
-  }, []);
-
-  // Preload the 8 avatar frames so switching mid-hover doesn't flicker.
-  useEffect(() => {
-    for (const dir of AVATAR_DIRECTIONS) {
-      const img = new window.Image();
-      img.src = `/AlbumCuaTui/${dir}.png`;
-    }
-  }, []);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (rafId.current !== null) return; // throttle to 1 update/frame
-    const clientX = e.clientX;
-    const clientY = e.clientY;
-
-    rafId.current = requestAnimationFrame(() => {
-      rafId.current = null;
-
-      // vector từ tâm avatar (cached, no reflow) tới con trỏ
-      const { cx, cy } = centerRef.current;
-      const dx = clientX - cx;
-      const dy = clientY - cy;
-
-      let angle = Math.atan2(dy, dx) * 180 / Math.PI;
-      if (angle < 0) angle += 360;
-
-      const index = Math.round(angle / 45) % 8;
-
-      setAvtIMG(prev => {
-        const next = `/AlbumCuaTui/${AVATAR_DIRECTIONS[index]}.png`;
-        return prev === next ? prev : next;
-      });
-    });
-  };
-
   return (
-    <div className="space-y-16 pb-20" onMouseMove={handleMouseMove}>
-      <section className="grid gap-6 md:grid-cols-5">
-        <div className="md:col-span-3 flex gap-4">
-          <div ref={avtRef}>
-            <Image
-              src={avtIMG || "/AlbumCuaTui/right.png"}
-              alt="Hero"
-              width={300}
-              height={100}
-              className="w-[200px] h-full object-cover rounded-lg"
-            />
-          </div>
-          <Card >
-            <CardHeader>
-              <Badge variant="outline" className="w-fit rounded-full text-xs text-muted-foreground">
-                {settings.hero_badge || "Building clean web experiences"}
-              </Badge>
-              <h1 className="mt-4 text-4xl font-semibold tracking-tight text-foreground md:text-5xl">
-                Mai Tri Thanh
-              </h1>
-              <p className="mt-2 max-w-md text-base text-muted-foreground">
-                {settings.hero_subtitle || "Fullstack Developer crafting modern, fast and delightful products."}
-              </p>
-            </CardHeader>
-            <CardContent className="flex flex-wrap gap-3">
-              <Button asChild>
-                <Link href="/projects">
-                  View Projects
-                  <ArrowRight variant="Outline" className="ml-1.5" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link href="/about">About Me</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link href="/CV_MaiTriThanh.pdf" target="_blank" rel="noreferrer">
-                  Resume
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
+    <div className="space-y-16 pb-20">
+      <section className="grid gap-8 sm:grid-cols-[10rem_1fr] sm:items-start">
+        <div className="relative aspect-square overflow-hidden rounded-full bg-muted">
+          <Image src="/Thanh2.jpg" alt="Mai Tri Thanh" fill priority className="object-cover object-[center_30%]" />
         </div>
-
-        <div className="md:col-span-2">
-          <Card className="h-full">
-            <CardHeader>
-              <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">Focus</p>
-              <p className="mt-1 text-lg font-medium text-foreground">Web Developer</p>
-              <p className="text-muted-foreground">React · Next.js · Laravel</p>
-            </CardHeader>
-            <CardContent className="space-y-2.5 text-sm">
-              <div className="flex items-center gap-2.5 text-muted-foreground">
-                <Location variant="Outline" className="shrink-0 text-foreground/40" />
-                <span>{settings.location || "Ho Chi Minh City"}</span>
-              </div>
-              <div className="flex items-center gap-2.5 text-muted-foreground">
-                <Sms variant="Outline" className="shrink-0 text-foreground/40" />
-                <a href={`mailto:${settings.email || "maitrithanh06@gmail.com"}`} className="transition-colors hover:text-foreground">
-                  {settings.email || "maitrithanh06@gmail.com"}
-                </a>
-              </div>
-              <div className="flex items-center gap-2.5 text-muted-foreground">
-                <Call variant="Outline" className="shrink-0 text-foreground/40" />
-                <span>{settings.phone || "+84 325575029"}</span>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="space-y-5">
+          <Badge variant="secondary" className="w-fit font-normal text-muted-foreground">{settings.hero_badge || "Building clean web experiences"}</Badge>
+          <h1 className="text-4xl font-semibold tracking-tight text-foreground md:text-5xl">I&apos;m Mai Tri Thanh.</h1>
+          <p className="max-w-xl text-base leading-7 text-muted-foreground">{settings.hero_subtitle || "A full-stack developer in Ho Chi Minh City, crafting modern, fast, and delightful products."}</p>
+          <p className="text-sm text-muted-foreground">React · Next.js · Laravel</p>
+          <div className="flex flex-wrap gap-3">
+            <Button asChild><Link href="/projects">View projects <ArrowRight variant="Outline" className="ml-1.5" /></Link></Button>
+            <Button asChild variant="outline"><Link href="/about">About me</Link></Button>
+            <Button asChild variant="ghost"><Link href="/CV_MaiTriThanh.pdf" target="_blank" rel="noreferrer">Resume</Link></Button>
+          </div>
         </div>
       </section>
 
       <RevealSection show={modules.isVisible("stats")}>
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
           <div>
             <p className="text-3xl font-semibold tracking-tight text-foreground">2+</p>
             <p className="mt-1 text-sm text-muted-foreground">Years of experience</p>
@@ -218,7 +92,7 @@ export default function Home() {
                 href={item.link}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg border bg-muted/30 px-3 py-1.5 text-sm text-foreground/70 transition-colors hover:border-foreground/20 hover:text-foreground"
+                className="inline-flex items-center gap-2 rounded-lg bg-muted px-3 py-1.5 text-sm text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
               >
                 <Image src={item.image} alt={item.name} width={14} height={14} className="h-3.5 w-3.5" />
                 <span>{item.name}</span>
@@ -281,29 +155,29 @@ export default function Home() {
               See all →
             </Link>
           </div>
-          <div className="mt-4 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid gap-5 sm:grid-cols-3">
             {projects.slice(0, 3).map((project) => (
-              <a href={project.preview} target="_blank" key={project.name}
-                className="group block rounded-xl border bg-muted/20 transition-colors hover:border-foreground/20"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden rounded-t-xl">
+              <Card key={project.name} className="group overflow-hidden bg-muted/40 transition-colors hover:bg-muted/70">
+                <a href={project.preview} target="_blank" rel="noreferrer" className="block h-full">
+                <div className="relative aspect-[16/10] overflow-hidden">
                   <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
                 </div>
-                <div className="p-4">
+                <CardContent className="flex min-h-28 flex-col p-4">
                   <p className="text-xs text-muted-foreground">{project.date}</p>
                   <p className="mt-0.5 font-medium text-foreground">{project.name}</p>
-                  <span className="mt-2 inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors group-hover:text-foreground">
+                  <span className="mt-auto inline-flex items-center gap-1 pt-2 text-xs text-muted-foreground transition-colors group-hover:text-foreground">
                     Preview <ExportSquare variant="Outline" />
                   </span>
-                </div>
-              </a>
+                </CardContent>
+                </a>
+              </Card>
             ))}
           </div>
         </div>
       </RevealSection>
 
       <RevealSection show={modules.isVisible("cta")}>
-        <Card className="border-dashed">
+        <Card className="bg-muted/50">
           <CardContent className="flex flex-col items-center gap-4 p-6 text-center md:flex-row md:justify-between md:text-left">
             <div>
               <p className="font-medium text-foreground">

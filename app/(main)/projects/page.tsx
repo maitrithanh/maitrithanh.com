@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { projects as fallbackProjects } from "@/data/projects";
 import { ExportSquare } from "iconsax-reactjs";
 import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
@@ -28,34 +28,30 @@ const ProjectsPage = () => {
 
   return (
     modules.isVisible("content") && (
-    <div className="space-y-10">
-      <Card>
-        <CardHeader>
-          <Badge variant="outline" className="w-fit rounded-full text-xs text-muted-foreground">Portfolio</Badge>
-          <CardTitle className="text-3xl">Projects</CardTitle>
-          <CardDescription>
-            A curated selection of products and experiments focused on clean UX and practical engineering.
-          </CardDescription>
-        </CardHeader>
-      </Card>
+    <div className="space-y-12">
+      <header className="space-y-3">
+        <Badge variant="secondary" className="w-fit font-normal text-muted-foreground">Portfolio</Badge>
+        <h1 className="text-4xl font-semibold tracking-tight">Projects</h1>
+        <p className="max-w-xl leading-7 text-muted-foreground">A curated selection of products and experiments focused on clean UX and practical engineering.</p>
+      </header>
 
       <div className="grid gap-6 md:grid-cols-2">
         {projects.map((project) => (
-          <div key={project.name} className="group rounded-xl border bg-muted/20 transition-colors hover:border-foreground/20">
-            <div className="relative aspect-[16/9] overflow-hidden rounded-t-xl">
+          <Card key={project.name} className="group flex h-full flex-col overflow-hidden bg-muted/40 transition-colors hover:bg-muted/70">
+            <div className="relative aspect-[16/9] overflow-hidden">
               <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
             </div>
-            <div className="p-5">
+            <CardContent className="flex flex-1 flex-col p-5">
               <p className="text-xs text-muted-foreground">{project.date}</p>
               <h3 className="mt-0.5 font-medium text-foreground">{project.name}</h3>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {project.tag.map((item) => (
-                  <span key={item.tagName} className="rounded-md border bg-muted/30 px-2 py-0.5 text-xs text-foreground/60">
+                  <span key={item.tagName} className="rounded-md bg-background/70 px-2 py-0.5 text-xs text-foreground/60">
                     {item.tagName}
                   </span>
                 ))}
               </div>
-              <div className="mt-4 flex gap-3">
+              <div className="mt-auto flex gap-3 pt-4">
                 <Link href={project.preview} target="_blank" className="inline-flex items-center gap-1 text-sm font-medium text-foreground/60 transition-colors hover:text-foreground">
                   Preview <ExportSquare variant="Outline" size={12} />
                 </Link>
@@ -63,8 +59,8 @@ const ProjectsPage = () => {
                   Source <ExportSquare variant="Outline" size={12} />
                 </Link>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
     </div>

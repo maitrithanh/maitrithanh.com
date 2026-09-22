@@ -10,7 +10,7 @@ import { ArrowLeft, Calendar, Clock } from "iconsax-reactjs";
 import { SITE_URL } from "@/lib/constants";
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export function generateStaticParams() {
@@ -18,7 +18,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post = await getBlogPostBySlug(params.slug);
+  const post = await getBlogPostBySlug((await params).slug);
   if (!post) return { title: "Post not found" };
 
   return {
@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function BlogDetailPage({ params }: PageProps) {
-  const post = await getBlogPostBySlug(params.slug);
+  const post = await getBlogPostBySlug((await params).slug);
   if (!post) notFound();
 
   return (
@@ -71,12 +71,12 @@ export default async function BlogDetailPage({ params }: PageProps) {
           </Link>
         </Button>
 
-        <div className="overflow-hidden rounded-2xl border border-border/60 bg-card shadow-sm">
+        <div className="overflow-hidden rounded-xl bg-muted/30">
           <div className="relative h-56 w-full md:h-72">
             <Image src={post.cover} alt={post.title} fill className="object-cover" priority />
           </div>
           <div className="space-y-5 p-6 md:p-8">
-            <Badge variant="outline" className="border-border/60 bg-muted/30 text-xs text-foreground/70">
+            <Badge variant="secondary" className="text-xs text-foreground/70">
               {post.category}
             </Badge>
             <h1 className="text-3xl font-semibold leading-tight tracking-tight text-foreground md:text-4xl">{post.title}</h1>

@@ -4,7 +4,6 @@ import { menu } from "@/data/menu";
 import MenuItem from "./MenuItem";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { HamburgerMenu } from "iconsax-reactjs";
 import MobileNav from "./MobileNav";
 import Backdrop from "../Backdrop";
 import { Button } from "@/components/ui/button";
@@ -54,24 +53,23 @@ const Navbar = () => {
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-transform duration-300 ${isHeaderVisible ? "translate-y-0" : "-translate-y-full"}`}
     >
-        <div className="mx-auto max-w-6xl px-4 md:px-6 bg-white">
-        <div className="flex h-14 items-center justify-between border-b border-border md:h-16">
+      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="mx-auto flex h-14 max-w-3xl items-center justify-between px-5 md:h-16 md:px-6">
           <Link
             href="/"
             prefetch
             className="inline-flex cursor-pointer items-center transition-opacity hover:opacity-80"
           >
-            <span className="inline-flex items-center text-sm font-semibold tracking-wide text-foreground">
-              MAI TRI THANH
+            <span className="inline-flex items-center text-sm font-semibold tracking-tight text-foreground">
+              Mai Tri Thanh
             </span>
           </Link>
 
-          <ul className="hidden items-center gap-1 md:flex">
+          <ul className="hidden items-center gap-5 md:flex">
             {menu.map((item: any) => (
               <MenuItem
                 key={item.name}
                 name={item.name}
-                icon={<item.icon size={20} variant="Outline" />}
                 pathname={item.pathName}
                 active={pathName === item.pathName}
               />
@@ -84,8 +82,9 @@ const Navbar = () => {
               size="icon"
               onClick={() => setIsOpenMenu(true)}
               aria-label="Open navigation menu"
+              className="w-auto px-0 text-sm font-medium"
             >
-              <HamburgerMenu variant="Outline" size={24} />
+              Menu
             </Button>
           </div>
         </div>

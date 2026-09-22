@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
 
 const AboutPage = () => {
@@ -16,29 +16,30 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-14">
       {modules.isVisible("bio") && (
-      <Card>
-        <CardHeader>
-          <Badge variant="outline" className="w-fit rounded-full text-xs text-muted-foreground">About</Badge>
-          <CardTitle className="text-3xl">About Me</CardTitle>
-        </CardHeader>
-        <CardContent className="max-w-prose space-y-4 text-sm leading-relaxed text-muted-foreground">
-          <p>{settings.about_me || "I'm Mai Tri Thanh, a Fullstack Developer who enjoys blending solid engineering with thoughtful UI."}</p>
+      <section className="grid gap-8 sm:grid-cols-[10rem_1fr] sm:items-start">
+        <div className="relative aspect-square overflow-hidden rounded-full bg-muted">
+          <Image src="/Thanh2.jpg" alt="Mai Tri Thanh" fill className="object-cover object-[center_30%]" priority />
+        </div>
+        <div className="space-y-5 text-base leading-7 text-muted-foreground">
+          <Badge variant="secondary" className="w-fit font-normal text-muted-foreground">About</Badge>
+          <h1 className="text-3xl font-semibold tracking-tight text-foreground md:text-4xl">I&apos;m Thanh, a full-stack developer based in Ho Chi Minh City.</h1>
+          <p>{settings.about_me || "I enjoy blending solid engineering with thoughtful UI, building digital products that are fast, useful, and easy to understand."}</p>
           <p>{settings.about_focus || "My focus is building fast web products with clean architecture, smooth interactions, and details users can feel."}</p>
           <div className="flex flex-wrap gap-1.5 pt-2">
             {["Next.js", "React", "TypeScript", "Laravel", "REST APIs"].map((skill) => (
-              <span key={skill} className="rounded-md border bg-muted/30 px-2.5 py-0.5 text-xs text-foreground/70">{skill}</span>
+              <span key={skill} className="rounded-md bg-muted px-2.5 py-0.5 text-xs text-foreground/70">{skill}</span>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </section>
       )}
 
       {modules.isVisible("experience") && (
       <div>
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Experience</h2>
-        <div className="mt-4 space-y-3">
+        <div className="mt-5 space-y-4">
           {[
             "Built responsive production interfaces and optimized performance on modern frontend stacks.",
             "Contributed backend APIs and data integrations to ship end-to-end features.",
@@ -55,7 +56,7 @@ const AboutPage = () => {
       {modules.isVisible("education") && (
       <div>
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education</h2>
-        <div className="mt-4 border-l-2 border-border pl-4">
+        <div className="mt-5 border-l-2 border-primary pl-4">
           <p className="font-medium text-foreground">Software Engineering</p>
           <p className="text-sm text-muted-foreground">Ho Chi Minh City University of Foreign Languages – Information Technology</p>
           <p className="mt-0.5 text-xs text-muted-foreground/60">2020 – 2024 · GPA 3.2/4.0</p>

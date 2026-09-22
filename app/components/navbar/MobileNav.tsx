@@ -3,7 +3,6 @@ import React from "react";
 import MenuItem from "./MenuItem";
 import { menu } from "@/data/menu";
 import { usePathname } from "next/navigation";
-import { CloseSquare } from "iconsax-reactjs";
 import { Button } from "@/components/ui/button";
 
 interface MobileNavProps {
@@ -14,15 +13,16 @@ const MobileNav = ({ setIsOpenMenu }: MobileNavProps) => {
   const pathName = usePathname();
 
   return (
-    <div className="fixed right-0 top-0 flex h-screen w-72 flex-col border-l border-black/10 bg-white/80 p-5 shadow-xl backdrop-blur-xl">
+    <div className="fixed right-0 top-0 flex h-screen w-72 flex-col border-l bg-background p-5 shadow-xl">
       <div className="mb-8 flex justify-end">
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setIsOpenMenu(false)}
           aria-label="Close navigation menu"
+          className="w-auto px-0 text-sm font-medium"
         >
-          <CloseSquare variant="Outline" className="h-6 w-6" />
+          Close
         </Button>
       </div>
 
@@ -32,7 +32,6 @@ const MobileNav = ({ setIsOpenMenu }: MobileNavProps) => {
             <MenuItem
               key={item.name}
               name={item.name}
-              icon={<item.icon size={22} variant="Outline" />}
               pathname={item.pathName}
               active={pathName === item.pathName}
             />

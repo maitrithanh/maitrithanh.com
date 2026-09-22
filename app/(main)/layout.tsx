@@ -8,7 +8,7 @@ export default function MainLayout({
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
-      <main className="mx-auto mt-14 max-w-6xl px-4 pb-20 pt-6 md:mt-16 md:px-6 md:pt-8">
+      <main className="mx-auto mt-14 max-w-3xl px-5 pb-20 pt-10 md:mt-16 md:px-6 md:pt-14">
         {children}
       </main>
     </div>
