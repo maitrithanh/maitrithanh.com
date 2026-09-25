@@ -10,6 +10,17 @@ import { skill as fallbackSkills } from "@/data/skill";
 import { careerTimeline as fallbackTimeline, cvQuickInfo as fallbackQuickInfo } from "@/data/cv";
 import { ArrowRight, ExportSquare } from "iconsax-reactjs";
 import { useModuleVisibility } from "@/app/utils/useModuleVisibility";
+import { motion } from "motion/react"
+import Counter from "../utils/CounterMotion";
+import {
+  AvatarGroup,
+  AvatarGroupTooltip,
+} from '@/components/animate-ui/components/animate/avatar-group';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '@/components/ui/avatar';
 
 function RevealSection({ children, className, show = true }: { children: React.ReactNode; className?: string; show?: boolean }) {
   if (!show) return null;
@@ -42,19 +53,28 @@ export default function Home() {
 
   return (
     <div className="space-y-16 pb-20">
-      <section className="grid gap-8 sm:grid-cols-[10rem_1fr] sm:items-start">
-        <div className="relative aspect-square overflow-hidden rounded-full bg-muted">
+      <section className="grid gap-8 sm:grid-cols-[14rem_1fr] sm:items-start">
+        <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="relative aspect-square h-full overflow-hidden rounded-full bg-muted">
           <Image src="/Thanh2.jpg" alt="Mai Tri Thanh" fill priority className="object-cover object-[center_30%]" />
-        </div>
+        </motion.div>
         <div className="space-y-5">
           <Badge variant="secondary" className="w-fit font-normal text-muted-foreground">{settings.hero_badge || "Building clean web experiences"}</Badge>
           <h1 className="text-4xl font-semibold tracking-tight text-foreground md:text-5xl">I&apos;m Mai Tri Thanh.</h1>
-          <p className="max-w-xl text-base leading-7 text-muted-foreground">{settings.hero_subtitle || "A full-stack developer in Ho Chi Minh City, crafting modern, fast, and delightful products."}</p>
-          <p className="text-sm text-muted-foreground">React · Next.js · Laravel</p>
+          <p className="max-w-xl text-base leading-7 text-muted-foreground">{settings.hero_subtitle || "..."}</p>
+          {/* <p className="text-sm text-muted-foreground">React · Next.js · Laravel</p> */}
           <div className="flex flex-wrap gap-3">
-            <Button asChild><Link href="/projects">View projects <ArrowRight variant="Outline" className="ml-1.5" /></Link></Button>
-            <Button asChild variant="outline"><Link href="/about">About me</Link></Button>
-            <Button asChild variant="ghost"><Link href="/CV_MaiTriThanh.pdf" target="_blank" rel="noreferrer">Resume</Link></Button>
+            <motion.button whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }} >
+              <Button asChild><Link href="/projects">View projects <ArrowRight variant="Outline" className="ml-1.5" /></Link></Button>
+            </motion.button>
+            <motion.button whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }} >
+              <Button asChild variant="outline"><Link href="/about">About me</Link></Button>
+            </motion.button>
+            <motion.button whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }} >
+              <Button asChild variant="ghost"><Link href="/CV_MaiTriThanh.pdf" target="_blank" rel="noreferrer">Resume</Link></Button>
+            </motion.button>
           </div>
         </div>
       </section>
@@ -62,19 +82,26 @@ export default function Home() {
       <RevealSection show={modules.isVisible("stats")}>
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
           <div>
-            <p className="text-3xl font-semibold tracking-tight text-foreground">2+</p>
+            <p className="text-3xl font-semibold tracking-tight text-foreground">
+              <Counter to={2} />+
+            </p>
             <p className="mt-1 text-sm text-muted-foreground">Years of experience</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tracking-tight text-foreground">{projects.length}+</p>
+            <p className="text-3xl font-semibold tracking-tight text-foreground">
+              <Counter to={projects.length} />+</p>
             <p className="mt-1 text-sm text-muted-foreground">Projects shipped</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tracking-tight text-foreground">{skills.length}+</p>
+            <p className="text-3xl font-semibold tracking-tight text-foreground">
+              <Counter to={skills.length} />+
+            </p>
             <p className="mt-1 text-sm text-muted-foreground">Technologies used</p>
           </div>
           <div>
-            <p className="text-3xl font-semibold tracking-tight text-foreground">500+</p>
+            <p className="text-3xl font-semibold tracking-tight text-foreground">
+              <Counter to={500} />+
+            </p>
             <p className="mt-1 text-sm text-muted-foreground">Git contributions</p>
           </div>
         </div>
@@ -86,18 +113,17 @@ export default function Home() {
             Tech Stack
           </h2>
           <div className="mt-4 flex flex-wrap gap-2">
-            {skills.slice(0, 12).map((item) => (
-              <a
-                key={item.name}
-                href={item.link}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-lg bg-muted px-3 py-1.5 text-sm text-foreground/70 transition-colors hover:bg-secondary hover:text-foreground"
-              >
-                <Image src={item.image} alt={item.name} width={14} height={14} className="h-3.5 w-3.5" />
-                <span>{item.name}</span>
-              </a>
-            ))}
+            <AvatarGroup className="gap-6 flex flex-wrap justify-center items-center">
+              {skills.slice(0, 12).map((item) => (
+                <Link key={item.name} href={item.link} target="_blank" rel="noreferrer">
+                  <Avatar key={item.name} className="size-12 rounded-sm">
+                    <AvatarImage src={item.image} alt={item.name} />
+                    <AvatarFallback>{item.name}</AvatarFallback>
+                    <AvatarGroupTooltip>{item.name}</AvatarGroupTooltip>
+                  </Avatar>
+                </Link>
+              ))}
+            </AvatarGroup>
           </div>
         </div>
       </RevealSection>
@@ -159,16 +185,16 @@ export default function Home() {
             {projects.slice(0, 3).map((project) => (
               <Card key={project.name} className="group overflow-hidden bg-muted/40 transition-colors hover:bg-muted/70">
                 <a href={project.preview} target="_blank" rel="noreferrer" className="block h-full">
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
-                </div>
-                <CardContent className="flex min-h-28 flex-col p-4">
-                  <p className="text-xs text-muted-foreground">{project.date}</p>
-                  <p className="mt-0.5 font-medium text-foreground">{project.name}</p>
-                  <span className="mt-auto inline-flex items-center gap-1 pt-2 text-xs text-muted-foreground transition-colors group-hover:text-foreground">
-                    Preview <ExportSquare variant="Outline" />
-                  </span>
-                </CardContent>
+                  <div className="relative aspect-[16/10] overflow-hidden">
+                    <Image src={project.image} alt={project.name} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.02]" />
+                  </div>
+                  <CardContent className="flex min-h-28 flex-col p-4">
+                    <p className="text-xs text-muted-foreground">{project.date}</p>
+                    <p className="mt-0.5 font-medium text-foreground">{project.name}</p>
+                    <span className="mt-auto inline-flex items-center gap-1 pt-2 text-xs text-muted-foreground transition-colors group-hover:text-foreground">
+                      Preview <ExportSquare variant="Outline" />
+                    </span>
+                  </CardContent>
                 </a>
               </Card>
             ))}
