@@ -189,9 +189,9 @@ function CrudManager({
   }, [resource]);
   useEffect(() => { load(); }, [load]);
 
-  const startEdit = (item: any | null) => {
+  const startEdit = (item: any = {}) => {
     setEditing(item);
-    setForm(item || {});
+    setForm(item);
     if (lines) setLineValues(item?.[lines.key] || [""]);
   };
 
@@ -203,7 +203,7 @@ function CrudManager({
     if (lines) body[lines.key] = lineValues.filter(Boolean);
     try {
       await saveRecord(resource, editing?.id, body);
-      startEdit(null);
+      setEditing(null);
       load();
     } catch (e) {
       saveFailed(e);
@@ -264,7 +264,7 @@ function CrudManager({
           )}
         </div>
         <div className="mt-6 flex gap-3">
-          <button onClick={() => startEdit(null)} className={ghostBtn}>Cancel</button>
+          <button onClick={() => setEditing(null)} className={ghostBtn}>Cancel</button>
           <button onClick={save} disabled={saving} className={saveBtn}>
             {saving ? "Saving..." : "Save"}
           </button>
@@ -277,7 +277,7 @@ function CrudManager({
     <div className={cardCls}>
       <div className="mb-4 flex items-center justify-between">
         <p className="text-sm text-muted-foreground">{items.length} {title.toLowerCase()}s{items.length > 1 && " · Drag ⠿ or use arrows to reorder"}</p>
-        <button onClick={() => startEdit(null)} className={primaryBtn}>{addLabel}</button>
+        <button onClick={() => startEdit()} className={primaryBtn}>{addLabel}</button>
       </div>
       <div className="space-y-2">
         {items.map((item, index) => (
