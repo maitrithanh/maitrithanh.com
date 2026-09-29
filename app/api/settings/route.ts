@@ -8,7 +8,7 @@ export async function GET() {
   const data = await list("site_settings");
   const settings: Record<string, string> = {};
   for (const item of data) {
-    settings[item.key] = item.value;
+    if (!item.key.startsWith("sort:")) settings[item.key] = item.value;
   }
   return NextResponse.json(settings);
 }

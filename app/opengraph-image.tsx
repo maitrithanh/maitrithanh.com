@@ -101,7 +101,7 @@ export default function Image() {
             letterSpacing: 1,
           }}
         >
-          AVAILABLE FOR WHAT'S NEXT
+          AVAILABLE FOR WHAT&apos;S NEXT
         </div>
         <div style={{ display: "flex", flexDirection: "column", marginTop: 30, fontSize: 86, fontWeight: 700, letterSpacing: -5, lineHeight: 1.02 }}>
           <span>Building</span>

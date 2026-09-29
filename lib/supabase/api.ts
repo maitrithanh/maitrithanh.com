@@ -1,7 +1,9 @@
 import { createClient } from "./server";
 import { createAdminClient } from "./server";
+import { applySavedOrder } from "@/lib/sort";
 
 type TableName = "projects" | "blog_posts" | "skills" | "experiences" | "site_settings" | "page_modules";
+const sortableTables = new Set<TableName>(["projects", "blog_posts", "skills", "experiences", "page_modules"]);
 
 export async function list(table: TableName, options?: { orderBy?: string; ascending?: boolean }) {
   const supabase = await createClient();
@@ -11,6 +13,20 @@ export async function list(table: TableName, options?: { orderBy?: string; ascen
   }
   const { data, error } = await query;
   if (error) throw error;
+  if (sortableTables.has(table)) {
+    const { data: setting, error: sortError } = await supabase
+      .from("site_settings")
+      .select("value")
+      .eq("key", `sort:${table}`)
+      .maybeSingle();
+    if (sortError) throw sortError;
+    if (setting) {
+      try {
+        const ids = JSON.parse(setting.value);
+        if (Array.isArray(ids)) return applySavedOrder(data, ids);
+      } catch { /* Keep the database order if a saved value is malformed. */ }
+    }
+  }
   return data;
 }
 

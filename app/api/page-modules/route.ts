@@ -5,7 +5,7 @@ import { list, create } from "@/lib/supabase/api";
 
 export async function GET(request: Request) {
   const page = new URL(request.url).searchParams.get("page");
-  const data = await list("page_modules", { orderBy: "sort_order" });
+  const data = await list("page_modules", { orderBy: "sort_order", ascending: true });
   return NextResponse.json(page ? data.filter((m: any) => m.page === page) : data);
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
@@ -22,12 +22,13 @@ import {
   AvatarImage,
 } from '@/components/ui/avatar';
 
-function RevealSection({ children, className, show = true }: { children: React.ReactNode; className?: string; show?: boolean }) {
+function RevealSection({ children, className, show = true, order }: { children: React.ReactNode; className?: string; show?: boolean; order?: number }) {
   if (!show) return null;
-  return <div className={`border-t pt-10 ${className || ""}`}>{children}</div>;
+  return <div style={{ order }} className={`border-t pt-10 ${className || ""}`}>{children}</div>;
 }
 
 export default function Home() {
+  const resumeDialog = useRef<HTMLDialogElement>(null);
   const [projects, setProjects] = useState(fallbackProjects);
   const [skills, setSkills] = useState(fallbackSkills);
   const [timeline, setTimeline] = useState(fallbackTimeline);
@@ -52,7 +53,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="space-y-16 pb-20">
+    <div className="flex flex-col gap-16 pb-20">
       <section className="grid gap-8 sm:grid-cols-[14rem_1fr] sm:items-start">
         <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="relative aspect-square h-full overflow-hidden rounded-full bg-muted">
           <Image src="/Thanh2.jpg" alt="Mai Tri Thanh" fill priority className="object-cover object-[center_30%]" />
@@ -71,15 +72,27 @@ export default function Home() {
               whileTap={{ scale: 0.95 }} >
               <Button asChild variant="outline"><Link href="/about">About me</Link></Button>
             </motion.button>
-            <motion.button whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }} >
-              <Button asChild variant="ghost"><Link href="/CV_MaiTriThanh.pdf" target="_blank" rel="noreferrer">Resume</Link></Button>
-            </motion.button>
+            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="ghost" onClick={() => resumeDialog.current?.showModal()}>Resume</Button>
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <RevealSection show={modules.isVisible("stats")}>
+      <dialog ref={resumeDialog} aria-labelledby="resume-title" onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }} className="m-auto h-[min(88vh,900px)] w-[min(94vw,1000px)] max-w-none overflow-hidden rounded-2xl border border-border bg-background p-0 shadow-2xl backdrop:bg-black/70">
+        <div className="flex h-full flex-col">
+          <div className="flex items-center justify-between gap-3 border-b px-4 py-3">
+            <h2 id="resume-title" className="font-semibold">Mai Tri Thanh · Resume</h2>
+            <div className="flex items-center gap-3">
+              <a href="/CV_MaiTriThanh.pdf" download className="text-sm text-muted-foreground hover:text-foreground">Download PDF</a>
+              <button type="button" onClick={() => resumeDialog.current?.close()} aria-label="Close resume" className="rounded-md px-2 py-1 text-xl text-muted-foreground hover:bg-muted hover:text-foreground">×</button>
+            </div>
+          </div>
+          <iframe src="/CV_MaiTriThanh.pdf" title="Mai Tri Thanh resume PDF" loading="lazy" className="min-h-0 w-full flex-1" />
+        </div>
+      </dialog>
+
+      <RevealSection show={modules.isVisible("stats")} order={modules.order("stats", 1)}>
         <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-4">
           <div>
             <p className="text-3xl font-semibold tracking-tight text-foreground">
@@ -107,7 +120,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection show={modules.isVisible("tech_stack")}>
+      <RevealSection show={modules.isVisible("tech_stack")} order={modules.order("tech_stack", 2)}>
         <div>
           <h2 className="text-md font-bold uppercase tracking-wider text-primary">
             Tech Stack
@@ -128,7 +141,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection show={modules.isVisible("education")}>
+      <RevealSection show={modules.isVisible("education")} order={modules.order("education", 3)}>
         <div>
           <h2 className="text-md font-bold uppercase tracking-wider text-primary">
             Education
@@ -141,7 +154,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection show={modules.isVisible("experience")}>
+      <RevealSection show={modules.isVisible("experience")} order={modules.order("experience", 4)}>
         <div>
           <h2 className="text-md font-bold uppercase tracking-wider text-primary">
             Experience
@@ -171,7 +184,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection show={modules.isVisible("projects")}>
+      <RevealSection show={modules.isVisible("projects")} order={modules.order("projects", 5)}>
         <div>
           <div className="flex items-center justify-between">
             <h2 className="text-md font-bold uppercase tracking-wider text-primary">
@@ -202,7 +215,7 @@ export default function Home() {
         </div>
       </RevealSection>
 
-      <RevealSection show={modules.isVisible("cta")}>
+      <RevealSection show={modules.isVisible("cta")} order={modules.order("cta", 6)}>
         <Card className="bg-muted/50">
           <CardContent className="flex flex-col items-center gap-4 p-6 text-center md:flex-row md:justify-between md:text-left">
             <div>

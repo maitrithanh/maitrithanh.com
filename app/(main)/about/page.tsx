@@ -16,9 +16,9 @@ const AboutPage = () => {
   }, []);
 
   return (
-    <div className="space-y-14">
+    <div className="flex flex-col gap-14">
       {modules.isVisible("bio") && (
-      <section className="grid gap-8 sm:grid-cols-[10rem_1fr] sm:items-start">
+      <section style={{ order: modules.order("bio", 1) }} className="grid gap-8 sm:grid-cols-[10rem_1fr] sm:items-start">
         <div className="relative aspect-square overflow-hidden rounded-full bg-muted">
           <Image src="/Thanh2.jpg" alt="Mai Tri Thanh" fill className="object-cover object-[center_30%]" priority />
         </div>
@@ -37,7 +37,7 @@ const AboutPage = () => {
       )}
 
       {modules.isVisible("experience") && (
-      <div>
+      <div style={{ order: modules.order("experience", 2) }}>
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Experience</h2>
         <div className="mt-5 space-y-4">
           {[
@@ -54,7 +54,7 @@ const AboutPage = () => {
       )}
 
       {modules.isVisible("education") && (
-      <div>
+      <div style={{ order: modules.order("education", 3) }}>
         <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education</h2>
         <div className="mt-5 border-l-2 border-primary pl-4">
           <p className="font-medium text-foreground">Software Engineering</p>

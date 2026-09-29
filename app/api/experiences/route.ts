@@ -4,7 +4,7 @@ import { requireAdmin } from "@/lib/auth";
 import { list, create } from "@/lib/supabase/api";
 
 export async function GET() {
-  const data = await list("experiences", { orderBy: "sort_order" });
+  const data = await list("experiences", { orderBy: "sort_order", ascending: true });
   return NextResponse.json(data);
 }
 

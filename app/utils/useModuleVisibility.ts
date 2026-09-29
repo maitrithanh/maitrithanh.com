@@ -6,18 +6,22 @@ import { useEffect, useState } from "react";
 // the table is seeded.
 export function useModuleVisibility(page: string) {
   const [flags, setFlags] = useState<Record<string, boolean>>({});
+  const [positions, setPositions] = useState<Record<string, number>>({});
 
   useEffect(() => {
     fetch(`/api/page-modules?page=${page}`)
       .then((r) => r.json())
       .then((rows: any[]) => {
         const map: Record<string, boolean> = {};
-        rows.forEach((m) => { map[m.section] = m.visible; });
+        const order: Record<string, number> = {};
+        rows.forEach((m, index) => { map[m.section] = m.visible; order[m.section] = index + 1; });
         setFlags(map);
+        setPositions(order);
       })
       .catch(() => {});
   }, [page]);
 
   const isVisible = (section: string) => (section in flags ? flags[section] : true);
-  return { isVisible };
+  const order = (section: string, fallback: number) => positions[section] ?? fallback;
+  return { isVisible, order };
 }

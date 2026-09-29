@@ -1,24 +1,15 @@
 "use client";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { useAdminTab } from "../layout";
+import { moveItem } from "@/lib/sort";
 
 // Admin CMS. One screen with tabs (Projects, Blog, Skills, Experience,
 // Settings). Each tab is a "manager": it lists rows, lets you add/edit
 // via a form, and calls the matching /api/<resource> endpoint. The
 // shared CRUD helpers at the bottom do the actual HTTP work.
 
-type Tab = "projects" | "blog" | "skills" | "experience" | "modules" | "settings";
-
 export default function AdminDashboard() {
-  const [tab, setTab] = useState<Tab>("projects");
-
-  const tabs: { key: Tab; label: string }[] = [
-    { key: "projects", label: "Projects" },
-    { key: "blog", label: "Blog" },
-    { key: "skills", label: "Skills" },
-    { key: "experience", label: "Experience" },
-    { key: "modules", label: "Modules" },
-    { key: "settings", label: "Settings" },
-  ];
+  const { tab } = useAdminTab();
 
   return (
     <div className="space-y-6">
@@ -27,22 +18,6 @@ export default function AdminDashboard() {
           Dashboard
         </h1>
         <SeedButton />
-      </div>
-
-      <div className="flex gap-1 rounded-xl">
-        {tabs.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
-              tab === t.key
-                ? "bg-foreground text-background shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            {t.label}
-          </button>
-        ))}
       </div>
 
       {tab === "projects" && (
@@ -88,7 +63,6 @@ export default function AdminDashboard() {
             { key: "role", label: "Role", required: true },
             { key: "period", label: "Period", required: true },
             { key: "location", label: "Location", required: true },
-            { key: "sort_order", label: "Sort Order" },
           ]}
         />
       )}
@@ -158,6 +132,15 @@ async function deleteRecord(resource: string, id: string) {
   await fetch(`/api/${resource}/${id}`, { method: "DELETE" });
 }
 
+async function saveOrder(resource: string, ids: string[]) {
+  const res = await fetch("/api/sort", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ resource, ids }),
+  });
+  if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || "Sorting failed");
+}
+
 // ponytail: one place to change API error shape; alerts kept simple on purpose
 function saveFailed(e: unknown) {
   alert(e instanceof Error ? e.message : "Save failed");
@@ -196,6 +179,8 @@ function CrudManager({
   const [form, setForm] = useState<any>({});
   const [saving, setSaving] = useState(false);
   const [lineValues, setLineValues] = useState<string[]>([""]);
+  const [sorting, setSorting] = useState(false);
+  const draggedId = useRef<string | null>(null);
 
   const load = useCallback(async () => {
     const res = await fetch(`/api/${resource}`);
@@ -231,6 +216,22 @@ function CrudManager({
     if (!confirm(`Delete this ${title.toLowerCase()}?`)) return;
     await deleteRecord(resource, id);
     load();
+  };
+
+  const reorder = async (sourceId: string, targetId: string) => {
+    if (sorting) return;
+    const next = moveItem(items, sourceId, targetId);
+    if (next === items) return;
+    setItems(next);
+    setSorting(true);
+    try {
+      await saveOrder(resource, next.map((item) => item.id));
+    } catch (e) {
+      setItems(items);
+      saveFailed(e);
+    } finally {
+      setSorting(false);
+    }
   };
 
   if (loading) return <p className="text-sm text-muted-foreground">Loading...</p>;
@@ -275,17 +276,20 @@ function CrudManager({
   return (
     <div className={cardCls}>
       <div className="mb-4 flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">{items.length} {title.toLowerCase()}s</p>
+        <p className="text-sm text-muted-foreground">{items.length} {title.toLowerCase()}s{items.length > 1 && " · Drag ⠿ or use arrows to reorder"}</p>
         <button onClick={() => startEdit(null)} className={primaryBtn}>{addLabel}</button>
       </div>
       <div className="space-y-2">
-        {items.map((item) => (
-          <div key={item.id} className="flex items-center justify-between rounded-lg border border-border/40 bg-muted/20 px-4 py-3">
+        {items.map((item, index) => (
+          <div key={item.id} onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (draggedId.current) reorder(draggedId.current, item.id); draggedId.current = null; }} className="flex items-center justify-between gap-3 rounded-lg border border-border/40 bg-muted/20 px-4 py-3">
+            <button type="button" draggable={!sorting} onDragStart={(e) => { draggedId.current = item.id; e.dataTransfer.effectAllowed = "move"; }} onDragEnd={() => { draggedId.current = null; }} aria-label={`Drag ${item[listField]} to reorder`} className="cursor-grab select-none text-lg text-muted-foreground active:cursor-grabbing">⠿</button>
             <div>
               <p className="text-sm font-medium text-foreground">{item[listField]}</p>
               {subField && <p className="text-xs text-muted-foreground">{item[subField]}</p>}
             </div>
-            <div className="flex gap-2">
+            <div className="ml-auto flex items-center gap-2">
+              <button type="button" onClick={() => reorder(item.id, items[index - 1].id)} disabled={sorting || index === 0} aria-label={`Move ${item[listField]} up`} className={`${linkBtn} disabled:opacity-30`}>↑</button>
+              <button type="button" onClick={() => reorder(item.id, items[index + 1].id)} disabled={sorting || index === items.length - 1} aria-label={`Move ${item[listField]} down`} className={`${linkBtn} disabled:opacity-30`}>↓</button>
               <button onClick={() => startEdit(item)} className={linkBtn}>Edit</button>
               <button onClick={() => remove(item.id)} className={delBtn}>Delete</button>
             </div>
@@ -303,6 +307,8 @@ function ModulesManager() {
   const [newSection, setNewSection] = useState("");
   const [newLabel, setNewLabel] = useState("");
   const [saving, setSaving] = useState(false);
+  const [sorting, setSorting] = useState(false);
+  const draggedId = useRef<string | null>(null);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/page-modules");
@@ -338,6 +344,22 @@ function ModulesManager() {
     }
   };
 
+  const reorder = async (sourceId: string, targetId: string) => {
+    if (sorting || modules.find((m) => m.id === sourceId)?.page !== modules.find((m) => m.id === targetId)?.page) return;
+    const next = moveItem(modules, sourceId, targetId);
+    if (next === modules) return;
+    setModules(next);
+    setSorting(true);
+    try {
+      await saveOrder("page-modules", next.map((m) => m.id));
+    } catch (e) {
+      setModules(modules);
+      saveFailed(e);
+    } finally {
+      setSorting(false);
+    }
+  };
+
   if (loading) return <p className="text-sm text-muted-foreground">Loading...</p>;
 
   // Group rows by page so each page's toggles sit together.
@@ -352,16 +374,20 @@ function ModulesManager() {
         <div key={page} className={cardCls}>
           <h2 className="text-lg font-semibold capitalize text-foreground">{page}</h2>
           <div className="mt-2 divide-y divide-border/40">
-            {rows.map((m) => (
-              <label key={m.id} className="flex items-center justify-between py-3">
+            {rows.map((m, index) => (
+              <div key={m.id} onDragOver={(e) => e.preventDefault()} onDrop={(e) => { e.preventDefault(); if (draggedId.current) reorder(draggedId.current, m.id); draggedId.current = null; }} className="flex items-center gap-3 py-3">
+                <button type="button" draggable={!sorting} onDragStart={(e) => { draggedId.current = m.id; e.dataTransfer.effectAllowed = "move"; }} onDragEnd={() => { draggedId.current = null; }} aria-label={`Drag ${m.label} to reorder`} className="cursor-grab select-none text-lg text-muted-foreground active:cursor-grabbing">⠿</button>
                 <span className="text-sm text-foreground">{m.label}</span>
+                <button type="button" onClick={() => reorder(m.id, rows[index - 1].id)} disabled={sorting || index === 0} aria-label={`Move ${m.label} up`} className={`${linkBtn} ml-auto disabled:opacity-30`}>↑</button>
+                <button type="button" onClick={() => reorder(m.id, rows[index + 1].id)} disabled={sorting || index === rows.length - 1} aria-label={`Move ${m.label} down`} className={`${linkBtn} disabled:opacity-30`}>↓</button>
                 <input
                   type="checkbox"
                   checked={m.visible}
                   onChange={(e) => toggle(m, e.target.checked)}
+                  aria-label={`Show ${m.label}`}
                   className="h-4 w-4"
                 />
-              </label>
+              </div>
             ))}
           </div>
         </div>

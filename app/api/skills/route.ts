@@ -4,7 +4,7 @@ import { requireAdmin } from "@/lib/auth";
 import { list, create } from "@/lib/supabase/api";
 
 export async function GET() {
-  const data = await list("skills", { orderBy: "created_at" });
+  const data = await list("skills", { orderBy: "created_at", ascending: true });
   return NextResponse.json(data);
 }
 
