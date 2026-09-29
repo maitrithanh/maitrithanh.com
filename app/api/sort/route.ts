@@ -18,7 +18,7 @@ export async function POST(request: Request) {
   const resource = body?.resource as keyof typeof resources;
   const ids = body?.ids;
   if (!Object.hasOwn(resources, resource) || !Array.isArray(ids) || ids.length > 1000 ||
-      !ids.every((id) => typeof id === "string" && /^[0-9a-f-]{36}$/i.test(id)) ||
+      !ids.every((id) => typeof id === "string" && /^[a-z0-9:_-]{1,100}$/i.test(id)) ||
       new Set(ids).size !== ids.length) {
     return NextResponse.json({ error: "Invalid sort order" }, { status: 400 });
   }
