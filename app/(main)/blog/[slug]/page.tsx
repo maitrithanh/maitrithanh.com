@@ -8,6 +8,8 @@ import { blogPosts as fallbackPosts } from "@/lib/blog";
 import { getBlogPostBySlug } from "@/lib/data";
 import { ArrowLeft, Calendar, Clock } from "iconsax-reactjs";
 import { SITE_URL } from "@/lib/constants";
+import { createMetadata } from "@/lib/seo";
+import { JsonLd } from "@/components/JsonLd";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -19,27 +21,16 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const post = await getBlogPostBySlug((await params).slug);
-  if (!post) return { title: "Post not found" };
+  if (!post) return { title: "Post not found", robots: { index: false } };
 
-  return {
+  return createMetadata({
+    path: `/blog/${post.slug}`,
     title: post.title,
     description: post.summary,
-    openGraph: {
-      title: `${post.title} | Blog`,
-      description: post.summary,
-      type: "article",
-      publishedTime: post.publishedAt,
-      url: `${SITE_URL}/blog/${post.slug}`,
-      images: [{ url: `${SITE_URL}${post.cover}`, width: 1200, height: 630, alt: post.title }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${post.title} | Blog`,
-      description: post.summary,
-      images: [`${SITE_URL}${post.cover}`],
-    },
-    alternates: { canonical: `${SITE_URL}/blog/${post.slug}` },
-  };
+    image: post.cover,
+    type: "article",
+    publishedTime: post.publishedAt,
+  });
 }
 
 export default async function BlogDetailPage({ params }: PageProps) {
@@ -48,10 +39,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
+      <JsonLd data={{
             "@context": "https://schema.org",
             "@type": "BlogPosting",
             headline: post.title,
@@ -61,9 +49,7 @@ export default async function BlogDetailPage({ params }: PageProps) {
             author: { "@type": "Person", name: "Mai Tri Thanh", url: SITE_URL },
             publisher: { "@type": "Person", name: "Mai Tri Thanh" },
             mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${post.slug}` },
-          }),
-        }}
-      />
+          }} />
       <div className="mx-auto max-w-3xl space-y-6">
         <Button asChild variant="outline">
           <Link href="/blog" className="inline-flex items-center gap-2">
